@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="product_product_inherited_view">
+            <field name="name">product.product.inherited.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[5]" position="after">
+                    <page string="Fleet Information">
+                        <group>
+                            <group>
+                                <field name="custom_model_id"/>
+                                <field name="custom_license_plate"/>
+                            </group>
+                            <group>
+                                 <field name="custom_vehicle_id"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <!-- <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="action_view_fleet" type="object" class="oe_stat_button" icon="fa-car" string="Vehicle">
+                     </button>
+                </xpath> -->
+                <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                    <div>
+                        <field name="custom_fleet_ok"/>
+                        <label for="custom_fleet_ok"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+</data>
+</odoo>

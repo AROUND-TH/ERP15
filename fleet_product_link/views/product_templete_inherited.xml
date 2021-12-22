@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="product_templete_inherited_view">
+            <field name="name">product.templete.inherited.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[5]" position="after">
+                    <page string="Fleet Information">
+                        <group>
+                            <group>
+                                <field name="custom_model_id"/>
+                                <field name="custom_license_plate"/>
+                            </group>
+                            <group>
+                                 <field name="custom_vehicle_id"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="action_view_fleet" type="object" class="oe_stat_button" icon="fa-car" string="Vehicle">
+                     </button>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                    <div>
+                        <field name="custom_fleet_ok"/>
+                        <label for="custom_fleet_ok"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_product_templete_inherited_search_view" model="ir.ui.view">
+            <field name="name">product.templete.inherited.search.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//search" position="inside">
+                        <filter string="License Plate" name="License Plate" context="{'group_by':'custom_license_plate'}"/>
+                        <filter string="Model" name="Model" context="{'group_by':'custom_model_id'}"/>
+                        <filter string="Vehicle" name="Vehicle" context="{'group_by':'custom_vehicle_id'}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+         <record id="action_product_link_all_fleet" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('custom_fleet_ok','=', True)]</field>
+            <field name="context">{'default_custom_fleet_ok':'1'}</field>
+        </record>
+         <menuitem name="Products" parent="fleet.menu_root" id="menu_product_link" sequence="98" action="action_product_link_all_fleet"/>
+    </data>
+</odoo>

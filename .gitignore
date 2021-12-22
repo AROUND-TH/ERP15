@@ -1,0 +1,11 @@
+*.pyc
+env
+exp_env
+
+# Config
+local.conf
+test.conf
+
+# IDE
+.idea
+.vscode
