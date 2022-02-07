@@ -12,6 +12,6 @@
     'author': "Around Enterprise Consulting Co., Ltd.",
     'website': "https://www.around.co.th",
     'category': 'Inventory',
-    "version": "14.0.1.0.0",
+    "version": "15.0.1.0.0",
     'depends': ['stock','fleet_product_link'],
 }
