@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_stock_location_quantity_overview" model="ir.ui.view">
+        <field name="name">Stock Location Quantity Overview</field>
+        <field name="model">stock.location.quantity.overview</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="location_id" domain="[('usage', 'in', ('internal', 'transit')),('company_id', '=', company_id)]"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="hierarchy"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="stock_location_overview" string="Location Quantity Overview" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_stock_location_quantity_overview_tree" model="ir.ui.view">
+        <field name="name">Stock Location Quantity Overview</field>
+        <field name="model">stock.quant</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Location Quantity Overview" create="false" edit="false">
+                <field name="id" invisible="1"/>
+                <field name="tracking" invisible="1"/>
+                <field name="location_id" attrs="{'readonly': [('id', '!=', False)]}" options="{'no_create': True}"/>
+                <field name="product_id" attrs="{'readonly': [('id', '!=', False)]}" options="{'no_create': True}"/>
+                <field name="lot_id" groups="stock.group_production_lot" attrs="{'readonly': ['|', ('id', '!=', False), ('tracking', 'not in', ['serial', 'lot'])]}" context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                <field name="package_id" groups="stock.group_tracking_lot" attrs="{'readonly': [('id', '!=', False)]}"/>
+                <field name="owner_id" groups="stock.group_tracking_owner" attrs="{'readonly': [('id', '!=', False)]}" options="{'no_create': True}"/>
+                <field name="available_quantity" string="Available Quantity" decoration-danger="available_quantity &lt; 0" optional="hidden"/>
+                <field name="quantity" string="On Hand Quantity"/>
+                <field name="product_uom_id" groups="uom.group_uom" string="UoM"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_stock_location_quantity_overview" model="ir.actions.act_window">
+        <field name="name">Stock Location Quantity Overview</field>
+        <field name="res_model">stock.location.quantity.overview</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_location_quantity_overview"/>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_stock_location_quantity_overview"
+        parent="stock.menu_warehouse_report"
+        sequence="100"
+        action="action_stock_location_quantity_overview"/>
+</odoo>
+
