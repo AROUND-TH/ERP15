@@ -16,7 +16,7 @@
                 <!-- <xpath expr="//form/header/button[@name='action_cancel']" position="replace">
                     <button name="action_cancel" states="manual,sale,workorder" string="Cancel Order" type="object"/>
                 </xpath> -->
-               <!--  <xpath expr="//form/header/button[@name='action_quotation_send']" position="replace">
+                <!-- <xpath expr="//form/header/button[@name='action_quotation_send']" position="replace">
                     <button name="print_quotation" string="Print" type="object" states="draft,workorder" class="oe_highlight"/>
                 </xpath> -->
                 <xpath expr="//form/header/button[@name='action_quotation_send']" position="after">
@@ -48,15 +48,18 @@
                 
             </field>
         </record>
-        
+
 
         <record id="custom_view_invoice_form" model="ir.ui.view">
             <field name="name">account.invoice.form.custom</field>
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
-                    <field name="create_form_fleet"  invisible="1"/>
+                <!-- <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
+                    <field name="create_form_fleet" invisible="1"/>
+                </xpath> -->
+                <xpath expr="//field[@name='date']" position="after">
+                  <field name="create_form_fleet" invisible="1"/>
                 </xpath>
             </field>
         </record>

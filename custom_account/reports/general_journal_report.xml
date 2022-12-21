@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="general_journal_report">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang or o.company_id.partner_id.lang"/>
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <div class="page page_general_journal_report">
+                    <div class="row">
+                        <div class="col-8"></div>
+                        <div class="col-4 text-left">
+                            เลขที่เอกสาร: <span t-field="o.name"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8"></div>
+                        <div class="col-4 text-left">
+                            วันที่: <span t-field="o.date"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center header-report">
+                            <h2>
+                                <span t-field="o.journal_id.name"/>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left text-margin">
+                            Reference <span t-field="o.ref"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left text-margin">
+                            หมายเหตุ <span t-field="o.narration_notes"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-margin">Account</th>
+                                <th class="text-center text-margin">Partner</th>
+                                <th class="text-center text-margin">Label</th>
+                                <th class="text-center text-margin">Currency</th>
+                                <th class="text-center text-margin">Debit</th>
+                                <th class="text-center text-margin">Credit</th>
+                            </tr>
+                        </thead>
+                        <t t-set="sum_debit" t-value="0"/>
+                        <t t-set="sum_credit" t-value="0"/>
+                        <tr t-foreach="o.line_ids" t-as="line">
+                            <td class="text-left text-margin">
+                                <t t-esc="line.account_id.code"/>
+                                <span> </span>
+                                <t t-esc="line.account_id.name"/>
+                            </td>
+                            <td class="text-left text-margin"><t t-esc="line.partner_id.name"/></td>
+                            <td class="text-left text-margin"><t t-esc="line.name"/></td>
+                            <td class="text-center text-margin"><t t-esc="line.currency_id.name"/></td>
+                            <td class="text-center text-margin"><t t-esc="line.debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            <td class="text-center text-margin"><t t-esc="line.credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            <t t-set="sum_debit" t-value="sum_debit + line.debit"/>
+                            <t t-set="sum_credit" t-value="sum_credit + line.credit"/>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center text-margin" colspan="4"></td>
+                                <td class="text-center text-margin"><t t-esc="sum_debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                <td class="text-center text-margin"><t t-esc="sum_credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <br/><br/><br/><br/><br/>
+                    <div class="row">
+                        <div class="col-4 text-center text-margin">
+                            ผู้จัดทำ ........................................
+                        </div>
+                        <div class="col-4 text-center text-margin">
+                            ผู้ตรวจสอบ .....................................
+                        </div>
+                        <div class="col-4 text-center text-margin">
+                            ผู้อนุมัติ ........................................
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

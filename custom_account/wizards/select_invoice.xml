@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- === Select Invoice Wizard === -->
+    <record id="select_invoice_form" model="ir.ui.view">
+        <field name="name">wizard.select.invoice</field>
+        <field name="model">wizard.select.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Search Invoice Wizard">
+                <h1 class="d-none d-md-block">
+                    <field name="customer_bill_id" readonly="1" invisible="1"/>
+                    <field name="vendor_bill_id" readonly="1" invisible="1"/>
+                </h1>
+                <h5 class="d-none d-md-block">
+                    <field name="message" readonly="1" style="color:red;"/>
+                </h5>
+                <group>
+                    <group>
+                        <div style="padding: 0px 0px 0px 55%">
+                            <label for="partner_id" string="Customer" attrs="{'invisible': [('customer_bill_id', '=', False)]}" style="font-weight: bold"/>
+                            <label for="partner_id" string="Vendor" attrs="{'invisible': [('vendor_bill_id', '=', False)]}" style="font-weight: bold"/>
+                        </div>
+                        <div style="padding: 0px 0px 0px 5%">
+                            <field name="partner_id"/>
+                        </div>
+                        <div style="padding: 0px 0px 0px 55%">
+                            <label for="all_invoice" style="font-weight: bold"/>
+                        </div>
+                        <div style="padding: 0px 0px 0px 5%">
+                            <field name="all_invoice"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="from_invoice_date" attrs="{'readonly': [('all_invoice', '=', True)]}"/>
+                        <field name="to_invoice_date" attrs="{'readonly': [('all_invoice', '=', True)]}"/>
+                    </group>
+                </group>
+
+                <group>
+                    <div name="button_search" align="center">
+                        <button name="action_search" string="Search" type="object" class="btn-primary"/>
+                    </div>
+                </group>
+
+                <div style="padding: 50px 0px 0px 0px">
+                    <field name="invoice_items">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="select_item"/>
+                            <field name="invoice_id" readonly="1"/>
+                            <field name="invoice_date" readonly="1"/>
+                            <field name="invoice_date_due" readonly="1"/>
+                            <field name="amount_untaxed" readonly="1"/>
+                            <field name="amount_tax" readonly="1"/>
+                            <field name="amount_total" readonly="1"/>
+                        </tree>
+                    </field>
+                </div>
+
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="select_invoice_wizard" model="ir.actions.act_window">
+        <field name="name">Search Invoice Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.select.invoice</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="select_invoice_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

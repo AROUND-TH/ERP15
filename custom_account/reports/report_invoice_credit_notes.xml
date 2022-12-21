@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="custom_account.report_invoice_document_credit_notes">
+            <t t-set="o" t-value="o.with_context(lang=lang)" />
+            <div class="page page_credit_notes">
+                <!-- Company Header -->
+                <div class="row">
+                    <div class="col-12 credit_notes_header">
+                        <div class="col-7 text-left">
+                            <address t-field="o.company_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                        </div>
+                        <div class="col-5 text-center box-left box-right box-top"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 credit_notes_header">
+                        <div class="col-7 text-left">
+                            <span t-field="o.company_id.street"/>
+                        </div>
+                        <div class="col-5 text-center box-left box-right"><h3>ใบลดหนี้</h3></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 credit_notes_header">
+                        <div class="col-7 text-left">
+                            <span t-field="o.company_id.street2"/>
+                        </div>
+                        <div class="col-5 text-center box-left box-right"><h3>CREDIT NOTE</h3></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 credit_notes_header">
+                        <div class="col-7 text-left">เลขประจำตัวผู้เสียภาษี: <span t-field="o.company_id.vat"/></div>
+                        <div class="col-5 text-center box-left box-right box-bottom"></div>
+                    </div>
+                </div>
+                <!-- Company Header -->
+                <br/>
+                <!-- Customer Header -->
+                <div class="row">
+                    <div class="col-12 credit_notes_header">
+                        <div class="col-7 text-left box-left box-top box-bottom">
+                            <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                        </div>
+                        <div class="col-5 text-left box-left box-right box-top box-bottom">
+                            <div class="col-12 credit_notes_header">
+                                <div class="col-4 text-right text-padding">วันที่:</div>
+                                <div class="col-8 text-left">
+                                    <span t-field="o.invoice_date"/>
+                                </div>
+                            </div>
+                            <div class="col-12 credit_notes_header">
+                                <div class="col-4 text-right text-padding">ที่มา:</div>
+                                <div class="col-8 text-left">
+                                    <span t-field="o.invoice_origin"/>
+                                </div>
+                            </div>
+                            <div class="col-12 credit_notes_header">
+                                <div class="col-4 text-right text-padding">Doc Number:</div>
+                                <div class="col-8 text-left">
+                                    <span t-field="o.name"/>
+                                </div>
+                            </div>
+                            <div class="col-12 credit_notes_header">
+                                <div class="col-4 text-right text-padding">Due Date:</div>
+                                <div class="col-8 text-left">
+                                    <span t-field="o.invoice_date_due"/>
+                                </div>
+                            </div>
+                            <div class="col-12 credit_notes_header">
+                                <div class="col-4 text-right text-padding">Trems:</div>
+                                <div class="col-8 text-left">
+                                    <span t-field="o.invoice_payment_term_id.name"/>
+                                </div>
+                            </div>
+                            <div class="col-12 credit_notes_header">
+                                <div class="col-4 text-right text-padding">Salse:</div>
+                                <div class="col-8 text-left">
+                                    <span t-field="o.invoice_user_id.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Customer Header -->
+
+                <br/>
+                <table class="table table-bordered table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ลำดับ</th>
+                            <th colspan="2" class="text-center">รายละเอียด</th>
+                            <th class="text-center">จำนวน</th>
+                            <th class="text-center">หน่วย</th>
+                            <th class="text-center">ราคา/หน่วย</th>
+                            <th class="text-center">ส่วนลด(%)</th>
+                            <th class="text-center">จำนวนเงิน</th>
+                        </tr>
+                    </thead>
+                    <t t-set="index" t-value="1"/>
+                    <t t-set="discount" t-value="0"/>
+                    <tr t-foreach="o.invoice_line_ids" t-as="line">
+                        <td class="text-center"><t t-esc="index"/></td>
+                        <td colspan="2" class="text-left"><t t-esc="line.name"/></td>
+                        <td class="text-center"><t t-esc="line.quantity"/></td>
+                        <td class="text-center"><t t-esc="line.product_uom_id.name"/></td>
+                        <td class="text-center">
+                            <t t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                        </td>
+                        <td class="text-center"><t t-esc="line.discount"/></td>
+                        <td class="text-right">
+                            <t t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                        </td>
+                        <t t-set="index" t-value="index + 1"/>
+                    </tr>
+                    <tfoot>
+                        <t t-set="reversal_amount_total" t-value="o._get_reversal_invoice(o.ref)"/>
+                        <tr>
+                            <td class="text-left" rowspan="3" colspan="5">
+                                <p>สาเหตุการลดหนี้ : </p>
+                                <p><span t-field="o.narration"/></p>
+                            </td>
+                            <td class="text-left" colspan="2">รวมราคา</td>
+                            <td class="text-right">
+                                <t t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="2">ส่วนลด</td>
+                            <td class="text-right">
+                                <t t-esc="discount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="2">มูลค่าตามใบกำกับ</td>
+                            <td class="text-right">
+                                <t t-esc="reversal_amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" rowspan="3" colspan="5">
+                                <p>อ้างอิงใบกำกับภาษีมูลค่าเพิ่ม : </p>
+                                <p><span t-field="o.ref"/></p>
+                            </td>
+                            <td class="text-left" colspan="2">มูลค่าที่ถูกต้อง</td>
+                            <td class="text-right">
+                                <t 
+                                    t-esc="reversal_amount_total - o.amount_total"
+                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="2">มูลค่า</td>
+                            <td class="text-right">
+                                <t t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="2">ภาษีมูลค่าเพิ่ม</td>
+                            <td class="text-right">
+                                <t t-esc="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="5">
+                                <span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount_total, 'th_TH', 'th')"/>
+                            </td>
+                            <td class="text-left" colspan="2">ยอดเงินสุทธิ</td>
+                            <td class="text-right">
+                                <t t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Footer-->
+                <div class="row">
+                    <div class="col-12 credit_notes_header">
+                        <div class="col-3 box-left box-right box-top box-bottom">
+                            <div class="col-12">
+                                <div class="text-center">ผู้จัดทำ</div>
+                                <div class="text-center">............................................</div>
+                                <div class="text-center">วันที่</div>
+                                <div class="text-center">............................................</div>
+                            </div>
+                        </div>
+                        <div class="col-3 box-right box-top box-bottom">
+                            <div class="col-12">
+                                <div class="text-center">ผู้จัดการ</div>
+                                <div class="text-center">............................................</div>
+                                <div class="text-center">วันที่</div>
+                                <div class="text-center">............................................</div>
+                            </div>
+                        </div>
+                        <div class="col-3 box-right box-top box-bottom">
+                            <div class="col-12">
+                                <div class="text-center">ผู้ตรวจสอบ</div>
+                                <div class="text-center">............................................</div>
+                                <div class="text-center">วันที่</div>
+                                <div class="text-center">............................................</div>
+                            </div>
+                        </div>
+                        <div class="col-3 box-right box-top box-bottom">
+                            <div class="col-12">
+                                <div class="text-center">ผู้อนุมัติ</div>
+                                <div class="text-center">............................................</div>
+                                <div class="text-center">วันที่</div>
+                                <div class="text-center">............................................</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer-->
+            </div>
+        </template>
+
+        <template id="custom_account.report_invoice">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.partner_id.lang"/>
+                    <t t-if="o._get_name_invoice_report() == 'account.report_invoice_document'"
+                        t-call="custom_account.report_invoice_document_credit_notes" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
