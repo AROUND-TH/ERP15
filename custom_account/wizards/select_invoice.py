@@ -15,9 +15,7 @@ class SelectInvoice(models.TransientModel):
         # required=True, 
         # ondelete="cascade",
     )
-    # @Set to account.billing.customer only.
-    # vendor_bill_id = fields.Many2one('account.billing.vendor', 
-    vendor_bill_id = fields.Many2one('account.billing.customer', 
+    vendor_bill_id = fields.Many2one('account.billing.vendor', 
         string='Bill Acceptance',
         readonly=True, 
         # required=True, 

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="paperformat_account_billing_vendor" model="report.paperformat">
+            <field name="name">Paper Format Bill Acceptance</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_account_billing_vendor" model="ir.actions.report">
+            <field name="name">Report Bill Acceptance</field>
+            <field name="model">account.billing.vendor</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_account.account_billing_vendor</field>
+            <field name="report_file">custom_account.account_billing_vendor</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_model_id" ref="model_account_billing_vendor"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Bill Acceptance - %s' %(object.name)</field>
+            <field name="paperformat_id" ref="paperformat_account_billing_vendor"/>
+        </record>
+
+        <template id="account_billing_vendor_document">
+            <t t-call="custom_account.external_layout">
+                <div class="page" style="font-size: 80%;">
+                    <style>
+                    .rem-border-td td {
+                        border: 0px;
+                        vertical-align: top;
+                    }
+                    </style>
+                    <div class="row">
+                        <div class="col h2 text-center" style="margin-top:20px; margin-bottom:20px;">
+                            <span><strong>ใบรับวางบิล</strong></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <span/>
+                        </div>
+                        <div class="col-4">
+                            <span/>
+                        </div>
+                        <div class="col-4">
+                            <span style="margin-right:32px;">เลขที่เอกสาร</span>
+                            <span t-field="doc.name"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <span style="margin-left:20px; margin-right:10px;">Vendor</span>
+                            <span t-field="doc.partner_id"/>
+                        </div>
+                        <div class="col-4">
+                            <span/>
+                        </div>
+                        <div class="col-4">
+                            <span style="margin-right:10px;">วันที่สร้างเอกสาร</span>
+                            <span t-field="doc.document_date"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <!-- <span style="margin-left:20px; margin-right:18px;">ที่อยู่</span>
+                            <span t-field="doc.partner_address"/> -->
+                            <table class="rem-border-td" style="margin-left:20px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:53px;">
+                                            <span>ที่อยู่</span>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.partner_id"
+                                                t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': true}"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-4">
+                            <span/>
+                        </div>
+                        <div class="col-4">
+                            <span style="margin-right:25px;">วันที่ถึงกำหนด</span>
+                            <span t-field="doc.document_date_due"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="margin-top:50px; margin-bottom:10px;">
+                            <span></span>
+                        </div>
+                    </div>
+                    <table class="table o_report_block_table" style="font-size: 85%;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <span>Invoice No.</span>
+                                </th>
+                                <th>
+                                    <span>Invoice/Bill Date</span>
+                                </th>
+                                <th>
+                                    <span>Due Date</span>
+                                </th>
+                                <th>
+                                    <span>Untaxed Amount</span>
+                                </th>
+                                <th>
+                                    <span>Tax</span>
+                                </th>
+                                <th>
+                                    <span>Total</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.line_ids" t-as="table_line">
+                                <td>
+                                    <span t-field="table_line.invoice_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="table_line.invoice_date"/>
+                                </td>
+                                <td>
+                                    <span t-field="table_line.invoice_date_due"/>
+                                </td>
+                                <td>
+                                    <span t-field="table_line.amount_untaxed"/>
+                                </td>
+                                <td>
+                                    <span t-field="table_line.amount_tax"/>
+                                </td>
+                                <td>
+                                    <span t-field="table_line.amount_total"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <style>
+                    .right-bar {
+                        border-right: 1px solid #dddddd;
+                    }
+                    </style>
+                    <table class="table" style="margin-top:60px; font-size:85%; text-align:center;">
+                        <thead>
+                            <tr>
+                                <th class="right-bar">
+                                    <span>รวม</span>
+                                </th>
+                                <th class="right-bar">
+                                    <span t-field="doc.line_count"/>
+                                </th>
+                                <th class="right-bar">
+                                    <span>ฉบับ</span>
+                                </th>
+                                <th class="right-bar">
+                                    <span t-field="doc.amount_total"/>
+                                </th>
+                                <th>
+                                    (
+                                    <span t-field="doc.amount_total_text"/>
+                                    )
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="row" style="margin-top:100px; margin-bottom:0px;">
+                        <div class="col-6">
+                            <span style="margin-left:20px;"><strong>หมายเหตุ:</strong></span>
+                        </div>
+                        <div class="col-6">
+                            <span style="margin-left:20px; font-size: 120%;"><strong>ในนาม "บริษัท บี ออโต้ฮาวส์ จำกัด"</strong></span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:0px; margin-bottom:0px;">
+                        <div class="col-6">
+                            <!-- <span style="margin-left:20px;">กรุณาสั่งจ่ายเช็คลงวันที่</span> -->
+                            <span class="d-block" style="margin-left:20px;" t-if="not is_html_empty(doc.narration)" t-field="doc.narration"/>
+                        </div>
+                        <div class="col-6">
+                            <span/>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:50px; margin-bottom:0px;">
+                        <div class="col-6">
+                            <span style="margin-left:30px;">ผู้วางบิล.....................................................</span>
+                        </div>
+                        <div class="col-6">
+                            <span style="margin-left:30px;">ผู้รับวางบิล................................................</span>
+                        </div>
+                    </div>
+                    <!-- <div class="row" style="margin-top:0px; margin-bottom:0px;">
+                        <div class="col-6">
+                            <span style="margin-left:30px;">(...................................................................)</span>
+                        </div>
+                        <div class="col-6">
+                            <span style="margin-left:30px;">(...................................................................)</span>
+                        </div>
+                    </div> -->
+                    <div class="row" style="margin-top:0px; margin-bottom:0px;">
+                        <div class="col-6">
+                            <span style="margin-left:30px;">วันที่..........................................................</span>
+                        </div>
+                        <div class="col-6">
+                            <span style="margin-left:30px;">วันที่..........................................................</span>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="account_billing_vendor">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="custom_account.account_billing_vendor_document"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
