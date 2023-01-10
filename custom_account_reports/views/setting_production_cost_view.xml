@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_psetting_production_cost_form" model="ir.ui.view">
+            <field name="name">setting.production.cost.form</field>
+            <field name="model">setting.production.cost</field>
+            <field name="arch" type="xml">
+                <form string="Setting Production Cost Report">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="group_account_raw_mate_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            <field name="group_account_direct_labor_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            <field name="group_account_production_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            <field name="group_account_start_progress_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            <field name="group_account_end_progress_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_psetting_production_cost_tree" model="ir.ui.view">
+            <field name="name">setting.production.cost.tree</field>
+            <field name="model">setting.production.cost</field>
+            <field name="arch" type="xml">
+                <tree string="Setting Production Cost Report">
+                    <field name="name"/>
+                    <field name="group_account_raw_mate_ids" widget="many2many_tags"/>
+                    <field name="group_account_direct_labor_ids" widget="many2many_tags"/>
+                    <field name="group_account_production_ids" widget="many2many_tags"/>
+                    <field name="group_account_start_progress_ids" widget="many2many_tags"/>
+                    <field name="group_account_end_progress_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="setting_production_cost_action" model="ir.actions.act_window">
+            <field name="name">Setting Production Cost Report</field>
+            <field name="res_model">setting.production.cost</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_psetting_production_cost_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Setting Production Cost Report not found. Let's create one!
+                </p><p>
+                    'Setting Production Cost Report' allow you config group account for report.
+                </p>
+            </field>
+
+        </record>
+
+        <menuitem id="menu_setting_production_cost_action"
+            action="setting_production_cost_action" name="ต้นทุนผลิต"
+            parent="custom_account_reports.menu_configuration_account_report" sequence="1"/>
+    </data>
+</odoo>
