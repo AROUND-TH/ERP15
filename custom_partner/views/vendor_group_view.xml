@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="vendor_group_form_view">
+            <field name="name">vendor.group.form</field>
+            <field name="model">vendor.group</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet string="Vendor Group">
+                        <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="active" invisible="1"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Name..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="vendor_code" required="1"/>
+                            </group>
+                            <group>
+                                <field name="running_prefix" invisible="1"/>
+                                <field name="running_digit" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter" name="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="vendor_group_search_view">
+            <field name="name">vendor.group.search</field>
+            <field name="model">vendor.group</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <filter name="inactive_flag"
+                            string="Archived"
+                            domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="vendor_group_tree_view">
+            <field name="name">vendor.group.tree</field>
+            <field name="model">vendor.group</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="vendor_group_list_action">
+            <field name="name">Vendor Group</field>
+            <field name="res_model">vendor.group</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create first Vendor Group</p>
+            </field>
+        </record>
+
+        <menuitem
+            id="vendor_group_menu"
+            name="Vendor Group"
+            parent="account.account_management_menu"
+            action="vendor_group_list_action"
+            sequence="1"
+        />
+
+    </data>
+</odoo>

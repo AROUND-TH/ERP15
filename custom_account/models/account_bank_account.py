@@ -15,6 +15,7 @@ class AccountBankAccount(models.Model):
     )
     name = fields.Char(
         string='Name', 
+        tracking=True,
         required=True,
     )
     active = fields.Boolean(
@@ -24,17 +25,21 @@ class AccountBankAccount(models.Model):
 
     bank_name = fields.Char(
         string='Bank Name', 
+        tracking=True,
     )
     bank_account = fields.Char(
         string='Account Number', 
+        tracking=True,
     )
 
     account_code = fields.Many2one('account.account', 
         string='Account Code',
+        tracking=True,
         ondelete='set null',
     )
     suspense_account_code = fields.Many2one('account.account', 
         string='Suspense Account',
+        tracking=True,
         ondelete='set null',
     )
 
