@@ -58,12 +58,16 @@ class ProductTemplate(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if vals.get('categ_id'):
+            if vals.get('categ_id') and not vals.get('default_code'):
                 categ_id = self.env['product.category'].browse(vals.get('categ_id'))
                 sequence = categ_id._get_sequence_next()
-                vals.update(generate_number=sequence)
-                if not vals.get('default_code'):
-                    vals.update(default_code=sequence)
+                if sequence:
+                    vals.update(
+                        {
+                            "generate_number": sequence,
+                            "default_code": sequence,
+                        }
+                    )
 
         templates = super(ProductTemplate, self).create(vals_list)
 

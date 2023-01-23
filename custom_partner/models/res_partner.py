@@ -41,10 +41,15 @@ class ResPartner(models.Model):
     def create(self, vals_list):
         partners = super(ResPartner, self).create(vals_list)
         for partner in partners:
-            if partner.vendor_group_id:
-                partner.generate_number = partner.vendor_group_id._get_sequence_next()
-                if not partner.internal_code:
-                    partner.internal_code = partner.generate_number
+            if partner.vendor_group_id and not partner.internal_code:
+                sequence = partner.vendor_group_id._get_sequence_next()
+                if sequence:
+                    partner.update(
+                        {
+                            "generate_number": sequence,
+                            "internal_code": sequence,
+                        }
+                    )
         return partners
 
     # @Override odoo core method write

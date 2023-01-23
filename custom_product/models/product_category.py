@@ -59,6 +59,8 @@ class ProductCategory(models.Model):
                     'code': code,
                     'prefix': self.running_prefix,
                     'padding': self.running_digit,
+                    'use_date_range': True,
+                    'range_reset': 'yearly',
                 })
                 sequence_next = sequence.sudo().next_by_code(code)
 
