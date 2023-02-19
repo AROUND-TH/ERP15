@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_car_order_tree" model="ir.ui.view">
+        <field name="name">car.order.tree</field>
+        <field name="model">car.order</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="Car Orders" duplicate="0">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="sale_price"/>
+                <field name="company_header_1"/>
+                <field name="company_header_2"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_car_order_form" model="ir.ui.view">
+        <field name="name">car.order.form</field>
+        <field name="model">car.order</field>
+        <field name="arch" type="xml">
+            <form string="Car Order" duplicate="0">
+                <field name="sale_id" invisible="1"/>
+                <header>
+                    <button name="action_done" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-shopping-cart"
+                            attrs="{'invisible': [('sale_id', '=', False)]}">
+                            <field name="sale_id" />
+                        </button>
+                        <button name="action_view_invoice"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="sale_header">
+                        <group name="partner_details">
+                            <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True}'/>
+                            <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
+                            <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+                        </group>
+                        <group name="order_details">
+                            <field name="date_order"/>
+                            <field name="payment_term_id"/>
+                            <field name="pricelist_id"/>
+                            <field name="currency_id" invisible="1"/>
+
+                        </group>
+                    </group>
+                    <group name="company_header" string="Product">
+                        <group>
+                            <field name="product_id"/>
+                        </group>
+                        <group>
+                            <field name="start_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="sale_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="reserve_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                        </group>
+                    </group>
+                    <group name="company_header" string="Company">
+                        <group>
+                            <field name="company_header_1"/>
+                        </group>
+                        <group>
+                            <field name="company_header_2"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="order_line">
+                                <tree
+                                    string="Order Lines"
+                                    editable="bottom"
+                                >
+                                    <field name="product_id"/>
+                                    <field name="price_company_header_1"/>
+                                    <field name="price_company_header_2"/>
+                                </tree>
+                            </field>
+                            <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4"/>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="amount_total" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                        <page string="Finance">
+                            <group>
+                                <group>
+                                    <field name="finance_id"/>
+                                    <field name="finance_amount" string="Amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <label for="finance_interest" string="Interest"/>
+                                    <div>
+                                        <field name="finance_interest" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="finance_installment" string="Installment" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <field name="finance_commission" string="Commission" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                </group>
+                            </group>
+
+                        </page>
+                        <page string="Accessories">
+                            <group>
+                                <group string="Film">
+                                    <field name="acc_film_brand" string="Brand"/>
+                                    <label for="acc_film_front" string="Front"/>
+                                    <div >
+                                        <field name="acc_film_front" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                    <label for="acc_film_around" string="Side and Back"/>
+                                    <div >
+                                        <field name="acc_film_around" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                    <label for="acc_film_roof" string="Roof"/>
+                                    <div >
+                                        <field name="acc_film_roof" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                    <field name="acc_film_other" string="Other"/>
+                                </group>
+                                <group string="Sound System">
+                                    <field name="acc_sound_detail" string="Description"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Commission">
+                            <field name="commission_line">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                </tree>
+                            </field>
+                            <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4"/>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="commission_amount_total" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_car_order" model="ir.actions.act_window">
+        <field name="name">Car Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">car.order</field>
+        <field name="view_mode">form,tree</field>
+    </record>
+
+    <record id="sale_order_action_view_order_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="car_order.view_car_order_tree"/>
+        <field name="act_window_id" ref="action_car_order"/>
+    </record>
+
+    <record id="sale_order_action_view_order_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="car_order.view_car_order_form"/>
+        <field name="act_window_id" ref="action_car_order"/>
+    </record>
+
+    <menuitem id="menu_car_order"
+        name="Car Orders"
+        action="action_car_order"
+        parent="sale.sale_order_menu"
+        sequence="2" groups="sales_team.group_sale_salesman"/>
+</odoo>
