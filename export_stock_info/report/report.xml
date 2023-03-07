@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Customer Sale Analysis Report PaperFormat -->
+    <record id="paperformat_export_stock_information" model="report.paperformat">
+        <field name="name">Export Stock Information</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">15</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Customer Sale Analysis Report -->
+    <report
+        id="action_report_export_stock_information"
+        string="Export Stock Information"
+        model="res.partner"
+        report_type="qweb-pdf"
+        name="export_stock_info.report_exportstockinformation"
+        file="export_stock_info.report_exportstockinformation"
+        menu="False"/>
+
+    <record id="action_report_export_stock_information" model="ir.actions.report">
+        <field name="paperformat_id" ref="paperformat_export_stock_information"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_partner_form_priority1" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit_priority1</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <group name="purchase" position="inside">
+                <field name="is_vender"/>
+            </group>
+        </field>
+    </record>
+
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="street2" position="after">
+                <field name="street3" placeholder="Street 3..." class="o_address_street"/>
+            </field>
+            <xpath expr="//div[@name='div_address']/field[@name='street2']" position="after">
+                <field name="street3" placeholder="Street 3..." class="o_address_street"/>
+            </xpath>
+            <group name="sale" position="inside">
+                <field name="incoterm_id"/>
+                <field name="transportation"/>
+                <field name="port_of_loading"/>
+                <field name="port_of_destination"/>
+                <field name="shipping_note"/>
+            </group>
+            <xpath expr="//group[@name='sale']/field[@name='user_id']" position="before">
+                <field name="is_customer"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_address_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_address_form" />
+        <field name="arch" type="xml">
+            <field name="street2" position="after">
+                <field name="street3" placeholder="Street 3..." class="o_address_street"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="res_partner_view_form_private" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_view_form_private" />
+        <field name="arch" type="xml">
+            <field name="street2" position="after">
+                <field name="street3" placeholder="Street 3..." class="o_address_street"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

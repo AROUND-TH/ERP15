@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="stock_warn_insufficient_qty_scrap_form_view" model="ir.ui.view">
+        <field name="name">stock.warn.insufficient.qty.scrap</field>
+        <field name="model">stock.warn.insufficient.qty.scrap</field>
+        <field name="inherit_id" ref="stock.stock_warn_insufficient_qty_scrap_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_scrap_form_view" model="ir.ui.view">
+        <field name="name">stock.scrap.form.inherit_custom_stock</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="before">
+                <field name="lot_id_domain" invisible="1"/>
+                <field name="location_id_domain" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="domain">lot_id_domain</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="domain">location_id_domain</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

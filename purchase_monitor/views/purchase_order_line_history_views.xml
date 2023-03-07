@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="purchase_order_line_history_form" model="ir.ui.view">
+        <field name="name">purchase.order.line.history.form</field>
+        <field name="model">purchase.order.line.history</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Order Line History" create="false" edit="false">
+                <group>
+                    <field name="purchase_id"/>
+                    <field name="purchase_line_id"/>
+                </group>
+                <notebook>
+                    <page string="Goods Receipts">
+                        <field name="move_ids" nolabel='1'>
+                            <tree string="Goods Receipts" decoration-muted="state == 'cancel'" default_order="date" edit="0" create="0">
+                                <field name="date" widget="date"/>
+                                <field name="reference"/>
+                                <field name="product_id"/>
+                                <field name="location_dest_id" options="{'no_create': True}" string="Location"/>
+                                <field name="product_uom_qty"/>
+                                <field name="product_uom" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                                <field name="quantity_done" string="Done"/>
+                                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Invoice Receipts">
+                        <field name="invoice_lines" nolabel='1'>
+                            <tree string="Invoice Receipts" decoration-muted="parent_state == 'cancel'" default_order="date" edit="0" create="0">
+                                <field name="date" widget="date"/>
+                                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                                <field name="journal_id" options="{&quot;no_open&quot;:True}" optional="hide"/>
+                                <field name="move_id"/>
+                                <field name="account_id" options="{'no_open': True}" groups="account.group_account_readonly" optional="hide"/>
+                                <field name="partner_id"/>
+                                <field name="analytic_account_id" groups="account.group_account_readonly" optional="hide"/>
+                                <field name="debit" sum="Total Debit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="credit" sum="Total Credit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_currency" groups="base.group_multi_currency" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                <field name="matching_number" optional="hide"/>
+                                <field name="currency_id" readonly="1" invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="parent_state" widget="badge" decoration-success="parent_state == 'posted'" decoration-info="parent_state not in ('posted', 'cancel')"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <footer>
+                    <button special="cancel" string="close"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_monitor_history_action" model="ir.actions.act_window">
+        <field name="name">Purchase Monitor Item History</field>
+        <field name="res_model">purchase.order.line.history</field>
+        <field name="binding_model_id" ref="purchase_monitor.model_purchase_order_line"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="purchase_monitor.purchase_order_line_history_form"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>
+

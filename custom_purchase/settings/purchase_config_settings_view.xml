@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="custom_purchase_config_settings_view" model="ir.ui.view">
+            <field name="name">Custom Purchase Config Settings</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='purchase_setting_container']" position="after">
+                    <h2>Approval Procedure</h2>
+                    <div class="row mt16 o_settings_container" name="pr_po_approval_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="pr_approval_procedure">
+                            <div class="o_setting_left_pane">
+                                <field name="pr_approval_procedure"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="pr_approval_procedure"/>
+                                <div class="text-muted">
+                                    All PR must to pass the approve by Approval Procedure process.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="po_approval_procedure">
+                            <div class="o_setting_left_pane">
+                                <field name="po_approval_procedure"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="po_approval_procedure"/>
+                                <div class="text-muted">
+                                    All PO must to pass the approve by Approval Procedure process.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

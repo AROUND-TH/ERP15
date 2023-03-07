@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="custom_mrp_production_form_view" model="ir.ui.view">
+            <field name="name">mrp.production.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='id']" position="before">
+                    <xpath expr="//field[@name='bom_id']" position="move"/>
+                </xpath>
+                <xpath expr="//field[@name='bom_id']" position="attributes">
+                    <attribute name="context">{'default_product_tmpl_id': product_tmpl_id, 'display_component_name': True}</attribute>
+                    <attribute name="attrs">{"readonly": [["state","!=","draft"]]}</attribute>
+                    <attribute name="domain">[('x_studio_bom_status','=','Active')]</attribute>
+                    <attribute name="options">{"no_create":true}</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="context">{'default_type': 'product', 'display_component_name': True}</attribute>
+                    <attribute name="options">{"no_create":true}</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page/field[@name='move_raw_ids']" position="attributes">
+                    <attribute name="context">{'default_date': date_planned_start, 'default_date_deadline': date_deadline, 'default_location_id': location_src_id, 'default_location_dest_id': production_location_id, 'default_state': 'draft', 'default_raw_material_production_id': id, 'default_picking_type_id': picking_type_id, 'default_company_id': company_id, 'display_component_name': True}</attribute>
+                </xpath>
+                <!-- <xpath expr="//notebook/page/field[@name='move_raw_ids']/tree/field[@name='product_id']" position="replace">
+                    <field name="product_id" force_save="1" required="1" options="{'no_create': True}"
+                        context="{'default_type':'product','display_component_name':True,'search_view_ref':'custom_mrp.product_search_form_view'}" 
+                        attrs="{'readonly': ['|', '|', ('has_move_lines', '=', True), ('state', '=', 'cancel'), '&amp;', ('state', '!=', 'draft'), ('additional', '=', False) ]}"/>
+                </xpath> -->
+                <field name="move_raw_ids" position="before">
+                    <button name="action_open_wizard_stock_move" string="Consumption" class="oe_highlight" type="object"/>
+                </field>
+                <!-- <xpath expr="//header" position="inside">
+                    <button name="get_middleware_goodreceive_fgs" string="Get Middleware" class="oe_highlight" type="object"/>
+                    <button name="action_interface_middleware_mos" string="INTERFACE MOS" class="oe_highlight" type="object"/>
+                    <button name="action_open_mrp_confirmation_wizard" string="WO CONFIRMATION INTERFACE" class="oe_highlight" type="object"/>
+                </xpath> -->
+                <xpath expr="//field[@name='move_byproduct_ids']/tree/field[@name='lot_ids']" position="replace">
+                    <field name="lot_ids" widget="many2many_tags" groups="stock.group_production_lot" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_mrp_production_tree_view_inherit" model="ir.ui.view">
+            <field name="name">MRP Production Tree View Inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp_shop_floor_control.mrp_production_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_actual_start_wo']" position="attributes">
+                    <attribute name="string">WO Start Date</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_actual_finished_wo']" position="attributes">
+                    <attribute name="string">WO End Date</attribute>
+                </xpath>
+            
+            </field>
+        </record>
+        <record id="custom_mrp_production_tree_view_studio_inherit" model="ir.ui.view">
+            <field name="name">MRP Production Tree View Inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="studio_customization.odoo_studio_mrp_prod_2344b581-3ae2-4463-893f-197ef6a16856"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ks_datetime_start']" position="attributes">
+                    <attribute name="string">Basic Start Date</attribute>
+                </xpath>
+                <xpath expr="//field[@name='ks_datetime_end']" position="attributes">
+                    <attribute name="string">Basic End Date</attribute>
+                </xpath>
+            
+            </field>
+        </record>
+
+    </data>
+</odoo>

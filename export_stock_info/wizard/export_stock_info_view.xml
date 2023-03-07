@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+     <record id="export_stock_product_info_form_view" model="ir.ui.view">
+        <field name="name">export.stock.product.info.form.view</field>
+        <field name="model">export.stock.info.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Export Stock information in excel">
+                <group attrs="{'invisible': [('file', '!=', False)]}">
+                    <group>
+                        <field name="report_type"  widget="radio" options="{'horizontal': true}"/>
+                        <field name="warehouse_ids" widget="many2many_tags" string="Warehouse" attrs="{'invisible': [('report_type', '!=', 'warehouse')], 'required': [('report_type', '==', 'warehouse')]}"/>
+                        <field name="location_ids" widget="many2many_tags" string="Location" attrs="{'invisible': [('report_type', '!=', 'location')], 'required': [('report_type', '==', 'location')]}"/>
+                    </group>
+                    <group>
+                        <field name="date_from" string="From Date" required="1"/>
+                        <field name="date_to" string="To Date" required="1"/>
+                    </group>
+                </group>
+                <group attrs="{'invisible': [('file', '!=', False)]}">
+                    <group>
+                        <field name="check_active"/>
+                    </group>
+                    <group>
+                        <field name="color_neg"/>
+                    </group>
+                </group>
+                <group attrs="{'invisible': [('file', '!=', False)]}">
+                    <group>
+                        <separator string="Supplier" colspan="4"/>
+                        <field name="supp_ids" nolabel="1">
+                            <tree string="Supplier" editable="bottom">
+                                <field name="display_name" string="Name"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <separator string="Category" colspan="4"/>
+                        <field name="cat_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="display_name" string="Product Category"/>
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+                <group>
+                    <field name="file" invisible="1"/>
+                    <separator string="Report Generated" colspan="4" attrs="{'invisible': [('file', '==', False)]}"/>
+                    <p attrs="{'invisible': [('file', '==', False)]}">
+                        Here is the Excel Report: 
+                        <field name="document" filename="file" attrs="{'invisible': [('file', '==', False)]}" readonly="1"/>
+                    </p>
+                </group>
+                <footer>
+                    <button name="print_pdf_report" string="Print PDF" type="object" icon="fa-print" class="btn-primary" attrs="{'invisible': [('file', '!=', False)]}"/>
+                    <t attrs="{'invisible': [('file', '!=', False)]}">OR</t>
+                    <button name="print_excel_report" string="Print Excel" type="object" icon="fa-print" class="btn-primary" attrs="{'invisible': [('file', '!=', False)]}"/>
+                    <t attrs="{'invisible': [('file', '!=', False)]}">OR</t>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <t attrs="{'invisible': [('file', '==', False)]}">OR</t>
+                    <button name="action_back" string="_Back" type="object" attrs="{'invisible': [('file', '==', False)]}" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+        
+    </record>
+
+    <record id="action_wizard_stock_export" model="ir.actions.act_window">
+        <field name="name">Export Stock</field>
+        <field name="res_model">export.stock.info.wiz</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="wizard_stock_export" 
+        name="Export Stock" 
+        parent="stock.menu_warehouse_report"
+        action="action_wizard_stock_export"/>
+
+    </data>
+</odoo>

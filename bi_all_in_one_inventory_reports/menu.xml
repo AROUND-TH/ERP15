@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <menuitem id="report_stock_extraction" 
+            name="Stock Extraction"
+            parent="stock.menu_warehouse_report"
+            sequence="200"
+        />
+            <menuitem id="export_stock_info.wizard_stock_export" 
+                name="Export Stock"
+                parent="report_stock_extraction"
+                sequence="1"
+            />
+
+            <menuitem
+                id="bi_inventory_report.menu_inventory_break_down"
+                name="Inventory Breakdown"
+                parent="report_stock_extraction"
+                sequence="2"
+           />
+            <menuitem
+                id="bi_inventory_valuation_reports.menu_sale_book_report_product_category"
+                name="Inventory Valuation Report"
+                parent="report_stock_extraction"
+                sequence="3"
+            />
+            <menuitem
+                id="bi_inventory_overstock_report.inventory_overstock_menu" 
+                name="Inventory Overstock Report" 
+                parent="report_stock_extraction"
+                sequence="4"
+            />
+            <menuitem
+                id="bi_inventory_report.menu_inventory_age"
+                name="Inventory Age"
+                parent="report_stock_extraction"
+                sequence="5"
+            />
+            <menuitem
+                id="bi_inventory_coverage_report.menu_inventory_cover"
+                name="Inventory Coverage"
+                parent="report_stock_extraction"
+                sequence="6"
+            />
+            <menuitem 
+                id="bi_stock_expiry_report.menu_stock_expiry"
+                name="Stock Expiry Report" 
+                parent="report_stock_extraction"
+                sequence="7"
+            />
+            <menuitem 
+                id="bi_non_moving_product.menu_non_moving_product_wizard_id"
+                name="Non Moving Products" 
+                parent="report_stock_extraction"
+                sequence="8"
+            />
+            <menuitem
+                id="bi_inventory_coverage_report.menu_product_recommendation"
+                name="Product Recommendation"
+                parent="report_stock_extraction"
+                sequence="9"
+            />
+            <menuitem 
+                id="bi_stock_rotation_report.stock_rotation_report_menu"
+                name="Stock Rotation" 
+                parent="report_stock_extraction"
+                sequence="10"
+            />
+
+    </data>
+</odoo>

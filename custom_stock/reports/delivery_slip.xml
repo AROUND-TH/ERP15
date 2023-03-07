@@ -1,0 +1,555 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+      <template id="stock_delivery_order_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div class="row mt32 mb32">
+                        <div class="col-4 text-left">
+                            <span style="color:white;">.
+                            <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 80px; height:80px;" />
+                            </span>
+                        </div>
+                        <div class="col-4 text-center" >
+                        </div>
+                        <div class="col-4">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row mt32 mb32">
+                        <div class="col-8 text-left" >
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <div style="height:80px;">
+                                <strong><span t-esc="o.company_id.with_context({'lang':'en_US'}).company_details" /></strong><br/>
+                                </div>
+                            </t>
+                            <t t-elif="o.partner_id.lang == 'th_TH'">
+                                <div style="height:80px;">
+                                <strong><span t-esc="o.company_id.with_context({'lang':'th_TH'}).company_details" /></strong><br/>
+                                </div>
+                            </t>
+                            <!-- <span t-esc="o.company_id.name" class="text-left"/><br/>
+                            <span t-field="o.company_id.street" class="text-left"/>
+                            <span t-field="o.company_id.street2" class="text-left"/><br/>
+                            <span t-field="o.company_id.city" class="text-left"/>
+                            <span t-field="o.company_id.zip" class="text-left"/>
+                            <span t-field="o.company_id.state_id.name" class="text-left"/> -->
+                            <br/>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                    <div class="row mt32 mb32">
+                        <div class="col-6 text-left" >
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <strong><span class="text-left">Customer Address</span></strong><br/>
+                            </t>
+                            <t t-else="">
+                                <strong><span class="text-left">ที่อยู่ลูกค้า</span></strong><br/>
+                            </t>
+                            
+                            <span t-esc="o.partner_id.name" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street2" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street3" class="text-left"/>
+                            <span t-field="o.partner_id.city" class="text-left"/>
+                            <span t-field="o.partner_id.zip" class="text-left"/>
+                            <span t-field="o.partner_id.state_id.name" class="text-left"/>
+                            <span t-field="o.partner_id.country_id.name" class="text-left"/>
+                            <br/>
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                 <span>Tax ID:</span>
+                            </t>
+                            <t t-else="">
+                                 <span>เลขประจำตัวผู้เสียภาษี:</span>
+                            </t>
+                           <span t-field="o.partner_id.vat" class="text-left"/>
+                            <br/>
+                        </div>
+                        <div class="col-6 text-left" >
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <strong><span class="text-left">Delivery Address</span></strong><br/>
+                            </t>
+                            <t t-else="">
+                                <strong><span class="text-left">ที่อยู่จัดส่ง</span></strong><br/>
+                            </t>
+                            
+                            <span t-esc="o.partner_id.name" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street2" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street3" class="text-left"/>
+                            <span t-field="o.partner_id.city" class="text-left"/>
+                            <span t-field="o.partner_id.zip" class="text-left"/>
+                            <span t-field="o.partner_id.state_id.name" class="text-left"/>
+                            <span t-field="o.partner_id.country_id.name" class="text-left"/>
+                            <br/>
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                 <span>Tax ID:</span>
+                            </t>
+                            <t t-else="">
+                                 <span>เลขประจำตัวผู้เสียภาษี:</span>
+                            </t>
+                            <span t-field="o.partner_id.vat" class="text-left"/>
+                            <br/>
+                        </div>
+                        
+                    </div>
+                    <div style="height:10px; width:100%;"></div>
+                    <div class="row mt32 mb32">
+                        
+                        <div class="col-2 text-left" >
+                        </div>
+                        <div class="col-8 text-center">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <strong><h4 class="text-center">Delivery Order</h4></strong>
+                            </t>
+                            <t t-else="">
+                                <strong><h4 class="text-center">ใบส่งสินค้า</h4></strong>
+                            </t>
+                            
+                            <h5 t-esc="o.name"/>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    <div class="row mt32 mb32">
+                        <t t-if="o.partner_id.lang == 'en_US'">
+                            <div class="col-6 text-left"><span>Sale Order:</span></div>
+                        </t>
+                        <t t-else="">
+                            <div class="col-6 text-left"><span>ใบสั่งซื้อ:</span></div>
+                        </t>
+                        <t t-if="o.partner_id.lang == 'en_US'">
+                            <div class="col-6 text-left"><span>Shipping Date:</span></div>
+                        </t>
+                        <t t-else="">
+                            <div class="col-6 text-left"><span>วันที่จัดส่ง:</span></div>
+                        </t>
+                        
+                        
+                    </div>
+                    <div class="row mt32 mb32">
+                        <div class="col-6 text-left"><span t-field="o.sale_id"/></div>
+                        <div class="col-6 text-left"><span t-field="o.scheduled_date" t-options='{"widget": "datetime"}'/></div>
+                    </div>
+                 </div>
+                 <hr/>
+                <t t-call="web.external_layout">
+                    
+                    
+                    <style>
+                        border-4-side {
+                            border-top-style: 1px solid black;;
+                            border-right-style: 1px solid black;;
+                            border-bottom-style: 1px solid black;;
+                            border-left-style: 1px solid black;;
+                        }
+                    </style>
+                    <t t-set="item_per_page" t-value="16" />
+                    <t t-set="total_item" t-value="len(o.move_line_ids_without_package)"/>
+                    <t t-set="current_page" t-value="1"/>
+                    <t t-set="total_page" t-value="o.ceil(total_item,item_per_page)"/>
+                    <t t-set="start" t-value="0"/>
+                    <t t-set="end" t-value="16"/>
+
+                    <t t-set="items" t-value="len(o.move_line_ids_without_package)"/>
+                    <t t-foreach="range(0,total_page,1)" t-as="page">
+                        <div class="page">
+                        <div class="oe_structure"></div>
+                          <t t-if="current_page == 1">
+                            <div  class="container" style="height:420px;  width:100%;">
+                            
+                              
+                            </div>
+                          </t>
+                          <t t-elif="current_page &gt; 1">
+                            <div class="container" style="height:638px;  width:100%;">
+                             
+                            </div>
+                          </t>
+                        
+                        <br/>
+                        <br/>
+                        <t t-if="current_page &lt; total_page">
+                            <table width="100%" t-if="o.move_line_ids and o.move_ids_without_package" >
+                                <thead style="border-top:1px solid black;" >
+                                    
+                                    <tr style="border-bottom:1px solid black; height:40px;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Product</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>สินค้า</strong>
+                                            </th>
+                                        </t>
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Ordered</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>ยอดที่สั่ง</strong>
+                                            </th>
+                                        </t>
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Delivered</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>จัดส่งแล้ว</strong>
+                                            </th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    
+                                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                                        <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                        </t>
+                                        <t t-elif="(start == end) and (end &lt; total_item)">
+                                                <tr style="height:30px;" >
+                                                    <td style="width:60%;">
+                                                        <span t-field="o.move_line_ids_without_package[start].product_id.display_name"/><br/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_id.description_picking"/>
+                                                    </td>
+                                                    <td style="width:20%;" class="text-right">
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                    </td>
+                                                    <td style="width:20%;" class="text-right">
+                                                        <span t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <tr style="height:30px;" >
+                                                <td style="width:60%;">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.display_name"/><br/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.description_picking"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-right">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-right">
+                                                    <span t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                
+                                            </tr>
+                                            
+                                        </t>
+                                        <t t-if="start == total_item-1">
+                                            <t t-set="start" t-value="total_item-1"/>
+                                            <t t-set="end" t-value="total_item-1"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="start" t-value="start + 1"/>
+                                        </t>
+                                        
+                                    </t>
+                                    
+                                </tbody>
+                                <tfoot>
+                                        <!-- <table width="100%">
+                                            <tr style="height:100px;">
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้รับของ</span></td>
+                                                <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ส่ง</span></td>
+                                                <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ตรวจ</span></td>
+                                                <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้อนุมัติ</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span t-esc="current_page"/></td>
+                                                <td><span t-esc="total_page"/></td>
+                                            </tr>
+                                        
+                                        </table> -->
+                                </tfoot>
+                                
+                            </table>
+                        </t>
+                        <t t-elif="current_page == total_page">
+                            <table width="100%" t-if="o.move_line_ids and o.move_ids_without_package">
+                                <thead style="border-top:1px solid black;" >
+                                    
+                                    <tr style="border-bottom:1px solid black; height:40px;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Product</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>สินค้า</strong>
+                                            </th>
+                                        </t>
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Ordered</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>ยอดที่สั่ง</strong>
+                                            </th>
+                                        </t>
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Delivered</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>จัดส่งแล้ว</strong>
+                                            </th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    
+                                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                                        <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                        </t>
+                                        <t t-elif="(start == end) and (end &lt; total_item)">
+                                                <tr style="height:20px;" >
+                                                    <td style="width:60%;">
+                                                        <span t-field="o.move_line_ids_without_package[start].product_id.display_name"/><br/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_id.description_picking"/>
+                                                    </td>
+                                                    <td style="width:20%;" class="text-right">
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                    </td>
+                                                    <td style="width:20%;" class="text-right">
+                                                        <span t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <tr style="height:20px;" >
+                                                <td style="width:60%;">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.display_name"/><br/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.description_picking"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-right">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-right">
+                                                    <span t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                
+                                            </tr>
+                                            
+                                        </t>
+                                        <t t-if="start == total_item-1">
+                                            <t t-set="start" t-value="total_item-1"/>
+                                            <t t-set="end" t-value="total_item-1"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="start" t-value="start + 1"/>
+                                        </t>
+                                        
+                                    </t>
+                                    
+                                </tbody>
+                                <tfoot>
+                                        <table width="100%">
+                                            <tr style="height:100px;">
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                
+                                            </tr>
+                                            <tr class="text-center">
+                                                <t t-if="o.partner_id.lang == 'en_US'">
+                                                    <td style="width:25%;" class="text-center"><span>Signature Recipient</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Deliverer</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Inspector</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Approver</span></td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้รับของ</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ส่ง</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ตรวจ</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้อนุมัติ</span></td>
+                                                </t>
+                                                
+                                            </tr>
+                                           
+                                        
+                                        </table>
+                                </tfoot>
+                                
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <table width="100%" t-if="o.move_line_ids and o.move_ids_without_package">
+                                <thead style="border-top:1px solid black;" >
+                                    
+                                    <tr style="border-bottom:1px solid black; height:40px;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Product</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>สินค้า</strong>
+                                            </th>
+                                        </t>
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Ordered</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>ยอดที่สั่ง</strong>
+                                            </th>
+                                        </t>
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>Delivered</strong>
+                                            </th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                                <strong>จัดส่งแล้ว</strong>
+                                            </th>
+                                        </t>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    
+                                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                                        <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                        </t>
+                                        <t t-elif="(start == end) and (end &lt; total_item)">
+                                                <tr style="height:20px;" >
+                                                    <td style="width:60%;">
+                                                        <span t-field="o.move_line_ids_without_package[start].product_id.display_name"/><br/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_id.description_picking"/>
+                                                    </td>
+                                                    <td style="width:20%;" class="text-right">
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                    </td>
+                                                    <td style="width:20%;" class="text-right">
+                                                        <span t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                        <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <tr style="height:20px;" >
+                                                <td style="width:60%;">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.display_name"/><br/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.description_picking"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-right">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-right">
+                                                    <span t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                
+                                            </tr>
+                                            
+                                        </t>
+                                        <t t-if="start == total_item-1">
+                                            <t t-set="start" t-value="total_item-1"/>
+                                            <t t-set="end" t-value="total_item-1"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="start" t-value="start + 1"/>
+                                        </t>
+                                        
+                                    </t>
+                                    
+                                </tbody>
+                                <tfoot>
+                                        <table width="100%">
+                                            <tr style="height:100px;">
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                
+                                            </tr>
+                                            <tr class="text-center">
+                                                <t t-if="o.partner_id.lang == 'en_US'">
+                                                    <td style="width:25%;" class="text-center"><span>Signature Recipient</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Deliverer</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Inspector</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Approver</span></td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้รับของ</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ส่ง</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ตรวจ</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้อนุมัติ</span></td>
+                                                </t>
+                                            </tr>
+                                           
+                                        
+                                        </table>
+                                </tfoot>
+                                
+                            </table>
+                        </t>
+                        
+                    </div>
+                    <t t-set="current_page" t-value="current_page+1"/>
+
+                    </t>
+                    
+                </t>
+                
+            </t>
+            
+        </t>
+    </template>
+    <record id="stock_delivery_order_report" model="ir.actions.report">
+      <field name="name">Delivery Orders</field>
+      <field name="model">stock.picking</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="paperformat_id" ref="custom_stock.paper_format_A4_zero_margin"/>
+      <field name="report_name">custom_stock.stock_delivery_order_document</field>
+      <field name="report_file">custom_stock.stock_delivery_order_document</field>
+      <field name="binding_model_id" ref="stock.model_stock_picking"/>
+      <field name="binding_type">report</field>
+    </record>
+  </data>
+
+</odoo>

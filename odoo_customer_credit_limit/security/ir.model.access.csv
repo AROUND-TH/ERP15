@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_credit_rule_user,partner_credit_rule_user,odoo_customer_credit_limit.model_partner_credit_rule,,1,0,0,0
+access_partner_credit_rule_manager,partner_credit_rule_manager,odoo_customer_credit_limit.model_partner_credit_rule,sales_team.group_sale_manager,1,1,1,1
+access_history_credit_rule,sale.authentication,model_history_credit_rule,sales_team.group_sale_salesman,1,1,1,1
+access_history_credit_rule_manager,sale.authentication,model_history_credit_rule,sales_team.group_sale_manager,1,1,1,1
+access_wizard_credit_rule,sale.wizard_credit_rule,model_wizard_credit_rule,sales_team.group_sale_salesman,1,1,1,1
+access_wizard_credit_rule_manager,sale.wizard_credit_rule,model_wizard_credit_rule,sales_team.group_sale_manager,1,1,1,1
+access_credit_message_error,sale.credit_message_error,model_credit_message_error,sales_team.group_sale_salesman,1,1,1,1
+access_credit_message_error_manager,sale.credit_message_error,model_credit_message_error,sales_team.group_sale_manager,1,1,1,1

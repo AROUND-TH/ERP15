@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="custom_sale_order_form_view_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority" eval="30"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_quotation_send']" position="after">
+                    <button name="action_print_quotation_th" attrs="{'invisible': ['|','|',('price_list_need_approve', '=', True),('state','in',['wait_for_approve','sale','done','cancel']),('name','=','New')]}" string="Print QUOTATION (TH)" type="object" class="oe_highlight"/>
+                    <button name="action_print_quotation_en" attrs="{'invisible': ['|','|',('price_list_need_approve', '=', True),('state','in',['wait_for_approve','sale','done','cancel']),('name','=','New')]}" string="Print QUOTATION (EN)" type="object" class="oe_highlight"/>
+                    <button name="action_print_quotation_th" attrs="{'invisible': ['|','|',('price_list_need_approve', '=', True),('state','in',['wait_for_approve','draft','sent','cancel']),('name','=','New')]}" string="Print SALES ORDER (TH)" type="object" class="oe_highlight"/>
+                    <button name="action_print_quotation_en" attrs="{'invisible': ['|','|',('price_list_need_approve', '=', True),('state','in',['wait_for_approve','draft','sent','cancel']),('name','=','New')]}" string="Print SALES ORDER (EN)" type="object" class="oe_highlight"/>
+                    <button name="action_print_quotation_sale_order_thai" attrs="{'invisible': ['|','|',('price_list_need_approve', '=', True),('state','in',['wait_for_approve','cancel']),('name','=','New')]}" string="ใบเสนอราคา/ใบสั่งซื้อ" type="object" class="oe_highlight"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

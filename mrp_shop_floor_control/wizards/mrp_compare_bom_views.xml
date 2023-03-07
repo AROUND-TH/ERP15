@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_compare_bom_form" model="ir.ui.view">
+        <field name="name">mrp.compare.bom.form</field>
+        <field name="model">mrp.compare.bom</field>
+        <field name="type">form</field>
+        <field name="priority" eval="10"/>
+        <field name="arch" type="xml">
+            <form string="BoM Comparison">
+                <group>
+                    <group>
+                        <field name="bom_id1"/>
+                    </group>
+                    <group>
+                        <field name="bom_id2"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_compare_boms" class="oe_highlight" string="Compare BoMs" type="object"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+     <record id="mrp_bom_differences_form" model="ir.ui.view">
+        <field name="name">mrp.bom.differences.form</field>
+        <field name="model">mrp.compare.bom</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="BoM Differences" create="0">
+                <group>
+	                <group>
+                        <field name="bom_id1" readonly="True"/>
+                        <field name="type_id1" readonly="True"/>
+                        <field name="product_tmpl_id1" readonly="True"/>
+                        <field name="product_id1" readonly="True"/>
+	                </group>
+	                <group >
+                        <field name="bom_id2" readonly="True"/>
+                        <field name="type_id2" readonly="True"/>
+                        <field name="product_tmpl_id2" readonly="True"/>
+                        <field name="product_id2" readonly="True"/>
+	                </group>
+                </group>
+                <group>
+                    <group>
+               	        <field name="item1notin2" nolabel="1" readonly="1">
+               	            <tree>
+                                <field name="bom_line_id"/>
+                                <field name="product_id" invisible="1"/>
+                                <field name="product_qty"/>
+                                <field name="product_uom_id"/>
+                                <field name="bom_product_template_attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant"/>
+               	             </tree>
+               	        </field>
+                    </group>
+                 	<group>
+                 		<field name="item2notin1" nolabel="1" readonly="1">
+                 		     <tree>
+                                <field name="bom_line_id"/>
+                                <field name="product_id" invisible="1"/>
+                                <field name="product_qty"/>
+                                <field name="product_uom_id"/>
+                                <field name="bom_product_template_attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant"/>
+                            </tree>
+                        </field>
+             		</group>
+         		</group>
+                <footer>
+                    <button name="action_close" class="oe_highlight" string="Close" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mrp_compare_bom_action" model="ir.actions.act_window">
+        <field name="name">BoMs Comparison</field>
+        <field name="res_model">mrp.compare.bom</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_mrp_compare_bom_form"/>
+    </record>
+
+    <menuitem
+        name="BoMs Comparison"
+        action="mrp_compare_bom_action"
+        id="menu_bom_comparison"
+        sequence="70"
+        parent="mrp.menu_mrp_reporting"/>
+</odoo>

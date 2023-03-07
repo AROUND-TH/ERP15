@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_consumption_stock_move,wizard.consumption.stock.move,model_wizard_consumption_stock_move,,1,1,1,1
+access_wizard_consumption_stock_move_line,wizard.consumption.stock.move.line,model_wizard_consumption_stock_move_line,,1,1,1,1

@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <template id="bluefalo_report_saleorder_document_en">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+        <div class="header" style="height:200px !important; ">
+            <div class="row mt32 mb32" >
+                <div class="col-6" style="background-color:white !important;">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="height:80px; max-height: 100px;" />
+                </div>
+                <div class="col-6 text-right" style="font:14px lucida-console,sans-serif !important;">
+                    
+                </div>
+            </div>
+            <hr/>
+            <div class="row mt32 mb32" style="font:16px lucida-console,sans-serif !important;">
+                <div class="col-6">
+                <div style="height:80px;">
+                    <span t-esc="company.with_context({'lang':'en_EN'}).company_details" /><br/>
+                </div>
+                <!-- <span t-field="company.partner_id" />
+                    <br/>
+                    <span t-field="company.partner_id.street" />
+                    <br/>
+                    <span t-field="company.partner_id.street2" />
+                    <br/>
+                    <span t-field="company.partner_id.city" /> 
+                    <span t-field="company.partner_id.country_id" />
+                    <br/>
+                    <span>Tax ID: <span t-field="company.partner_id.vat" /> </span> -->
+                    <br/><br/>
+                    <t t-if="doc.state in ['draft','sent']">
+                        <strong style="color:#1e90ff;"><h3>Quotation # <span t-esc="doc.name"/></h3></strong>
+                    </t>
+                    <t t-elif="doc.state in ['wait_for_approve','cancel']">
+                        <strong style="color:#1e90ff;"><h3>#######</h3></strong>
+                    </t>
+                    <t t-else="">
+                        <strong style="color:#1e90ff;"><h3>SaleOrder # <span t-esc="doc.name"/></h3></strong>
+                    </t>
+                </div>
+                <div class="col-6">
+                    <div t-field="doc.partner_id"/>
+                    <t t-if="doc.partner_id.street">
+                        <t t-esc="doc.partner_id.street"/>
+                    </t><br/>
+                    <t t-if="doc.partner_id.street2">
+                        <t t-esc="doc.partner_id.street2"/>
+                    </t><br/>
+                    <t t-if="doc.partner_id.street3">
+                        <t t-esc="doc.partner_id.street3"/>
+                    </t>
+                    <t t-if="doc.partner_id.city">
+                        <t t-esc="doc.partner_id.city"/>
+                    </t>
+                    <t t-if="doc.partner_id.state_id.name">
+                        <t t-esc="doc.partner_id.state_id.name"/>
+                    </t>
+                    <t t-if="doc.partner_id.zip">
+                        <t t-esc="doc.partner_id.zip"/>
+                    </t>
+                    <br/>
+                    <t t-if="doc.partner_id.country_id.name">
+                        <t t-esc="doc.partner_id.country_id.name"/>
+                    </t>
+                    <br/>
+                    <br/>
+                    <!-- <span>Tax ID: <span t-field="doc.partner_id.vat" /> </span> -->
+                </div>
+                
+            </div>
+            <div  class="container" style="height:65px;  width:100%; ">
+                <div class="row">
+                    <table style="width:100%;">
+                    <tr>
+                        <td style="width:25%;"><span style="color:grey; font-size:14px;">Quotation Date</span></td>
+                        <td style="width:25%;"><span style="color:grey; font-size:14px;">Expirations</span></td>
+                        <td style="width:25%;"><span style="color:grey; font-size:14px;">Incoterm</span></td>
+                        <td style="width:25%;"><span style="color:grey; font-size:14px;">Salesperson</span></td>
+                    </tr>
+                    <tr>
+                        <td><span t-field="doc.date_order" t-options='{"widget": "date"}'/></td>
+                        <td><span t-field="doc.validity_date"/></td>
+                        <td><span t-field="doc.incoterm"/></td>
+                        <td><span t-field="doc.user_id"/></td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+        
+
+    <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context({'lang':th_TH})" />
+        <t t-set="item_per_page" t-value="7" />
+        <t t-set="total_item" t-value="len(doc.order_line)"/>
+        <t t-set="current_page" t-value="1"/>
+        <t t-set="total_page" t-value="doc.ceil(total_item,item_per_page)"/>
+        <t t-set="start" t-value="0"/>
+        <t t-set="end" t-value="7"/>
+            <t t-foreach="range(0,total_page,1)" t-as="page">
+            <div class="page" style="position:relative !important;">
+                <div class="oe_structure"></div>
+                <t t-if="current_page == 1">
+                <div  class="container" style="height:280px;  width:100%;">
+                
+                    
+                </div>
+                </t>
+                <t t-elif="current_page &gt; 1">
+                <div class="container" style="height:428px;  width:100%;">
+                    
+                </div>
+                </t>
+                <hr/>
+                <div >
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="display_discount" t-value="any([l.discount for l in doc.order_line])"/>
+                <t t-if="current_page &lt; total_page">
+                    <table class="table table-sm" style="height:200mm; !important; ">
+                    <thead>
+                        <tr>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:20%;">Brand</th>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:25%;">Product Name</th>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:15%;">Delivery Address</th>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:12%" class="text-right">Quantity</th>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:10%" class="text-right">Unit Price</th>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:8%" class="text-right">Taxes</th>
+                            <th style="background-color:#add8e6 !important;color:grey !important; width:10%" class="text-right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                            <tr style="height:45px !important;">
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span /> -->
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-elif="(start == end) and (end &lt; total_item)">
+                            <tr style="height:45px !important;">
+                                <!-- <td class="border-left-right" >
+                                    <span style="margin-left:3px;" t-esc="start+1"/>
+                                </td> -->
+                                <td class="border-left-right">
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.product_tmpl_id.x_studio_many2one_field_UqhIy.x_name"/>
+                                </td>
+                                <td class="border-left-right">
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-esc="doc.order_line[start].delivery_partner_id.name" 
+                                    style="margin-right:2px;display:block;width:100px; overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].product_uom_qty"/>
+                                    <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].price_tax" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))" style="margin-right:2px;"/><span t-esc="doc.currency_id.symbol"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-else="">
+                            <tr style="height:45px !important;">
+                            <!-- <td class="border-left-right" >
+                                <span style="margin-left:3px;" t-esc="start+1"/>
+                            </td> -->
+                            <t t-if="doc.order_line[start]">
+                                <td class="border-left-right">
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.product_tmpl_id.x_studio_many2one_field_UqhIy.x_name"/>
+                                </td>
+                                <td class="border-left-right">
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                </td>
+
+                                <td class="text-right border-left-right" >
+                                    <span t-esc="doc.order_line[start].delivery_partner_id.name" 
+                                    style="margin-right:2px;display:block;width:100px; overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].product_uom_qty"/>
+                                    <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].price_tax" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))" style="margin-right:2px;"/><span t-esc="doc.currency_id.symbol"/>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="" style="border-bottom:1px solid white !important;">
+                                    <!-- <span /> -->
+                                </td>
+                            </t>
+                            
+                        </tr>
+                        </t>
+                        <t t-if="start == total_item-1">
+                            <t t-set="start" t-value="total_item-1"/>
+                            <t t-set="end" t-value="total_item-1"/>
+                        </t>
+                        <t t-else="">
+                            <t t-set="start" t-value="start + 1"/>
+                        </t>
+                        <!-- <t t-set="log_start" t-value="doc.log_start(start)"/> -->
+                    </t>
+                    </tbody>
+                </table>
+                </t>
+                <t t-elif="total_page == 1">
+                    <table class="table table-sm" style="height:130mm; !important; ">
+                        <thead>
+                            <tr>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:20%;">Brand</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:25%;">Product Name</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:15%;">Delivery Address</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:12%" class="text-right">Quantity</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:10%" class="text-right">Unit Price</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:8%" class="text-right">Taxes</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:10%" class="text-right">Price</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                            <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                    <tr style="height:45px !important;">
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="(start == end) and (end &lt; total_item)">
+                                <tr style="height:45px !important;">
+                                    <!-- <td class="border-left-right" >
+                                        <span style="margin-left:3px;" t-esc="start+1"/>
+                                    </td> -->
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.product_tmpl_id.x_studio_many2one_field_UqhIy.x_name"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="doc.order_line[start].delivery_partner_id.name" 
+                                        style="margin-right:2px;display:block;width:100px; overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom_qty"/>
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_tax" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))" style="margin-right:2px;"/><span t-esc="doc.currency_id.symbol"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <tr style="height:45px !important;">
+                                <!-- <td class="border-left-right" >
+                                    <span style="margin-left:3px;" t-esc="start+1"/>
+                                </td> -->
+                                <t t-if="doc.order_line[start]">
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.product_tmpl_id.x_studio_many2one_field_UqhIy.x_name"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="doc.order_line[start].delivery_partner_id.name" 
+                                        style="margin-right:2px;display:block;width:100px; overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom_qty"/>
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_tax" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))" style="margin-right:2px;"/><span t-esc="doc.currency_id.symbol"/>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <!-- <td class="border-left-right" >
+                                        <span/>
+                                    </td> -->
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                </t>
+                                
+                            </tr>
+                            </t>
+                            <t t-if="start == total_item-1">
+                                <t t-set="start" t-value="total_item-1"/>
+                                <t t-set="end" t-value="total_item-1"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="start" t-value="start + 1"/>
+                            </t>
+                            <!-- <t t-set="log_start" t-value="doc.log_start(start)"/> -->
+                        </t>
+                    </tbody>
+                </table>
+                <table class="table" style="width:100%; ">
+                    <tr style="height:20px !important;">
+                        <td style="width:50%;"></td>
+                        <td style="width:25%;" class="text-right"><span>Total</span></td>
+                        <td style="width:25%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.amount_total)"/><span t-esc="doc.currency_id.symbol"/></td>
+                    </tr>
+                </table>
+                <table class="table" style="width:100%; ">
+                <div class="row">
+                        <div class="col-8"><span>Credit Term </span><span t-field="doc.payment_term_id"/></div>
+                        <div class="col-4"></div>
+                    
+                    </div>
+                    <div class="row">
+                        <div class="col-2"><span>Addition Note </span></div>
+                        <div class="col-8"><span style="text-align:left;" t-esc="doc.note"/></div>
+                        <div class="col-2"></div>
+                    </div>
+                    
+                    
+                    <tr style="height:20px !important;">
+                        <div style="height:5px !important;"></div>
+            
+                        <div class="row" style="margin-top:-10px;">
+                            <div class="col-2"></div>
+                            <div class="col-4 text-center"><span class="text-center"><img t-if="doc.x_studio_binary_field_2Zagi" t-att-src="'data:image/png;base64,%s' % to_text(doc.x_studio_binary_field_2Zagi)" style="height:80px; width:140px; max-height: 80px;" /></span></div>
+                            <div class="col-4 text-center"><span class="text-center"><img t-if="doc.approver_login_user.digital_signature" t-att-src="'data:image/png;base64,%s' % to_text(doc.approver_login_user.digital_signature)" style="height:80px; width:140px; max-height: 80px;" /></span></div>
+                            <div class="col-2"></div>
+                        
+                        </div>
+                    </tr>
+                    <tr style="height:10px !important;">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-4 text-center"><span class="text-center" t-field="doc.x_studio_many2one_field_oXvdO"/></div>
+                            <div class="col-4 text-center"><span class="text-center" t-esc="doc.approver_id.user_approve_id.name"/></div>
+                            <div class="col-2"></div>
+                        
+                        </div>
+                    </tr>
+                    
+                    <tr style="height:10px !important; margin-bottom:0px;">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-4 text-center"><span class="text-center">Sales Representative</span></div>
+                            <div class="col-4 text-center"><span class="text-center" t-esc="doc.approver_id.positions_id.name"/></div>
+                            <div class="col-2"></div>
+                        
+                        </div>
+                    </tr>
+                </table>
+                </t>
+                <t t-else="">
+                    <table class="table table-sm" style="height:100mm; !important; ">
+                        <thead>
+                            <tr>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:20%;">Brand</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:25%;">Product Name</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:15%;">Delivery Address</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:12%" class="text-right">Quantity</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:10%" class="text-right">Unit Price</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:8%" class="text-right">Taxes</th>
+                                <th style="background-color:#add8e6 !important;color:grey !important; width:10%" class="text-right">Price</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                            <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                <tr style="height:45px !important; border-bottom:1px solid white !important;">
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="(start == end) and (end &lt; total_item)">
+                                <tr style="height:45px !important;">
+                                    <!-- <td class="border-left-right" >
+                                        <span style="margin-left:3px;" t-esc="start+1"/>
+                                    </td> -->
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.product_tmpl_id.x_studio_many2one_field_UqhIy.x_name"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="doc.order_line[start].delivery_partner_id.name" 
+                                        style="margin-right:2px;display:block;width:100px; overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom_qty"/>
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_tax" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))" style="margin-right:2px;"/><span t-esc="doc.currency_id.symbol"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <tr style="height:45px !important;">
+                                <!-- <td class="border-left-right" >
+                                    <span style="margin-left:3px;" t-esc="start+1"/>
+                                </td> -->
+                                <t t-if="doc.order_line[start]">
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.product_tmpl_id.x_studio_many2one_field_UqhIy.x_name"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="doc.order_line[start].delivery_partner_id.name" 
+                                        style="margin-right:2px;display:block;width:100px; overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom_qty"/>
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_tax" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))" style="margin-right:2px;"/><span t-esc="doc.currency_id.symbol"/>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <!-- <td class="border-left-right" >
+                                        <span/>
+                                    </td> -->
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="" style="border-bottom:1px solid white !important;">
+                                        <!-- <span /> -->
+                                    </td>
+                                </t>
+                                
+                            </tr>
+                            </t>
+                            <t t-if="start == total_item-1">
+                                <t t-set="start" t-value="total_item-1"/>
+                                <t t-set="end" t-value="total_item-1"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="start" t-value="start + 1"/>
+                            </t>
+                            <!-- <t t-set="log_start" t-value="doc.log_start(start)"/> -->
+                        </t>
+                    </tbody>
+                </table>
+                <table class="table" style="height:20px !important; width:100%; ">
+                    <tr style="height:20px !important;">
+                        <td style="width:50%;"></td>
+                        <td style="width:25%;" class="text-right"><span>Total</span></td>
+                        <td style="width:25%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.amount_total)"/><span t-field="doc.currency_id.symbol"/></td>
+                    </tr>
+                </table>
+                <table class="table" style="height:50px !important; width:100%; ">
+                    <div class="row">
+                        <div class="col-8"><span>Credit Term </span><span t-field="doc.payment_term_id"/></div>
+                        <div class="col-4"></div>
+                    
+                    </div>
+                    <div class="row">
+                        <div class="col-2"><span>Addition Note </span></div>
+                        <div class="col-8"><span style="text-align:left;" t-esc="doc.note"/></div>
+                        <div class="col-2"></div>
+                    </div>
+                    <tr style="height:20px !important;">
+                        <div style="height:20px !important;"></div>
+            
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-4 text-center"><span class="text-center"><img t-if="doc.x_studio_binary_field_2Zagi" t-att-src="'data:image/png;base64,%s' % to_text(doc.x_studio_binary_field_2Zagi)" style="height:80px; width:140px; max-height: 80px;" /></span></div>
+                            <div class="col-4 text-center"><span class="text-center"><img t-if="doc.approver_login_user.digital_signature" t-att-src="'data:image/png;base64,%s' % to_text(doc.approver_login_user.digital_signature)" style="height:80px; width:140px; max-height: 80px;" /></span></div>
+                            <div class="col-2"></div>
+                        
+                        </div>
+                    </tr>
+                    <tr style="height:10px !important; margin-top:-10px;">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-4 text-center"><span class="text-center" t-field="doc.x_studio_many2one_field_oXvdO"/></div>
+                            <div class="col-4 text-center"><span class="text-center" t-esc="doc.approver_id.user_approve_id.name"/></div>
+                            <div class="col-2"></div>
+                        
+                        </div>
+                    </tr>
+                    <tr style="height:10px !important; margin-bottom:0px;">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-4 text-center"><span class="text-center">Sales Representative</span></div>
+                            <div class="col-4 text-center"><span class="text-center" t-esc="doc.approver_id.positions_id.name"/></div>
+                            <div class="col-2"></div>
+                        
+                        </div>
+                    </tr>
+                </table>
+                </t>
+                </div>
+            </div>
+            <t t-set="current_page" t-value="current_page+1"/>
+            </t>
+        </t>
+    </template>
+    <template id="custom_report_quotation_bluefalo_en">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                    <t t-call="custom_sale_quotation_report_template.bluefalo_report_saleorder_document_en" t-lang="doc.partner_id.lang"/>
+                    
+            </t>
+        </t>
+    </template>
+
+    <record id="quotation_bluefalo_report_en" model="ir.actions.report">
+      <field name="name">Quotaton/SaleOrder EN</field>
+      <field name="model">sale.order</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="paperformat_id" ref="custom_sale_quotation_report_template.paper_format_A4_zero_margin"/>
+      <field name="report_name">custom_sale_quotation_report_template.custom_report_quotation_bluefalo_en</field>
+      <field name="report_file">custom_sale_quotation_report_template.custom_report_quotation_bluefalo_en</field>
+      <field name="binding_model_id" eval="False"/>
+      <field name="binding_type">report</field>
+    </record>
+  </data>
+</odoo>

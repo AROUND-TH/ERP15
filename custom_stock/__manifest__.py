@@ -1,0 +1,43 @@
+{
+    'name': "Customize: Stock",
+    'summary': """
+        Customize of Stock Module 
+    """,
+    'description': """""",
+    'author': "Around Enterprise Consulting Co., Ltd.",
+    'website': "https://www.around.co.th",
+    "version": "15",
+    "depends": [
+        'base',
+        'account',
+        'stock',
+        'product_expiry',
+        'sale_stock',
+        'stock_picking_batch',
+        'generic_m2o',
+        'custom_mrp',
+        'web_domain_field',
+    ],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "data/report_paper.xml",
+        "views/stock_production_lot.xml",
+        "views/stock_storage_category_views.xml",
+        "views/stock_picking_type.xml",
+        "views/stock_quant.xml",
+        "views/stock_move_views.xml",
+        "views/stock_picking.xml",
+        "views/stock_picking_batch.xml",
+        "views/res_company_views.xml",
+        "views/stock_scrap.xml",
+        "wizard/stock_picking_return_views.xml",
+        "wizard/truckscale_item.xml",
+        "reports/picking_operation.xml",
+        "reports/delivery_slip.xml",
+        "reports/packing_list.xml",
+        "reports/sale_return_order.xml",
+        "reports/report_simple_label.xml",
+        "reports/report_picking_batch.xml",
+    ]
+}

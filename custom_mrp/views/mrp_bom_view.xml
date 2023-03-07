@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="product_search_form_view" model="ir.ui.view">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="Product" filter_domain="['|', '|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self), ('name_of_component', 'ilike', self)]"/>
+                </field>
+                <field name="attribute_line_ids" position="replace">
+                    <field name="product_template_attribute_value_ids" groups="product.group_product_variant"/>
+                    <field name="product_tmpl_id" string="Product Template"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="custom_mrp_bom_form_view" model="ir.ui.view">
+            <field name="name">mrp.bom.form</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook/page/field[@name='bom_line_ids']" position="attributes">
+                    <attribute name="context">{'default_parent_product_tmpl_id': product_tmpl_id, 'default_product_id': False, 'default_company_id': company_id, 'default_bom_id': id, 'display_component_name': True}</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='bom_line_ids']/tree/field[@name='product_id']" position="replace">
+                    <field name="product_id" context="{'default_type':'product','display_component_name':True,'search_view_ref':'custom_mrp.product_search_form_view'}"/>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='bom_line_ids']/tree/field[@name='product_qty']" position="before">
+                    <field name="convertion_quantity"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

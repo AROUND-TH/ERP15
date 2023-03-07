@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report
+            id="report_expiry_print"
+            string="Stock Expiry Report"
+            model="stock.expiry.report.wizard"
+            report_type="qweb-pdf"
+            file="bi_stock_expiry_report.report_expiry_pdf"
+            name="bi_stock_expiry_report.report_expiry_pdf"
+        />
+
+        <report
+            id="report_expiry_print_all"
+            string="Stock Expiry Report"
+            model="stock.expiry.report"
+            report_type="qweb-pdf"
+            file="bi_stock_expiry_report.report_expiry_pdf_all"
+            name="bi_stock_expiry_report.report_expiry_pdf_all"
+        />
+
+
+        <report
+            id="report_expiry_print_location"
+            string="Stock Expiry Report"
+            model="stock.expiry.report"
+            report_type="qweb-pdf"
+            file="bi_stock_expiry_report.report_expiry_pdf_location"
+            name="bi_stock_expiry_report.report_expiry_pdf_location"
+        />
+
+        <report
+            id="report_expiry_print_warehouse"
+            string="Stock Expiry Report"
+            model="stock.expiry.report"
+            report_type="qweb-pdf"
+            file="bi_stock_expiry_report.report_expiry_pdf_warehouse"
+            name="bi_stock_expiry_report.report_expiry_pdf_warehouse"
+        />
+    </data>
+</odoo>

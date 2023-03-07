@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+        <record forcecreate="0" id="pr_approval_procedure" model="ir.config_parameter">
+            <field name="key">purchase.pr_approval_procedure</field>
+            <field name="value">True</field>
+        </record>
+        <record forcecreate="0" id="po_approval_procedure" model="ir.config_parameter">
+            <field name="key">purchase.po_approval_procedure</field>
+            <field name="value">True</field>
+        </record>
+
+    </data>
+</odoo>

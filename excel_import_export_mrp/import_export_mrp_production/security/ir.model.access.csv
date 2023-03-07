@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_import_mrp_production,wizard.import.mrp.production,excel_import_export_mrp.model_wizard_import_mrp_production,,1,1,1,1

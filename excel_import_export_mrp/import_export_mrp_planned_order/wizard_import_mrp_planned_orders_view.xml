@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_import_mrp_planned_orders_form" model="ir.ui.view">
+        <field name="name">wizard.import.mrp.planned.orders.form</field>
+        <field name="model">wizard.import.mrp.planned.orders</field>
+        <field name="arch" type="xml">
+            <form string="Import Planned Orders">
+                <group>
+                    <group>
+                        <field name="upload" />
+                    </group>
+                    <group><button name="get_mrp_planned_orders_template" string="Get Sample Import Template" class="oe_link btn-link" type="object"/></group>
+                </group>
+                <footer>
+                    <button name="action_upload" string="Import row" colspan="1" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="wizard_import_mrp_planned_orders" model="ir.actions.act_window">
+		<field name="name">Import Planned Orders</field>
+		<field name="res_model">wizard.import.mrp.planned.orders</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+
+    <menuitem 
+        id="menu_wizard_import_mrp_planned_orders"
+        name="Import Planned Orders"
+        parent="mrp.mrp_planning_menu_root"
+        action="wizard_import_mrp_planned_orders"
+        sequence="2"
+    />
+
+</odoo>

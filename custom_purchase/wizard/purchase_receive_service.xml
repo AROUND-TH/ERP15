@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_receive_service_action" model="ir.actions.act_window">
+        <field name="name">Purchase Receive</field>
+        <field name="res_model">purchase.receive.service</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="purchase_receive_service_view_form" model="ir.ui.view">
+        <field name="name">purchase.receive.service.view.form</field>
+        <field name="model">purchase.receive.service</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="purchase_id" invisible="1" force_save="1"/>
+                <group>
+                    <field name="receive_line" nolabel="1">
+                        <tree editable="top" create="0" delete="0">
+                            <field name="product_id"  options="{'no_create': True, 'no_open': True}" force_save="1" readonly="True"/>
+                            <field name="quantity" force_save="1" readonly="True"/>
+                            <field name="qty_received" force_save="1" readonly="True"/>
+                            <field name="receive"/>
+                            <field name="uom_id" groups="uom.group_uom"/>
+                            <field name="line_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="action_receive" string="Receive" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

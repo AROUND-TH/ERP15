@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+	<record id="sale_delivery_inheritance" model="ir.ui.view">
+		<field name="name">sale.delivery.inheritance</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//notebook//page//field[@name='order_line']//tree" position="inside">
+                <field name="order_id" invisible="1"/>
+				<button name='%(wizard_delivery_action)d'
+                        string="&#160;"
+                        class='btn-primary'
+                        icon="fa-clock-o"
+                        type='action'
+                        help="Schedule Delivery Dates"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+			</xpath>
+			<xpath expr="//notebook//page//field[@name='order_line']//form" position="inside">
+                <separator string="Delivery Details"/>
+				<field name='delivery_line_ids' readonly="1">
+                    <tree>
+                        <field name="date" string="Delivery Date"/>
+                        <field name="qty"/>
+                    </tree>
+                    <form>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="qty"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+			</xpath>
+		</field>
+	</record>
+</odoo>

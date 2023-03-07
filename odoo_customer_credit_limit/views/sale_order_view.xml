@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="customer_creadit_sale_order_view" model="ir.ui.view">
+            <field name="name">sale.order.customer.credit.inherit.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='sale_shipping']" position="after">
+                    <group string="Credit Limit Validation" name="credit_limit" >
+                        <field name="is_credit_manager" invisible='1'/>
+                        <field name="is_skip_credit_limit" attrs="{'readonly' : [('is_credit_manager','=',False)]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

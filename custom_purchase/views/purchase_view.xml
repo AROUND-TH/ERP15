@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="custom_purchase_order_form_view" model="ir.ui.view">
+            <field name="name">purchase.order.form.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header" position="before">
+                    <field name="show_receive_service" invisible="1"/>
+                    <field name="is_on_active" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='action_rfq_send']" position="before">
+                    <button name="print_purchase_order" type="object" string="PRINT PURCHASE ORDER" class="oe_highlight" states="purchase,done"/>
+                </xpath>
+                <xpath expr="//form/header" position="inside">
+                    <button name="%(purchase_receive_service_action)d" type="action" string="Receive Service" attrs="{'invisible': [('show_receive_service', '=', False)]}"/>
+                    <button name="action_rfq_send" states="purchase,done" string="Send PO by Email" type="object" context="{'send_rfq':False}" data-hotkey="g"/>
+                </xpath>
+                <xpath expr="//form/header/button[@name='confirm_reminder_mail']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form/header/button[@name='action_rfq_send'][1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form/header/button[@name='action_rfq_send'][2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form/header/button[@name='action_rfq_send'][3]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form/header[last()]" position="after">
+                    <header>
+                        <field name="approval_position" widget="statusbar" states="to approve"/>
+                    </header>
+                </xpath>
+                <xpath expr="//form/sheet/group/group[2]" position="inside">
+                    <field name="lc_number"/>
+                </xpath>
+
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirm,to approve,purchase" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//button[@name='button_approve']" position="replace">
+                    <button name="request_approval" type="object" string="Request for Approval" states="confirm" class="btn-primary" groups="purchase.group_purchase_user"/>
+                    <button name="manager_approve" type="object" string="Approve" states="to approve" class="btn-primary" groups="purchase.group_purchase_manager"/>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="replace">
+                    <button name="button_cancel" type="object" string="Cancel" groups="purchase.group_purchase_user" states="draft,sent,confirm,to approve,purchase"/>
+                </xpath>
+
+                <!-- <xpath expr="//field[@name='date_order']" position="before">
+                    <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </xpath> -->
+
+                <xpath expr="//notebook/page[@name='purchase_delivery_invoice']" position="after">
+                    <page string="Approve Information" name="purchase_order_approve">
+                        <group>
+                            <group name="approve_info">
+                                <field name="confirm_employee_id"/>
+                                <field name="approve_employee_id"/>
+                                <field name="coo_approve_id"/>
+                                <field name="ceo_approve_id"/>
+                                <field name="reject_employee_id"/>
+                                <!-- <field name="category_ids" widget="many2many_tags"/> -->
+                            </group>
+                            <group name="approve_date">
+                                <field name="confirm_date"/>
+                                <field name="userrapp_date"/>
+                                <field name="coo_approve_date"/>
+                                <field name="ceo_approve_date"/>
+                                <field name="userreject_date"/>
+                                <!-- <field name="procedure_id"/>
+                                <field name="approve_sequence"/> -->
+                            </group>
+                        </group>
+                    </page>
+                    <page name="approval_procedure" string="Approval Procedure">
+                        <field name="purchase_order_approval_ids">
+                            <tree editable="bottom" create="false" delete="false">
+                                <field name="approver"/>
+                                <field name="position_id" readonly="1"/>
+                                <!-- <field name="position_id"/>
+                                <field name="position_chk"/> -->
+                                <field name="employee_domain" invisible="1"/>
+                                <field name="employee_id"/>
+                                <field name="approval_date"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

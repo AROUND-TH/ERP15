@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_parameter_xlsx_export" model="xlsx.template">
+        <field name="res_model">mrp.parameter</field>
+        <field name="fname">mrp_parameter.xlsx</field>
+        <field name="name">MRP Parameter Export</field>
+        <field name="description">MRP Parameter Export</field>
+        <field name="export_action_id" eval="ref('action_mrp_parameter_export_xlsx')" />
+        <field name="input_instruction">
+            {
+                '__EXPORT__': {
+                    1: {
+                        'row': {
+                            'A2': 'warehouse_id.name${value or ""}#{style=text}',
+                            'B2': 'product_id.default_code${value or ""}#{style=text}',
+                            'C2': '${""}#{style=date}',
+                            'D2': '${""}#{style=number}',
+                            'E2': 'product_uom.name${value or ""}#{style=text}',
+                        }
+                    }
+                },
+            }
+        </field>
+    </record>
+    <function model="xlsx.template" name="load_xlsx_template">
+        <value eval="[ref('mrp_parameter_xlsx_export')]" />
+    </function>
+</odoo>

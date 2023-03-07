@@ -1,0 +1,5 @@
+14.0.0.2 ==>
+1. fixed issue of traceback of in report for valuation.
+2. fixed issue if the product is with the tracking by series/lot then in the report column it is printing 0 qty .
+
+14.0.0.3 ==> Solved issue regarding different different data in excel and pdf reports have with the same given inputs

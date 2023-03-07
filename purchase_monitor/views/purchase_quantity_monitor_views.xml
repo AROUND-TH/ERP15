@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+   <record id="purchase_quantity_monitor_tree_view" model="ir.ui.view">
+         <field name="name">purchase.quantity.monitor.view.tree</field>
+         <field name="model">purchase.order.line</field>
+         <field name="arch" type="xml">
+            <tree >
+                <field name="order_id" string='PO number'/>
+                <field name="partner_id" string='Vendor'/>
+                <field name="origin" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+                <field name="warehouse_id"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="hide"/>
+                <field name="date_planned" widget="date"/>
+                <field name="product_id"/>
+                <field name="name" optional="hide"/>
+                <field name="product_qty"/>
+                <field name="product_uom" string='UoM'/>
+                <field name="price_unit" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="purchase_method"/>
+                <field name="qty_received"/>
+                <field name="qty_invoiced"/>
+                <field name="qty_to_receive"/>
+                <field name="qty_to_invoice"/>
+                <button name="%(purchase_monitor_history_action)d" type="action" string="PO Item History" class="oe_highlight"></button>
+            </tree>
+      </field>
+    </record>
+
+    <record id="purchase_monitor_filter_view" model="ir.ui.view">
+        <field name="name">purchase.monitor.filter</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <filter string="Purchase Orders" name="purchase" domain="[('state','in',('purchase','done'))]"/>
+                <separator/>
+                <filter name="open_to_receive" string="Waiting Receipts" domain="[('qty_to_receive','>',0.0)]"/>
+                <filter name="open_to_invoice" string="Waiting Bills" domain="[('qty_to_invoice','>',0.0)]"/>
+                <filter name="filter_date_planned" string="Delivery Date" date="date_planned"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Purchase Order" name="groupby_order_id" domain="[]" context="{'group_by':'order_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="purchase_quantity_monitor_action" model="ir.actions.act_window">
+        <field name="name">Purchase Quantity Monitor</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_id" ref="purchase_quantity_monitor_tree_view"/>
+        <field name="context">{'search_default_purchase': True, 'search_default_groupby_order_id': True}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+        id="menu_purchase_quantity_monitor"
+        sequence="10"
+        parent="purchase.purchase_report_main"
+        action="purchase_quantity_monitor_action"
+        groups="purchase.group_purchase_user"/>
+</odoo>
+

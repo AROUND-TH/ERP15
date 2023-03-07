@@ -1,0 +1,531 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+      <template id="stock_sale_return_order_document_multi_lang">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div class="row mt32 mb32">
+                        <div class="col-4 text-left">
+                            <span style="color:white;">.
+                            <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 80px; height:80px;" />
+                            </span>
+                        </div>
+                        <div class="col-4 text-center" >
+                        </div>
+                        <div class="col-4">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row mt32 mb32">
+                        <div class="col-8 text-left" >
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <div style="height:50px;">
+                                <strong><span t-esc="o.company_id.with_context({'lang':'en_US'}).company_details" /></strong><br/>
+                                </div>
+                            </t>
+                            <t t-elif="o.partner_id.lang == 'th_TH'">
+                                <div style="height:50px;">
+                                <strong><span t-esc="o.company_id.with_context({'lang':'th_TH'}).company_details" /></strong><br/>
+                                </div>
+                            </t>
+                            <!-- <span t-esc="o.company_id.name" class="text-left"/><br/>
+                            <span t-field="o.company_id.street" class="text-left"/>
+                            <span t-field="o.company_id.street2" class="text-left"/><br/>
+                            <span t-field="o.company_id.city" class="text-left"/>
+                            <span t-field="o.company_id.zip" class="text-left"/>
+                            <span t-field="o.company_id.state_id.name" class="text-left"/> -->
+                            <br/>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                    <div class="row mt32 mb32">
+                        <div class="col-5"></div>
+                        <div class="col-7 text-left" >
+                            <t t-if="o.picking_type_id.name=='Sales Return'">
+                                <t t-if="o.partner_id.lang == 'en_US'">
+                                    <strong><span class="text-left">Customer</span></strong><br/>
+                                </t>
+                                <t t-else="">
+                                    <strong><span class="text-left">ลูกค้า</span></strong><br/>
+                                </t>
+                                
+                            </t>
+                            <t t-else="">
+                                <!-- <span><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 200, 50)" style="width:200px;height:50px; margin-left:-10px;"/></span><br/> -->
+                                <t t-if="o.partner_id.lang == 'en_US'">
+                                    <strong><span class="text-left">Vendor Address</span></strong><br/>
+                                </t>
+                                <t t-else="">
+                                    <strong><span class="text-left">ที่อยู่ผู้จำหน่าย</span></strong><br/>
+                                </t>
+                                
+                            </t>
+                            <span t-esc="o.partner_id.name" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street2" class="text-left"/><br/>
+                            <span t-field="o.partner_id.street3" class="text-left"/>
+                            <span t-field="o.partner_id.city" class="text-left"/>
+                            <span t-field="o.partner_id.zip" class="text-left"/><br/>
+                            <span t-field="o.partner_id.state_id.name" class="text-left"/>
+                            <span t-field="o.partner_id.country_id.name" class="text-left"/>
+                            <br/>
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <span>Tax ID:</span>
+                            </t>
+                            <t t-else="">
+                                <span>เลขประจำตัวผู้เสียภาษี:</span>
+                            </t>
+                            <span t-field="o.partner_id.vat" class="text-left"/>
+                            <br/>
+                        </div>
+                        
+                    </div>
+                    <div class="row mt32 mb32">
+                        
+                        <div class="col-6 text-left" >
+                        <t t-if="o.picking_type_id.name=='Sales Return'">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <strong><h3 class="text-left">Sales Return Order</h3></strong>
+                            </t>
+                            <t t-else="">
+                                <strong><h3 class="text-left">ใบรับคืนสินค้า</h3></strong>
+                            </t>
+                        </t>
+                        <t t-elif="o.picking_type_id.name=='Vendor Return'">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <strong><h3 class="text-left">Return to Vendor</h3></strong>
+                            </t>
+                            <t t-else="">
+                                <strong><h3 class="text-left">ใบส่งคืนสินค้า</h3></strong>
+                            </t>
+                        </t>
+                            <h4 t-esc="o.name"/>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row mt32 mb32">
+                        <t t-if="o.picking_type_id.name=='Sales Return'">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <div class="col-3"><span>Sale Order :</span>&amp;nbsp;<span t-field="o.sale_id"/></div>
+                            </t>
+                            <t t-else="">
+                                <div class="col-3"><span>ใบสั่งขาย :</span>&amp;nbsp;<span t-field="o.sale_id"/></div>
+                            </t>
+                        </t>
+                        <t t-elif="o.picking_type_id.name=='Vendor Return'">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <div class="col-3"><span/></div>
+                            </t>
+                            <t t-else="">
+                                <div class="col-3"><span/></div>
+                            </t>
+                        </t>
+                    
+                        
+                        <div class="col-3"><span/></div>
+                        <t t-if="o.picking_type_id.name=='Vendor Return'">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <div class="col-4"><span>Purchase Order :</span>&amp;nbsp;<span t-field="o.group_id"/></div>
+                            </t>
+                            <t t-else="">
+                                <div class="col-4"><span>ใบสั่งซื้อ :</span>&amp;nbsp;<span t-field="o.group_id"/><span>xxx</span></div>
+                            </t>
+                        </t>
+                        <t t-elif="o.picking_type_id.name=='Sales Return'">
+                            <t t-if="o.partner_id.lang == 'en_US'">
+                                <div class="col-4"><span/></div>
+                            </t>
+                            <t t-else="">
+                                <div class="col-4"><span/></div>
+                            </t>
+                        </t>
+                        <div class="col-4"><span></span></div>
+                    
+                    </div>
+                    <div class="row mt32 mb32">
+                        <t t-if="o.partner_id.lang == 'en_US'">
+                            <div class="col-3"><span>Detail:</span></div>
+                            <div class="col-3"><span>Status:</span></div>
+                            <div class="col-3"><span>Scheduled Date:</span></div>
+                            <div class="col-3"><span>Weight</span></div>
+                        </t>
+                        <t t-else="">
+                            <div class="col-3"><span>รายละเอียด:</span></div>
+                            <div class="col-3"><span>สถานะ:</span></div>
+                            <div class="col-3"><span>กำหนดส่ง:</span></div>
+                            <div class="col-3"><span>น้ำหนัก</span></div>
+                        </t>
+                        
+                    
+                    </div>
+                    
+                    <div class="row mt32 mb32">
+                        <div class="col-3"><span t-field="o.origin"/></div>
+                        <div class="col-3"><span t-field="o.state"/></div>
+                        <div class="col-3"><span t-esc="o.scheduled_date.strftime('%d/%m/%Y')" /></div>
+                        
+                        <div class="col-3"><span t-field="o.weight"/><span t-field="o.weight_uom_name"/></div>
+                    </div>
+                 </div>
+                 <hr/>
+                <t t-call="web.external_layout">
+
+                    <t t-set="item_per_page" t-value="18" />
+                    <t t-set="total_item" t-value="len(o.move_line_ids_without_package)"/>
+                    <t t-set="current_page" t-value="1"/>
+                    <t t-set="total_page" t-value="o.ceil(total_item,item_per_page)"/>
+                    <t t-set="start" t-value="0"/>
+                    <t t-set="end" t-value="18"/>
+                    <t t-set="items" t-value="len(o.move_line_ids_without_package)"/>
+
+                    <t t-foreach="range(0,total_page,1)" t-as="page">
+                    
+                    <div class="page">
+                    <style>
+                        border-4-side {
+                            border-top-style: 1px solid black;;
+                            border-right-style: 1px solid black;;
+                            border-bottom-style: 1px solid black;;
+                            border-left-style: 1px solid black;;
+                        }
+                    </style>
+                        <t t-if="current_page == 1">
+                        <div  class="container" style="height:370px;  width:100%;">
+                        
+                            
+                        </div>
+                        </t>
+                        <t t-elif="current_page &gt; 1">
+                        <div class="container" style="height:578px;  width:100%;">
+                            
+                        </div>
+                        </t>
+                        
+                        <br/>
+                        <br/>
+                        <t t-if="current_page &lt; total_page">
+                        <table width="100%" t-if="o.move_line_ids and o.move_ids_without_package" >
+                            
+                            <thead style="border-top:1px solid black;" >
+                                
+                                <tr style="border-bottom:1px solid black; height:40px;">
+                                    <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <strong>Product</strong>
+                                        </t>
+                                        <t t-else="">
+                                            <strong>สินค้า</strong>
+                                        </t>
+                                        
+                                    </th>
+                                    <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <strong>Weight/Item</strong>
+                                        </t>
+                                        <t t-else="">
+                                            <strong>น้ำหนัก/รายการ</strong>
+                                        </t>
+                                        
+                                    </th>
+                                    <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <strong>Quantity</strong>
+                                        </t>
+                                        <t t-else="">
+                                            <strong>จำนวน</strong>
+                                        </t>
+                                        
+                                    </th>
+                                    <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                        <t t-if="o.partner_id.lang == 'en_US'">
+                                            <strong>To</strong>
+                                        </t>
+                                        <t t-else="">
+                                            <strong>ถึง</strong>
+                                        </t>
+                                        
+                                    </th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <!-- In case you come across duplicated lines, ask NIM or LAP -->
+                                <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                                <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                </t>
+                                <t t-elif="(start == end) and (end &lt; total_item)">
+                                    <tr style="height:30px !important;" >
+                                        <td style="width:50%;">
+                                            <span t-field="o.move_line_ids_without_package[start].product_id.name"/>
+                                        </td>
+                                        <td style="width:20%;" class="text-center">
+                                            <span t-field="o.move_line_ids_without_package[start].product_id.weight"/>
+                                            <span t-esc="o.move_line_ids_without_package[start].product_id.weight_uom_name" />
+                                        </td>
+                                        <td style="width:20%;" class="text-center">
+                                            <span t-if="o.state != 'done'" t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                            <span t-if="o.state == 'done'" t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                            <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                        </td>
+                                        <td style="width:20%;" class="text-center">
+                                            <span t-field="o.move_line_ids_without_package[start].location_dest_id" />
+                                        </td>
+                                        
+                                    </tr>
+                                </t>
+                                    <t t-else="">
+                                        <tr style="height:30px !important;" >
+                                            <td style="width:50%;">
+                                                <span t-field="o.move_line_ids_without_package[start].product_id.name"/>
+                                            </td>
+                                            <td style="width:20%;" class="text-center">
+                                                <span t-field="o.move_line_ids_without_package[start].product_id.weight"/>
+                                                <span t-esc="o.move_line_ids_without_package[start].product_id.weight_uom_name" />
+                                            </td>
+                                            <td style="width:20%;" class="text-center">
+                                                <span t-if="o.state != 'done'" t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                <span t-if="o.state == 'done'" t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                            </td>
+                                            <td style="width:20%;" class="text-center">
+                                                <span t-field="o.move_line_ids_without_package[start].location_dest_id" />
+                                            </td>
+                                            
+                                        </tr>
+                                    </t>
+                                    <t t-if="start == total_item-1">
+                                        <t t-set="start" t-value="total_item-1"/>
+                                        <t t-set="end" t-value="total_item-1"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="start" t-value="start + 1"/>
+                                    </t>
+                                </t>
+                              </tbody>
+                              <tfoot>
+                                
+                              </tfoot>
+                              
+                        </table>
+                        </t>
+                        <t t-elif="current_page == total_page">
+                            <table width="100%" t-if="o.move_line_ids and o.move_ids_without_package" >
+                            
+                                <thead style="border-top:1px solid black;" >
+                                    
+                                    <tr style="border-bottom:1px solid black; height:40px;">
+                                        <th class="text-left" rowspan="2" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                            <t t-if="o.partner_id.lang == 'en_US'">
+                                                <strong>Product</strong>
+                                            </t>
+                                            <t t-else="">
+                                                <strong>สินค้า</strong>
+                                            </t>
+                                            
+                                        </th>
+                                        <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                            <t t-if="o.partner_id.lang == 'en_US'">
+                                                <strong>Weight/Item</strong>
+                                            </t>
+                                            <t t-else="">
+                                                <strong>น้ำหนัก/รายการ</strong>
+                                            </t>
+                                            
+                                        </th>
+                                        <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                            <t t-if="o.partner_id.lang == 'en_US'">
+                                                <strong>Quantity</strong>
+                                            </t>
+                                            <t t-else="">
+                                                <strong>จำนวน</strong>
+                                            </t>
+                                            
+                                        </th>
+                                        <th class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+                                            <t t-if="o.partner_id.lang == 'en_US'">
+                                                <strong>To</strong>
+                                            </t>
+                                            <t t-else="">
+                                                <strong>ถึง</strong>
+                                            </t>
+                                            
+                                        </th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <!-- In case you come across duplicated lines, ask NIM or LAP -->
+                                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                                    <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                    </t>
+                                    <t t-elif="(start == end) and (end &lt; total_item)">
+                                        <tr style="height:30px !important;" >
+                                            <td style="width:50%;">
+                                                <span t-field="o.move_line_ids_without_package[start].product_id.name"/>
+                                            </td>
+                                            <td style="width:20%;" class="text-center">
+                                                <span t-field="o.move_line_ids_without_package[start].product_id.weight"/>
+                                                <span t-esc="o.move_line_ids_without_package[start].product_id.weight_uom_name" />
+                                            </td>
+                                            <td style="width:20%;" class="text-center">
+                                                <span t-if="o.state != 'done'" t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                <span t-if="o.state == 'done'" t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                            </td>
+                                            <td style="width:20%;" class="text-center">
+                                                <span t-field="o.move_line_ids_without_package[start].location_dest_id" />
+                                            </td>
+                                            
+                                        </tr>
+                                    </t>
+                                        <t t-else="">
+                                            <tr style="height:30px !important;" >
+                                                <td style="width:50%;">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.name"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-center">
+                                                    <span t-field="o.move_line_ids_without_package[start].product_id.weight"/>
+                                                    <span t-esc="o.move_line_ids_without_package[start].product_id.weight_uom_name" />
+                                                </td>
+                                                <td style="width:20%;" class="text-center">
+                                                    <span t-if="o.state != 'done'" t-field="o.move_line_ids_without_package[start].product_uom_qty"/>
+                                                    <span t-if="o.state == 'done'" t-field="o.move_line_ids_without_package[start].qty_done"/>
+                                                    <span t-field="o.move_line_ids_without_package[start].product_uom_id" groups="uom.group_uom"/>
+                                                </td>
+                                                <td style="width:20%;" class="text-center">
+                                                    <span t-field="o.move_line_ids_without_package[start].location_dest_id" />
+                                                </td>
+                                                
+                                            </tr>
+                                        </t>
+                                        <t t-if="start == total_item-1">
+                                            <t t-set="start" t-value="total_item-1"/>
+                                            <t t-set="end" t-value="total_item-1"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="start" t-value="start + 1"/>
+                                        </t>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <t t-if="o.picking_type_id.name=='Sales Return'">
+                                        <table width="100%">
+                                            <tr style="height:30px"></tr>
+                                            <tr style="height:20px;">
+                                                <t t-if="o.partner_id.lang=='en_US'">
+                                                    <td colspan="2"><span>Return Reason: </span><span t-field="o.return_reason"/></td>
+                                                    
+                                                    <td><span>Remark: </span><span t-field="o.return_remark"/></td>
+                                                    <td></td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td colspan="2"><span>เหตุผลการคืน: </span><span t-field="o.return_reason"/></td>
+                                                    
+                                                    <td><span>หมายเหตุ: </span><span t-field="o.return_remark"/></td>
+                                                    <td></td>
+                                                </t>
+                                            </tr>
+                                            <tr style="height:20px"></tr>
+                                            <tr class="text-center">
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                
+                                            </tr>
+                                            <t t-if="o.partner_id.lang=='en_US'">
+                                                <tr class="text-center">
+                                                    <td style="width:25%;" class="text-center"><span>Signature Deliverer</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Sales</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Recipient (Warehouse)</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature QC/QA</span></td>
+                                                </tr>
+                                            </t>
+                                            <t t-else="">
+                                                <tr class="text-center">
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ส่ง</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ Sales</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้รับ (Warehouse)</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ QC/QA</span></td>
+                                                </tr>
+                                            </t>
+                                            
+                                        
+                                        </table>
+                                        
+                                    </t>
+                                    <t t-if="o.picking_type_id.name=='Vendor Return'">
+                                        <table width="100%">
+                                            <tr style="height:30px"></tr>
+                                            <tr style="height:20px;">
+                                                <t t-if="o.partner_id.lang=='en_US'">
+                                                    <td colspan="2"><span>Return Reason: </span><span t-field="o.return_reason"/></td>
+                                                    
+                                                    <td><span>Remark: </span><span t-field="o.return_remark"/></td>
+                                                    <td></td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td colspan="2"><span>เหตุผลการคืน: </span><span t-field="o.return_reason"/></td>
+                                                    
+                                                    <td><span>หมายเหตุ: </span><span t-field="o.return_remark"/></td>
+                                                    <td></td>
+                                                </t>
+                                            </tr>
+                                            <tr style="height:20px"></tr>
+                                            <tr class="text-center">
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                <td style="width:25%;"><span>__________________________</span></td>
+                                                
+                                            </tr>
+                                            <t t-if="o.partner_id.lang=='en_US'">
+                                                <tr class="text-center">
+                                                    <td style="width:25%;" class="text-center"><span>Signature Deliverer</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Purchase</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature Recipient (Warehouse)</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>Signature QC/QA</span></td>
+                                                </tr>
+                                            </t>
+                                            <t t-else="">
+                                                <tr class="text-center">
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้ส่ง</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ Purchase</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ผู้รับ (Warehouse)</span></td>
+                                                    <td style="width:25%;" class="text-center"><span>ลายเซ็นต์ QC/QA</span></td>
+                                                </tr>
+                                            </t>
+                                            
+                                        
+                                        </table>
+                                        
+                                    </t>
+                                </tfoot>
+                                
+                            </table>
+                        </t>
+                    </div>
+                    <t t-set="current_page" t-value="current_page+1"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="stock_picking_sale_return_order_report" model="ir.actions.report">
+      <field name="name">Return Order</field>
+      <field name="model">stock.picking</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="paperformat_id" ref="custom_stock.paper_format_A4_zero_margin"/>
+      <field name="report_name">custom_stock.stock_sale_return_order_document_multi_lang</field>
+      <field name="report_file">custom_stock.stock_sale_return_order_document_multi_lang</field>
+      <field name="binding_model_id" ref="stock.model_stock_picking"/>
+      <field name="binding_type">report</field>
+    </record>
+  </data>
+
+</odoo>

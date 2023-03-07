@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="action_report_mrp_bom_structure_all" model="ir.actions.report">
+        <field name="name">BOM All Levels</field>
+        <field name="model">mrp.bom</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mrp_shop_floor_control.bom_structure_all</field>
+        <field name="binding_model_id" ref="mrp.model_mrp_bom"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_mrp_bom_structure_one" model="ir.actions.report">
+        <field name="name">BOM One Level</field>
+        <field name="model">mrp.bom</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mrp_shop_floor_control.bom_structure_one</field>
+        <field name="binding_model_id" ref="mrp.model_mrp_bom"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

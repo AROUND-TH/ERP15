@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="action_mrp_parameter_export_xlsx" model="ir.actions.act_window">
+        <field name="name">Export Excel</field>
+        <field name="res_model">export.xlsx.wizard</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="binding_model_id" ref="mrp_planning_engine.model_mrp_parameter" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">
+            {
+                'template_domain': [('res_model', '=', 'mrp.parameter'),
+                                    ('fname', '=', 'mrp_parameter.xlsx'),
+                                    ('gname', '=', False)],
+                'default_is_row': True,
+            }
+        </field>
+    </record>
+
+</odoo>

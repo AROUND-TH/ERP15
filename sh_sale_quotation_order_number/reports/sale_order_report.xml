@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="sh_remove_taxes_in_reports_sale_order_report" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@id='informations']//div[1]" position="before">
+            <div t-if="doc.quotation_no and (doc.state not in ['draft','sent'])" class="col-auto col-3 mw-100 mb-2">
+                <strong>Quotation No:</strong>
+                <p t-field="doc.quotation_no" />
+            </div>
+        </xpath>
+    </template>
+</odoo>

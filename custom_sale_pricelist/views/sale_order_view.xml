@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="custom_sale_order_form_view" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority" eval="30"/>
+            <field name="arch" type="xml">
+
+                <!-- <xpath expr="//field[@name='currency_id']" position="before">
+                    <field name="compare_pricelist_gp_id" />
+                    <field name="compare_pricelist_base_id" />
+                </xpath> -->
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="after">
+                    <button name="action_confirm" attrs="{'invisible': ['|','|',('price_list_need_approve', '=', True),('state','in',['wait_for_approve','not_approve','sale','done']),('name','=','New')]}" string="CONFIRM" type="object" class="oe_highlight"/>
+                    
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="before">
+                    <button name="action_update_state_draft"  attrs="{'invisible': ['|',('is_approver_id', '=', False),('state','in',['not_approve','draft','sent','sale','done','cancel'])]}" string="APPROVER CONFIRM" type="object" class="oe_highlight"/>
+                    <button name="action_update_state_not_approve"  attrs="{'invisible': ['|',('is_approver_id', '=', False),('state','in',['not_approve','draft','sent','sale','done','cancel'])]}" string="NOT APPROVE" type="object" class="btn-warning"/>
+                </xpath>
+
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="compare_baseprice_unit" force_save="1" invisible="1"/>
+                </xpath>
+                <field name="validity_date" position="after">
+                    <field name="approver_id"/>
+                    <field name="price_list_need_approve" readonly="1" force_save="1" invisible="1"/>
+                    <field name="is_approver_id" readonly="1" force_save="1" invisible="1"/>
+                    <field name="approver_login_user" readonly="1" force_save="1" invisible="1"/>
+                    <field name="approver_login_user" readonly="1" force_save="1" invisible="1"/>
+                    <field name="approver_user_id" readonly="1" force_save="1" invisible="1"/>
+                    <field name="login_user_id" readonly="1" force_save="1" invisible="1"/>
+                    <field name="approver_confirm" readonly="1" force_save="1" invisible="1"/>
+                </field>
+                <!-- <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                    <field name="price_subtotal_nodiscount" />
+                    <field name="baseprice_subtotal" />
+                    <field name="gpprice_subtotal" />
+                    <field name="gp_subtotal" />
+                    <field name="freight_subtotal" />
+                </xpath> -->
+
+                <!-- <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='analytic_tag_ids']" position="replace"/>
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='route_id']" position="replace"/>
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='customer_lead']" position="replace"/>
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='purchase_price']" position="replace">
+                    <field name="purchase_price" invisible="1" />
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='margin']" position="replace">
+                    <field name="margin" force_save="1" invisible="1" />
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='margin_percent']" position="replace">
+                    <field name="margin_percent" force_save="1" invisible="1" />
+                </xpath> -->
+
+            </field>
+        </record>
+
+        <record id="custom_sale_order_pivot_view" model="ir.ui.view">
+            <field name="name">sale.order.pivot</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sale_order_pivot"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='amount_total']" position="replace">
+                    <field name="amount_base" type="measure"/>
+                    <field name="amount_untaxed" type="measure"/>
+                    <field name="amount_total" type="measure"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

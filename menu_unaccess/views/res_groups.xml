@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="res_groups_form_view" model="ir.ui.view">
+      <field name="name">res.groups.form.inherit.menu_unaccess</field>
+      <field name="model">res.groups</field>
+      <field name="inherit_id" ref="base.view_groups_form"/>
+      <field name="arch" type="xml">
+        <field name="menu_access" position="after">
+          <label for="menu_unaccess" string="For menus that do not want to be displayed for user in this group."/>
+          <field name="menu_unaccess"/>
+        </field>
+      </field>
+    </record>
+
+  </data>
+</odoo>

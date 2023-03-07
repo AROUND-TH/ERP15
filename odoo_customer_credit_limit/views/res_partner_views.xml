@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="customer_creadit_res_partner_view" model="ir.ui.view">
+            <field name="name">res.partner.customer.credit.inherit.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//span[@name='address_name']" position="before">
+                    <field name="internal_code"/>
+                </xpath>
+                <xpath expr="//group[@name='sale']" position="inside">
+                    <field name="is_credit_manager" invisible='1'/>
+                    <field name="credit_limit" attrs="{'readonly' : [('is_credit_manager','=',False)]}"/>
+                    <label for="credit_rule_id" string="Credit Limit Rule"/>
+                    <div class="o_row">
+                        <field name="credit_rule_id" 
+                            attrs="{'readonly' : [('is_credit_manager','=',False)]}"
+                            context="{'default_partner_id': id}"
+                            options="{'no_create': True}"/>
+                        <button name="action_create_credit_rule" type="object"
+                            string=" Create"
+                            class="btn-link mb-1 px-0" icon="fa-refresh"
+                            attrs="{'invisible' : ['|', ('credit_rule_id', '!=', False), ('is_credit_manager','=',False)]}"/>
+                        <button name="action_update_credit_rule" type="object"
+                            string=" Update"
+                            class="btn-link mb-1 px-0" icon="fa-refresh"
+                            attrs="{'invisible' : ['|', ('credit_rule_id', '=', False), ('is_credit_manager','=',False)]}"/>
+                    </div>
+                    <field name="credit" attrs="{'readonly' : [('is_credit_manager','=',False)]}"/>
+                    <field name="credit_days" invisible='1'/>
+                    <field name="code_for_credit" invisible='1'/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='internal_notes']//field[@name='comment']" position="replace">
+                    <field name="comment" placeholder="Internal note..." attrs="{'readonly' : [('is_credit_manager','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_property_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.property.form.inherit.credit.limit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='sale']/field[@name='property_payment_term_id']" position="replace">
+                    <field string="Payment Terms" 
+                        name="property_payment_term_id" 
+                        widget="selection" 
+                        attrs="{'readonly' : [('is_credit_manager','=',False)]}"
+                        groups="account.group_account_invoice,account.group_account_readonly"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

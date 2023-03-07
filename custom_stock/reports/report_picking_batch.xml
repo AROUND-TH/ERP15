@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_picking_batch" inherit_id="stock_picking_batch.report_picking_batch">
+        <xpath expr="//div[@class='page']" position="replace">
+            <div class="page">
+                <div><h3>Details: <span t-field="o.name"/></h3></div>
+                <div t-if="o.user_id">
+                    <strong>Responsible:</strong>
+                    <span t-field="o.user_id"/>
+                </div><br/>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>SO No.</th>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th>Location</th>
+                            <th>Lot No.</th>
+                            <th>Qty</th>
+                            <th>Gross Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="move_line_ids" t-as="move_line">
+                            <t t-set="product_id" t-value="move_line.product_id"/>
+                            <t  t-if="move_line.state == 'done'" t-set="quantity" t-value="move_line.qty_done"/>
+                            <span t-else="" t-set="quantity" t-value="move_line.product_uom_qty"/>
+                            <tr>
+                                <td><span t-esc="move_line.sale_id.name"/></td>
+                                <td><span t-esc="product_id.code"/></td>
+                                <td><span t-esc="product_id.name"/></td>
+                                <td><span t-esc="move_line.location_id.display_name"/></td>
+                                <td><span t-esc="move_line.lot_id.name"/></td>
+                                <td><span t-esc="'%.2f'%quantity"/></td>
+                                <td><span t-esc="'%.2f'%(quantity * product_id.gross_weight)"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <p style="page-break-after: always;"/>
+                <div><h3>Summary: <span t-field="o.name"/></h3></div>
+                <div t-if="o.user_id">
+                    <strong>Responsible:</strong>
+                    <span t-field="o.user_id"/>
+                </div><br/>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th>Lot No.</th>
+                            <th>Qty</th>
+                            <th>Gross Weight</th>
+                        </tr>
+                    </thead>
+                    <t t-foreach="locations" t-as="location_from">
+                        <t t-set="loc_move_line" t-value="move_line_ids.filtered(lambda x: x.location_id==location_from)"/>
+                        <t t-foreach="loc_move_line.location_dest_id" t-as="location_dest">
+                            <t t-set="move_lines" t-value="loc_move_line.filtered(lambda x: x.location_dest_id==location_dest)"/>
+                            <t t-set="products" t-value="move_lines.product_id"/>
+                            <tbody>
+                                <tr>
+                                    <td style="background-color:lightgrey" colspan="6" >
+                                        <p style="margin:0px"><strong>FROM</strong>
+                                        <span t-esc="move_lines.location_id.display_name"/></p>
+                                        <p style="margin:0px"><strong>TO</strong>
+                                        <span t-esc="move_lines.location_dest_id.display_name"/></p>
+                                    </td>
+                                </tr>
+                                <t t-foreach="products" t-as="product">
+                                    <t t-set="move_product" t-value="move_lines.filtered(lambda x: x.product_id == product)"/>
+                                    <t t-foreach="move_product.lot_id" t-as="lot">
+                                        <t t-set="move_lot" t-value="move_product.filtered(lambda x: x.lot_id== lot)"/>
+                                        <tr t-foreach="move_lot.product_uom_id" t-as="uom">
+                                            <t t-set="move" t-value="move_lot.filtered(lambda x: x.product_uom_id == uom)"/>
+                                            <t t-set="quantity" t-value="sum(move.filtered(lambda m:m.state == 'done').mapped('qty_done')) + sum(move.filtered(lambda m:m.state != 'done').mapped('product_uom_qty'))"/>
+                                            <td><span t-esc="product.code"/></td>
+                                            <td><span t-esc="product.name"/></td>
+                                            <td><span t-esc="lot.name"/></td>
+                                            <td><span t-esc="'%.2f'%quantity"/> <span t-esc="uom.name"></span></td>
+                                            <td><span t-esc="'%.2f'%(quantity * product.gross_weight)"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </t>
+                    </t>
+                </table>
+                <div class="row" style='page-break-inside: avoid;padding-top:48px;'>
+                    <div class="col-6" style="display: flex;flex-flow: column;align-items: center;justify-content: end;text-align:center;">
+                        <span>........................................</span>
+                        <p>Deliverer</p>
+                    </div>
+                    <div class="col-6" style="display: flex;flex-flow: column;align-items: center;justify-content: end;text-align:center;">
+                        <span>........................................</span>
+                        <p>Receiver</p>
+                    </div>
+                </div>
+             </div>
+        </xpath>
+    </template>
+</odoo>

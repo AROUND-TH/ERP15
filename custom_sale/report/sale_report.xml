@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_commercial_invoice" model="ir.actions.report">
+            <field name="name">Commercial Invoice</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_sale.report_saleorder_commercial_invoice</field>
+            <field name="report_file">custom_sale.report_saleorder_commercial_invoice</field>
+            <field name="print_report_name">'COMMERCIAL INVOICE - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('sale.group_proforma_sales'))]"/>
+        </record>
+    </data>
+</odoo>

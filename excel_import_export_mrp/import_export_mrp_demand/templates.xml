@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_demand_xlsx_import_result" model="xlsx.template">
+        <field name="res_model">result.mrp.demand</field>
+        <field name="fname">mrp_demand.xlsx</field>
+        <field name="name">MRP Demand Import Data</field>
+        <field name="description">MRP Demand Import Data</field>
+        <field name="input_instruction">
+            {
+                '__EXPORT__': {
+                    1: {
+                        'results': {
+                            'A2': 'warehouse_name${value or ""}#{style=text}',
+                            'B2': 'product_code${value or ""}#{style=text}',
+                            'C2': 'date_planned${value or ""}#{style=date}',
+                            'D2': 'planned_qty${value or 0}#{style=number}',
+                            'E2': 'uom_name${value or ""}#{style=text}',
+                            'F2': 'status${value or ""}#{style=text}',
+                            'G2': 'message${value or ""}#{style=text}',
+                        },
+                    },
+                },
+            }
+        </field>
+    </record>
+
+    <function model="xlsx.template" name="load_xlsx_template">
+        <value eval="[ref('mrp_demand_xlsx_import_result')]" />
+    </function>
+</odoo>

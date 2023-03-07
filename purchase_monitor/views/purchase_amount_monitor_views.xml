@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+   <record id="purchase_amount_monitor_tree_view" model="ir.ui.view">
+         <field name="name">purchase.amount.monitor.view.tree</field>
+         <field name="model">purchase.order.line</field>
+         <field name="arch" type="xml">
+            <tree >
+                <field name="order_id" string='PO number'/>
+                <field name="partner_id" string='Vendor'/>
+                <field name="origin" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+                <field name="warehouse_id"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="hide"/>
+                <field name="account_analytic_id" optional="hide" groups="analytic.group_analytic_accounting"/>
+                <field name="date_planned" widget="date"/>
+                <field name="product_id"/>
+                <field name="name" optional="hide"/>
+                <field name="product_qty" optional="hide"/>
+                <field name="product_uom" string='UoM' optional="hide"/>
+                <field name="price_unit" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="price_subtotal" string='PO Amount' widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="purchase_method"/>
+                <field name="amount_received" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_invoiced" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_to_receive" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_to_invoice" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <button name="%(purchase_monitor_history_action)d" type="action" string="PO Item History" class="oe_highlight"></button>
+            </tree>
+      </field>
+    </record>
+
+   <record id="purchase_amount_monitor_pivot_view" model="ir.ui.view">
+         <field name="name">purchase.amount.monitor.view.pivot</field>
+         <field name="model">purchase.order.line</field>
+         <field name="arch" type="xml">
+            <pivot string="Purchase Amount Monitor">
+                <field name="order_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="date_planned" interval="month" type="col"/>
+                <field name="price_subtotal" string='PO Amount' type="measure" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_received" type="measure" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_invoiced" type="measure" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_to_receive" type="measure" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_to_invoice" type="measure" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </pivot>
+      </field>
+    </record>
+
+    <record id="purchase_amount_monitor_graph_view" model="ir.ui.view">
+        <field name="name">purchase.amount.monitor.view.graph</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <graph string="Purchase Amount Monitor" type="line">
+                <field name="date_planned" interval="month" type="row"/>
+                <field name="price_subtotal" string='PO Amount' type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="purchase_amount_monitor_action" model="ir.actions.act_window">
+        <field name="name">Purchase Amount Monitor</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="context">{'search_default_purchase': True, 'search_default_groupby_order_id': True}</field>
+        <field name="view_mode">tree,pivot,graph</field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="purchase_amount_monitor_action_tree_view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="purchase_amount_monitor_tree_view"/>
+        <field name="act_window_id" ref="purchase_amount_monitor_action"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="purchase_amount_monitor_action_pivot_view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="purchase_amount_monitor_pivot_view"/>
+        <field name="act_window_id" ref="purchase_amount_monitor_action"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="purchase_amount_monitor_action_graph_view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="purchase_amount_monitor_graph_view"/>
+        <field name="act_window_id" ref="purchase_amount_monitor_action"/>
+    </record>
+
+    <menuitem
+        id="menu_purchase_amount_monitor"
+        sequence="20"
+        parent="purchase.purchase_report_main"
+        action="purchase_amount_monitor_action"
+        groups="purchase.group_purchase_user"/>
+</odoo>

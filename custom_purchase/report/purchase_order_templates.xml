@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+		<!--<th name="th_date_req" class="text-center"><strong>Date Req.</strong></th>-->
+		<xpath expr="/t/t/div/table/thead/tr/th[3]" position="replace"/>
+		<!--<span t-field="line.date_planned"/>-->
+		<xpath expr="/t/t/div/table/tbody/t/tr/t/td[3]" position="replace"/>
+		<xpath expr="/t/t/div/p" position="replace"/>
+		<xpath expr="//div[@id='total']" position="after">
+			<div class="row">
+				<div class="col-6">
+					<span>
+						<strong>Terms and Conditions:</strong>
+						<br/>
+					</span>
+					<span t-field="o.notes"/>
+				</div>
+				<div class="col-6"/>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<span>
+						<strong>Source Document:</strong>
+						<br/>
+					</span>
+					<span t-field="o.origin"/>
+				</div>
+				<div class="col-6"/>
+			</div>
+			<div class="row" style='page-break-inside: avoid;'>
+				<div class="col-3" style="display: flex;flex-flow: column;align-items: center;">
+					<div style="height:80px; width:140px; max-height: 80px;" />
+					<p t-esc="env.user.employee_ids.name"/>
+					<p>ผู้จัดทำ/Create By</p>
+				</div>
+				<t t-set="approval_level2" t-value="o._get_approval_by_level('lv2')"/>
+				<div class="col-3" style="display: flex;flex-flow: column;align-items: center;" t-if="approval_level2">
+
+					<img t-if="approval_level2.employee_id.user_id.digital_signature"
+						 t-att-src="'data:image/png;base64,%s' % to_text(approval_level2.employee_id.user_id.digital_signature)"
+						 style="height:80px; width:140px; max-height: 80px;" />
+					<div style="height:80px; width:140px; max-height: 80px;" t-if="not approval_level2.employee_id.user_id.digital_signature"/>
+					<p t-esc="approval_level2.employee_id.name"/>
+					<p>ผู้จัดการ/Manager</p>
+				</div>
+				<t t-set="approval_level3" t-value="o._get_approval_by_level('lv3')"/>
+				<div class="col-3" style="display: flex;flex-flow: column;align-items: center;" t-if="approval_level3">
+					<img t-if="approval_level3.employee_id.user_id.digital_signature"
+						 t-att-src="'data:image/png;base64,%s' % to_text(approval_level3.employee_id.user_id.digital_signature)"
+						 style="height:80px; width:140px; max-height: 80px;" />
+					<div style="height:80px; width:140px; max-height: 80px;" t-if="not approval_level3.employee_id.user_id.digital_signature"/>
+					<p t-esc="approval_level3.employee_id.name"/>
+					<p>ผู้ตรวจสอบ/Checked By</p>
+				</div>
+				<t t-set="approval_level4" t-value="o._get_approval_by_level('lv4')"/>
+				<div class="col-3" style="display: flex;flex-flow: column;align-items: center;" t-if="approval_level4">
+					<img t-if="approval_level4.employee_id.user_id.digital_signature"
+						 t-att-src="'data:image/png;base64,%s' % to_text(approval_level4.employee_id.user_id.digital_signature)"
+						 style="height:80px; width:140px; max-height: 80px;" />
+					<div style="height:80px; width:140px; max-height: 80px;" t-if="not approval_level4.employee_id.user_id.digital_signature"/>
+					<p t-esc="approval_level4.employee_id.name"/>
+					<p>ผู้อนุมัติ/Authorized</p>
+				</div>
+			</div>
+		</xpath>
+	</template>
+</odoo>

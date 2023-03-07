@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_expense_sheet_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.view.form.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]//group[1]" position="inside">
+                <field name="document_number"/>
+                <field name="name_form"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_expense_sheet_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.view.tree.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="document_number" optional="show" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

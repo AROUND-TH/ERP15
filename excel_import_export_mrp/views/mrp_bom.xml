@@ -1,0 +1,36 @@
+<odoo>
+
+    <record id="mrp_bom_tree_view" model="ir.ui.view">
+        <field name="name">mrp.bom.form</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="after">
+                <field name="production_type" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="custom_mrp_bom_form_view" model="ir.ui.view">
+        <field name="name">mrp.bom.form</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='product_tmpl_id']" position="after">
+                <field name="production_type"/>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="before">
+                <field name="ecm_no"/>
+                <field name="ecm_date"/>
+            </xpath>
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="bom_status"/>
+            </xpath>
+            <xpath expr="//notebook/page/field[@name='bom_line_ids']/tree/field[@name='product_qty']" position="before">
+                <field name="bom_line_type" />
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

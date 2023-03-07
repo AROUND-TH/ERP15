@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.material_purchase_requisitions</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="25"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Requisitions" string="Requisitions" data-key="requisitions" groups="purchase.group_purchase_manager">
+                    <h2>Purchase</h2>
+                    <div class="row mt16 o_settings_container" >
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="requisitions_vendor"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="requisitions_vendor" required="1" class="o_light_label" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_purchase_requistions_configuration" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'requisitions', 'bin_size': False}</field>
+    </record>
+
+    <menuitem id="menu_purchase_requistions_config" name="Configuration" parent="menu_purchase_requisition" sequence="100" groups="purchase.group_purchase_manager"/>
+    <menuitem id="menu_purchase_requistions_settings" name="Settings" parent="menu_purchase_requistions_config" sequence="0" action="action_purchase_requistions_configuration"/>
+
+</odoo>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="before">
+                    <field name="must_validate" invisible="1"/>
+                    <field name="first_validate" invisible="1"/>
+                    <field name="second_validate" invisible="1"/>
+                    <field name="show_return_button" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('show_return_button', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="before">
+                    <button name="action_first_validate"
+                            attrs="{'invisible': ['|', '|', ('state', '!=', 'assigned'), ('must_validate', '=', False), ('first_validate', '=', True)]}"
+                            string="1st Validate" type="object" class="oe_highlight"/>
+                    <button name="action_second_validate"
+                            attrs="{'invisible': ['|', '|', ('state', '!=', 'assigned'), ('first_validate', '=', False), ('second_validate', '=', True)]}"
+                            string="2nd Validate" type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+                    <field name="interface_truckscale_data" invisible="1"/>
+                    <field name="show_truckscale_data" invisible="1"/>
+                    <field name="api_truckscale_model" invisible="1"/>
+                    <field name="set_done_by_weight" invisible="1" force_save="1"/>
+                    <field name="show_set_done_by_weight" invisible="1"/>
+                    <label for="api_truckscale_id" attrs="{'invisible': [('interface_truckscale_data', '=', False)]}"/>
+                    <div attrs="{'invisible': [('interface_truckscale_data', '=', False)]}">
+                        <field name="ts_trans_id" readonly="1" force_save="1" class="oe_inline"/>
+                        <field name="api_truckscale_id" widget="api_m2o" class="oe_inline" options="{'no_create': True, 'no_open': True}"
+                               model_field="api_truckscale_model" limit_result="600"
+                               context="{'domain': ['picking_id','=', id], 'picking_id': id, 'picking_type_code': picking_type_code}"
+                        />
+                        <button name="truckscale_update_quantity" type="object" class="btn btn-link oe_edit_only" string="Update Quantity"
+                                attrs="{'invisible': [('show_set_done_by_weight', '=', False)]}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//form/sheet/group" position="after">
+                    <field name="show_return_info" invisible="1"/>
+                    <group string="Return" name="return" attrs="{'invisible': [('show_return_info', '=', False)]}">
+                        <field name="return_reason" readonly="True" string="Reason"/>
+                        <field name="return_remark" readonly="True"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="sale_id" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="transportation"/>
+                    <field name="port_of_loading"/>
+                    <field name="port_of_destination"/>
+                </xpath>
+
+                <xpath expr="//notebook/page[last()]" position="after">
+                    <page name="truckscale_data" string="Truckscale Data" attrs="{'invisible': [('show_truckscale_data', '=', False)]}">
+                        <group string="Truckscale Data">
+                            <group>
+                                <field name="ts_id" invisible="1" force_save="1"/>
+                                <field name="ts_trans_id" readonly="1" force_save="1"/>
+                                <field name="ts_car_code" readonly="1" force_save="1"/>
+                                <field name="ts_car_prov" readonly="1" force_save="1"/>
+                                <field name="ts_car_code2" readonly="1" force_save="1"/>
+                                <field name="ts_car_prov2" readonly="1" force_save="1"/>
+                                <field name="ts_driver" readonly="1" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="ts_barcode" readonly="1" force_save="1"/>
+                                <field name="ts_ingred_code" readonly="1" force_save="1"/>
+                                <field name="ts_vendor_code" readonly="1" force_save="1"/>
+                                <field name="ts_trans_wt" readonly="1" force_save="1"/>
+                                <field name="ts_car_wt" readonly="1" force_save="1"/>
+                                <field name="ts_actual_wt" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='operations']/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

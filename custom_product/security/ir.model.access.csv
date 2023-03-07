@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_material_user,product.material.user,model_product_material,base.group_user,1,0,0,0
+access_product_material_sub1_user,product.material.sub1.user,model_product_material_sub1,base.group_user,1,0,0,0
+access_product_material_sub2_user,product.material.sub2.user,model_product_material_sub2,base.group_user,1,0,0,0
+access_product_material_manager,product.material.manager,model_product_material,base.group_system,1,1,1,1
+access_product_material_sub1_manager,product.material.sub1.manager,model_product_material_sub1,base.group_system,1,1,1,1
+access_product_material_sub2_manager,product.material.sub2.manager,model_product_material_sub2,base.group_system,1,1,1,1

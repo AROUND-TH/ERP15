@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_result_mrp_demand,access_result_mrp_demand,model_result_mrp_demand,base.group_user,1,1,1,1
+access_import_mrp_demand,access_import_mrp_demand,model_import_mrp_demand,base.group_user,1,1,1,1

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="result_mrp_demand" model="ir.ui.view">
+        <field name="name">result.mrp.demand</field>
+        <field name="model">result.mrp.demand</field>
+        <field name="inherit_id" ref="excel_import_export.xlsx_report_view" />
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='criteria']" position="inside">
+                <group>
+                    <field name="xls_import_file" />
+                </group>
+                <group><button name="get_mrp_demand_template" string="Get Sample Import Template" class="oe_link btn-link" type="object"/></group>
+            </xpath>
+            <xpath expr="//button[@name='report_xlsx']" position="attributes">
+                <attribute name="string">Execute Import</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_result_mrp_demand" model="ir.actions.act_window">
+        <field name="name">Import MRP Demand</field>
+        <field name="res_model">result.mrp.demand</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">
+            {'template_domain': [('res_model', '=', 'result.mrp.demand'),
+                                 ('fname', '=', 'mrp_demand.xlsx'),
+                                 ('gname', '=', False)]}
+        </field>
+    </record>
+    <menuitem
+        id="menu_result_mrp_demand"
+        parent="mrp.mrp_planning_menu_root"
+        action="action_result_mrp_demand"
+        sequence="1"
+    />
+</odoo>

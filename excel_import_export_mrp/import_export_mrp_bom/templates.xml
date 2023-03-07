@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_bom_xlsx_import" model="xlsx.template">
+        <field name="res_model">mrp.bom</field>
+        <field name="fname">mrp_bom.xlsx</field>
+        <field name="name">MRP BOM Import</field>
+        <field name="description">MRP BOM Import</field>
+        <field name="redirect_action" ref="mrp.mrp_bom_form_action" />
+        <field name="input_instruction">
+            {
+                '__IMPORT__': {
+                    1: {
+                        'row': {
+                            'A2': 'product_tmpl_id',
+                            'B2': 'x_studio_mo_type',
+                            'C2': 'type',
+                            'D2': 'x_studio_bom_status',
+                            'E2': 'x_studio_ecm_no',
+                            'G2': 'x_studio_ecm_date',
+                            'H2': 'product_qty',
+                            'I2': 'product_uom_id',
+                            'J2': 'bom_line_ids/product_id',
+                            'M2': 'bom_line_ids/product_qty',
+                            'N2': 'bom_line_ids/product_uom_id',
+                            'O2': 'operation_ids/workcenter_id',
+                            'P2': 'operation_ids/time_cycle_manual',
+                        }
+                    }
+                },
+                # '__POST_IMPORT__': '${object.log_some_value()}',
+            }
+        </field>
+    </record>
+    <function model="xlsx.template" name="load_xlsx_template">
+        <value eval="[ref('mrp_bom_xlsx_import')]" />
+    </function>
+</odoo>

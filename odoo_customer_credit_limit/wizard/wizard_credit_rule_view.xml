@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="create_credit_rule_view_form" model="ir.ui.view">
+        <field name="name">wizard.credit.rule.create.form</field>
+        <field name="model">wizard.credit.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <div class="oe_title col-lg-6">
+                    <h1 class="o_row">
+                        <field name="name" placeholder="Credit Limit Rule..."/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="credit_rule_id" invisible="1"/>
+                        <field name="partner_id"/>
+                        <field name="code"/>
+                    </group>
+                    <group>
+                        <field name="credit_type"/>
+                        <field name="credit_limit"/>
+                        <field name="payment_term_id" invisible="1"/>
+                        <field name="credit_days"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Create" name="action_create" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="update_credit_rule_view_form" model="ir.ui.view">
+        <field name="name">wizard.credit.rule.update.form</field>
+        <field name="model">wizard.credit.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="credit_rule_id" readonly="1"/>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="code"/>
+                    </group>
+                    <group>
+                        <field name="credit_type"/>
+                        <field name="credit_limit"/>
+                        <field name="payment_term_id" invisible="1"/>
+                        <field name="credit_days"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Update" name="action_update" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

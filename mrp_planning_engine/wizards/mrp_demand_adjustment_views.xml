@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_demand_adjustment_form" model="ir.ui.view">
+        <field name="name">MRP Demand Adjustment Run</field>
+        <field name="model">mrp.demand.adjustment</field>
+        <field name="arch" type="xml">
+            <form string="MRP Demand Adjustment Run">
+                <group>
+                    <group>
+                        <field name="mrp_parameter_ids" widget="many2many_tags" options= "{'no_open':1,'no_create':1,'no_create_edit':1}"/>
+                    </group>
+                    <group>
+                        <field name="all_mrp_parameters"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="cleaning_date"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_demand_adjustment_run" string="Adjust" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_demand_adjustment" model="ir.actions.act_window">
+        <field name="name">MRP Demand Adjustment Run</field>
+        <field name="res_model">mrp.demand.adjustment</field>
+        <field name="view_id" ref="view_mrp_demand_adjustment_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="mrp_planning_engine.model_mrp_demand" />
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <menuitem
+        id="menu_mrp_demand_adjustment_run"
+        action="action_mrp_demand_adjustment"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp_planning_engine.group_planning_administrator"
+        sequence="25"/>
+
+    <!-- MRP Demand Adjustment Temporary Message -->
+    <record id="view_mrp_demand_adjustment_message_form" model="ir.ui.view">
+        <field name="name">MRP Demand Adjustment Run Results</field>
+        <field name="model">mrp.demand.adjustment.message</field>
+        <field name="arch" type="xml">
+            <form string="MRP Demand Adjustment Run Results">
+                <group>
+                    <field name="name"/>
+                </group>
+                <footer>
+                    <button class="oe_link" string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

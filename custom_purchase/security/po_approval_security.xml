@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="purchase_all_approval" model="res.groups">
+            <field name="name">Purchase All Approval</field>
+            <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        </record>
+
+        <record id="group_purchase_no_activity" model="res.groups">
+            <field name="name">Purchase No Activity</field>
+            <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

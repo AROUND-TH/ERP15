@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_production_lot_tree" model="ir.ui.view">
+        <field name="name">stock.production.lot.tree.inherit_custom_stock</field>
+        <field name="model">stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="arch" type="xml">
+            <field name="ref" position="after">
+                <field name="product_grade" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_production_lot_form" model="ir.ui.view">
+        <field name="name">stock.production.lot.form.inherit_custom_stock</field>
+        <field name="model">stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='main_group']/group[1]" position="inside">
+                <field name="batch"/>
+            </xpath>
+            <xpath expr="//group[@name='main_group']/group[2]" position="inside">
+                <field name="product_grade"/>
+                <field name="remark" string="Note"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

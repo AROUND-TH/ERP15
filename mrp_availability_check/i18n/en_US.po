@@ -1,0 +1,445 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mrp_availability_check
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-10 10:16+0000\n"
+"PO-Revision-Date: 2021-11-10 10:16+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_availability_check
+#: model:ir.actions.report,print_report_name:mrp_availability_check.action_report_availability_check_pdf
+msgid "'BoM Availability Check PDF'"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.actions.report,print_report_name:mrp_availability_check.action_report_bom_explosion_pdf
+msgid "'BoM Explosion PDF'"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "<strong>BoM:</strong><br/>"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "<strong>Product:</strong><br/>"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "<strong>Quantity:</strong><br/>"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "<strong>Warehouse:</strong><br/>"
+msgstr ""
+
+#. module: mrp_availability_check
+#: code:addons/mrp_availability_check/wizard/mrp_availability_check.py:0
+#, python-format
+msgid "Availability Check"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "Availability Check Results"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__available
+msgid "Available"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__qty_virtual
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "Available Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,help:mrp_availability_check.field_mrp_bom_line_check__produce_delay
+msgid ""
+"Average lead time in days to manufacture this product. In the case of multi-"
+"level BOM, the manufacturing lead times of the components will be added."
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "BOM Availabity Check Report"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "BOM Explosion"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_bom_explosion_pdf
+msgid "BOM Explosion Report"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model,name:mrp_availability_check.model_mrp_bom
+msgid "Bill of Material"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model,name:mrp_availability_check.model_mrp_bom_line
+msgid "Bill of Material Line"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__bom_id
+msgid "Bill of Materials"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__bom_id
+msgid "BoM"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.actions.act_window,name:mrp_availability_check.mrp_availability_check_action
+#: model:ir.ui.menu,name:mrp_availability_check.mrp_availability_check_menu
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "BoM Availability Check"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.actions.report,name:mrp_availability_check.action_report_availability_check_pdf
+msgid "BoM Availability Check PDF"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.actions.report,name:mrp_availability_check.action_report_bom_explosion_pdf
+msgid "BoM Explosion PDF"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__bom_level
+msgid "BoM Level"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__type
+msgid "BoM Type"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__bom_line
+msgid "BoM line"
+msgstr ""
+
+#. module: mrp_availability_check
+#: code:addons/mrp_availability_check/wizard/mrp_availability_check.py:0
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__buy
+#, python-format
+msgid "Buy"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__clt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom__clt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line__clt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__clt
+msgid "CLT (days)"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form
+msgid "Cancel"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form
+msgid "Check"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__create_uid
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__create_uid
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__create_date
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__create_date
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__critical_path
+msgid "Critical Path"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__dlt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom__dlt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line__dlt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__dlt
+msgid "DLT (days)"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,help:mrp_availability_check.field_mrp_availability_check__product_uom_id
+#: model:ir.model.fields,help:mrp_availability_check.field_mrp_bom_line_check_summarized__product_uom_id
+msgid "Default unit of measure used for all stock operations."
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__display_name
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__display_name
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__explosion_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__explosion_id
+msgid "Explosion"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__qty_delta
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "Forecast Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__free_qty
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "Free To Use Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__id
+msgid "ID"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__qty_incoming
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "Incoming Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__lt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom__lt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line__lt
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__lt
+msgid "LT (days)"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check____last_update
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check____last_update
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__write_uid
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__write_uid
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__write_date
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__write_date
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_bom_explosion_pdf
+msgid "Level"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__line_ids
+msgid "Line"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model,name:mrp_availability_check.model_mrp_availability_check
+msgid "MRP Availability Check"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model,name:mrp_availability_check.model_mrp_bom_line_check
+msgid "MRP Availability Check Bom Line"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model,name:mrp_availability_check.model_mrp_bom_line_check_summarized
+msgid "MRP Availability Check Bom Line Summarized"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__mto
+msgid "MTO"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__make
+msgid "Make"
+msgstr ""
+
+#. module: mrp_availability_check
+#: code:addons/mrp_availability_check/wizard/mrp_availability_check.py:0
+#, python-format
+msgid "Make To Order"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "Manuf. Lead Time"
+msgstr ""
+
+#. module: mrp_availability_check
+#: code:addons/mrp_availability_check/wizard/mrp_availability_check.py:0
+#, python-format
+msgid "Manufacture"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__produce_delay
+msgid "Manufacturing Lead Time"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__name
+msgid "Name"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__qty_available
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "On Hand Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__qty_outgoing
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+msgid "Outgoing Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_bom_explosion_pdf
+msgid "Parent BoM"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "Print BoM Availability Check PDF"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "Print BoM Explosion PDF"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__product_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__product_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__product_id
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_bom_explosion_pdf
+msgid "Product"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__product_qty
+msgid "Product Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__product_tmpl_id
+msgid "Product Template"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__product_type
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__product_type
+msgid "Product_type"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "Pur. Lead Time"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__purchase_delay
+msgid "Purchase Lead Time"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__requested_qty
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_availability_check_pdf
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.report_mrp_bom_explosion_pdf
+msgid "Quantity"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model_terms:ir.ui.view,arch_db:mrp_availability_check.mrp_availability_check_view_form2
+msgid "RP"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__is_stock
+msgid "Reorder Point"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__product_qty
+msgid "Requested Qty"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom__is_stock
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line__is_stock
+msgid "Stock Buffered"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__sub
+msgid "Sub"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__sum_line_ids
+msgid "Sum Line"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__product_uom_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__product_uom_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__product_uom_id
+msgid "UoM"
+msgstr ""
+
+#. module: mrp_availability_check
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_availability_check__warehouse_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check__warehouse_id
+#: model:ir.model.fields,field_description:mrp_availability_check.field_mrp_bom_line_check_summarized__warehouse_id
+msgid "Warehouse"
+msgstr ""

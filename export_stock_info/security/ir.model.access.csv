@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_export_stock_info_wiz,export.stock.info.wiz,model_export_stock_info_wiz,,1,1,1,1

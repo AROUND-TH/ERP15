@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record model="ir.ui.view" id="truckscale_item_search_view">
+        <field name="name">truckscale.item.search</field>
+        <field name="model">wizard.truckscale.item</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ts_trans_id"/>
+                <field name="ts_car_code"/>
+                <field name="ts_car_prov"/>
+                <field name="ts_driver"/>
+                <field name="ts_ingred_code"/>
+                <field name="ts_vendor_code"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="truckscale_item_tree_view">
+        <field name="name">truckscale.item.tree</field>
+        <field name="model">wizard.truckscale.item</field>
+        <field name="arch" type="xml">
+            <tree string="Truckscale Item Tree">
+                <field name="ts_trans_id"/>
+                <field name="ts_car_code"/>
+                <field name="ts_car_prov"/>
+                <field name="ts_driver"/>
+                <field name="ts_ingred_code"/>
+                <field name="ts_vendor_code"/>
+                <field name="ts_trans_wt"/>
+                <field name="ts_car_wt"/>
+                <field name="ts_actual_wt"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

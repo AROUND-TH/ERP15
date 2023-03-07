@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_release_procedure,release.procedure,model_release_procedure,purchase.group_purchase_user,1,1,1,1
+access_release_procedure_manager,release.procedure,model_release_procedure,purchase.group_purchase_manager,1,1,1,1
+access_release_procedure_line,release.procedure.line,model_release_procedure_line,purchase.group_purchase_user,1,1,1,1
+access_release_procedure_line_manager,release.procedure.line,model_release_procedure_line,purchase.group_purchase_manager,1,1,1,1
+access_purchase_authentication,purchase.authentication,model_purchase_authentication,purchase.group_purchase_user,1,1,1,1
+access_purchase_authentication_manager,purchase.authentication,model_purchase_authentication,purchase.group_purchase_manager,1,1,1,1
+access_purchase_order_approval,purchase.order.approval,model_purchase_order_approval,purchase.group_purchase_user,1,1,1,1
+access_purchase_receive_service,purchase.receive.service,model_purchase_receive_service,purchase.group_purchase_user,1,1,1,1
+access_purchase_receive_service_line,purchase.receive.service.line,model_purchase_receive_service_line,purchase.group_purchase_user,1,1,1,1

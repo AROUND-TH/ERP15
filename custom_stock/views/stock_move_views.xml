@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="stock.stock_move_menu"
+        name="Stock Moves"
+        parent="stock.menu_warehouse_report" sequence="201"/>
+</odoo>

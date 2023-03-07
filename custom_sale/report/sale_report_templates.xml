@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="inherit_template_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+		<xpath expr="/t/t" position="inside">
+			<t t-set="doc" t-value="doc.with_context(lang='en_US')"/>
+		</xpath>
+        <xpath expr="/t/t/div" position="attributes">
+            <attribute name="class" separator=" " add="small"/>
+        </xpath>
+		<xpath expr="/t/t/div/h2" position="replace">
+			<h2 class="mt16 text-center">
+                <t t-if="not (env.context.get('proforma', False) or is_pro_forma) and not (env.context.get('commercial', False) or is_commercial)">
+                    <span t-if="doc.state not in ['draft','sent']">Order # </span>
+                    <span t-if="doc.state in ['draft','sent']">Quotation # </span>
+                </t>
+                <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                    <span>Pro-Forma Invoice # </span>
+                </t>
+                <t t-if="env.context.get('commercial', False) or is_commercial">
+					<span>Commercial Invoice # </span>
+                </t>
+                <span t-field="doc.name"/>
+            </h2>
+		</xpath>
+		<xpath expr="/t/t/div/h2" position="after">
+			<div class="row" style="margin-bottom:12px;">
+				<div class="col-6">
+					<span><strong>Shipper</strong></span>
+					<div t-field="doc.partner_id" t-options-widget="'contact'" t-options-no_marker="True" t-options-fields="['name', 'address']"/>
+				</div>
+				<div class="col-6">
+					<span><strong>Consignee</strong></span>
+					<div t-field="doc.partner_shipping_id" t-options-widget="'contact'" t-options-no_marker="True" t-options-fields="['name', 'address', 'vat']"/>
+				</div>
+			</div>
+		</xpath>
+		<xpath expr="/t/t/div/div[2]" position="after">
+			<div class="row" style="margin-bottom:12px;">
+				<div class="col-6">
+					<div>
+						<span style="font-weight: bolder;">Customer Reference:</span>
+						<span t-field="doc.client_order_ref"/>
+					</div>
+					<div>
+						<span style="font-weight: bolder;">Port of Loading:</span>
+						<span t-field="doc.port_of_loading"/>
+					</div>
+					<div>
+						<span style="font-weight: bolder;">Incoterm:</span>
+						<span t-field="doc.incoterm.code"/>
+					</div>
+				</div>
+				<div class="col-6">
+					<div>
+						<span style="font-weight: bolder;">Transportation:</span>
+						<span t-field="doc.transportation"/>
+					</div>
+					<div>
+						<span style="font-weight: bolder;">Port of Destination:</span>
+						<span t-field="doc.port_of_destination"/>
+					</div>
+				</div>
+			</div>
+		</xpath>
+		<xpath expr="/t[1]/t[1]/div[1]/div[4]/div[2]" position="replace"/>
+
+		<!--	remove inherit code from sale_stock.report_saleorder_document_inherit_sale_stock		-->
+		<xpath expr="/t[1]/t[1]/div[1]/div[4]/div[5]" position="replace"/>
+		<!--	end	-->
+
+		<xpath expr="/t/t/div/table/thead/tr/th[1]" position="before">
+			<th>
+				<span>Brand</span>
+			</th>
+		</xpath>
+		<xpath expr="/t/t/div/table/tbody/t[2]/tr/t[1]/td[1]" position="before">
+			<td>
+				<span t-field="line.product_id.x_studio_many2one_field_UqhIy.x_name"/>
+			</td>
+		</xpath>
+		<xpath expr="/t[1]/t[1]/div[1]/table[1]/tbody[1]/t[2]/tr[1]/t[1]/td[2]/span[1]" position="attributes">
+			<attribute name="t-field">line.product_id.name</attribute>
+		</xpath>
+		<xpath expr="//t/div/p[1]" position="replace"/>
+		<xpath expr="//t/div/p[1]" position="replace"/>
+
+		<xpath expr="/t/t/div/div[6]" position="after">
+			<div class="row" style="margin-bottom:12px;">
+				<div class="col-6">
+					<span>
+						<strong>Payment Terms:</strong>
+						<br/>
+					</span>
+					<span t-field="doc.payment_term_id.name"/>
+				</div>
+				<div class="col-6"/>
+			</div>
+		</xpath>
+		<xpath expr="/t/t/div/div[7]" position="after">
+			<div class="row" style="margin-bottom:12px;">
+				<div class="col-6">
+					<span>
+						<strong>Current Account:</strong>
+						<br/>
+					</span>
+					<span t-field="doc.bank_id.name"/>
+				</div>
+				<div class="col-6"/>
+			</div>
+		</xpath>
+		<xpath expr="/t/t/div/div[8]" position="after">
+			<div class="row" style="margin-bottom:12px;">
+				<div class="col-6">
+					<span>
+						<strong>Terms and conditions:</strong>
+						<br/>
+					</span>
+					<span t-field="doc.note"/>
+				</div>
+				<div class="col-6"/>
+			</div>
+		</xpath>
+		<xpath expr="/t/t/div/div[9]" position="after">
+			<div class="row">
+				<div class="col-4 text-center">
+					<span>
+						<strong>Approved by</strong>
+					</span>
+					<br/>
+					<br/>
+					<br/>
+					<span>Sales Executive</span>
+				</div>
+				<div class="col-4 text-center">
+					<span>
+						<strong>Approved by</strong>
+					</span>
+					<br/>
+					<br/>
+					<br/>
+					<span>Financial Accounting</span>
+				</div>
+				<div class="col-4 text-center">
+					<span>
+						<strong>Approved by</strong>
+					</span>
+					<br/>
+					<br/>
+					<br/>
+					<span>Finance</span>
+				</div>
+			</div>
+		</xpath>
+	</template>
+	<template id="report_saleorder_commercial_invoice">
+		<t t-call="web.html_container">
+			<t t-set="is_commercial" t-value="True"/>
+			<t t-set="docs" t-value="docs.with_context(commercial=True)"/>
+			<t t-foreach="docs" t-as="doc">
+				<t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>

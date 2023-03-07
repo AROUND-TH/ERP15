@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="app_view_location_tree2" model="ir.ui.view">
+        <field name="name">stock.location.tree</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='storage_category_id']" position="after">
+                <field name="capacity_type"/>
+                <field name="net_weight_percent" widget="progressbar"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_location_kanban2" model="ir.ui.view">
+        <field name="name">stock.location.kanban2</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="app_stock_location_kanban.view_location_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="string">Capacity of Stock Location</attribute>>
+            </xpath>
+            <xpath expr="//field[@name='usage']" position="after">
+                <field name="capacity_type"/>
+                <field name="max_weight" attrs="{'invisible': [('capacity_type', '!=', 'kg')]}"/>
+                <field name="max_pallet" attrs="{'invisible': [('capacity_type', '!=', 'pallet')]}"/>
+                <field name="net_weight" string="Used"/>
+                <field name="net_weight_percent"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="app_view_location_search2" model="ir.ui.view">
+        <field name="name">app.stock.location.search</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="app_stock_location_kanban.app_view_location_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_usage']" position="before">
+                <filter name="group_capacity_type" string="Capacity Type"  context="{'group_by': 'capacity_type'}"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="app_view_location_form" model="ir.ui.view">
+        <field name="name">app.stock.location.form</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <field name="storage_category_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <xpath expr="//form//group[3]" position="after">
+                <group string="Capacity" attrs="{'invisible': [('usage', 'not in',  ('internal', 'transit'))]}">
+                    <field name="storage_category_id"/>
+                    <field name="capacity_type" invisible="1"/>
+                    <label for="max_weight" attrs="{'invisible': [('capacity_type', '!=', 'kg')]}"/>
+                    <div class="o_row" attrs="{'invisible': [('capacity_type', '!=', 'kg')]}">
+                        <field name="max_weight"/>
+                        <span>kg</span>
+                    </div>
+                    <label for="max_pallet" attrs="{'invisible': [('capacity_type', '!=', 'pallet')]}"/>
+                    <div class="o_row" attrs="{'invisible': [('capacity_type', '!=', 'pallet')]}">
+                        <field name="max_pallet"/>
+                        <span>Pallet</span>
+                    </div>
+                    <label for="net_weight" attrs="{'invisible': [('storage_category_id', '=', False)]}"/>
+                    <div class="o_row" attrs="{'invisible': [('storage_category_id', '=', False)]}">
+                        <field name="net_weight" string="Used"/>
+                        <span attrs="{'invisible': [('capacity_type', '!=', 'kg')]}">kg</span>
+                        <span attrs="{'invisible': [('capacity_type', '!=', 'pallet')]}">Pallet</span>
+                    </div>
+                    <field name="net_weight_percent" widget="progressbar"
+                           attrs="{'invisible': [('storage_category_id', '=', False)]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

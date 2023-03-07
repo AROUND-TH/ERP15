@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <template id="assets_backend_widget_plotly_chart" name="widget_plotly_chart" inherit_id="web.assets_backend">
+        <xpath expr="//script[last()]" position="after">
+            <!-- Library -->
+            <script
+                type="text/javascript"
+                src="/mrp_shop_floor_control/static/lib/plotly/plotly-latest.min.js"/>
+            <!-- Widget -->
+            <script
+                type="text/javascript"
+                src="/mrp_shop_floor_control/static/src/js/widget_plotly.js"/>
+        </xpath>
+    </template>
+</odoo>

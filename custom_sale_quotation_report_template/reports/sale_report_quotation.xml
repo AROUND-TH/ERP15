@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <template id="sale_report_quotation_document">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+        <div class="header" style="height:200px !important; ">
+            <div class="row mt32 mb32" >
+                <div class="col-6">
+                    <div style="height:80px;">
+                        <strong t-esc="company.with_context({'lang':'th_TH'}).name" style="color:black;font-size:16px !important;"/><br/>
+                        <small t-esc="company.with_context({'lang':'th_TH'}).street" style="color:black;font-size:13px !important;"/><br/>
+                        <small t-esc="company.with_context({'lang':'th_TH'}).street2" style="color:black;font-size:13px !important;"/><br/>
+                        <t t-set="company_vat" t-value="'เลขประจำตัวผู้เสียภาษี '+str(company.vat)"/>
+                        <small t-esc="company_vat" style="color:black;font-size:13px !important;"/><br/>
+                    </div>
+                    <br/>
+                    
+                </div>
+                <div class="col-3">
+                    <small style="font-size:12px;"><input type="checkbox" /> ลูกค้าโทรสั่ง  <input type="checkbox" /> ลูกค้าสั่งผ่านไลน์</small>
+                </div>
+                <div class="col-3" style="margin-top:5px;">
+                    <t t-if="doc.state in ['draft','sent']">
+                        <strong ><h2>ใบเสนอราคา</h2></strong><br/>
+                        <strong style="font-size:16px;"><span>เลขที่</span></strong> <span t-esc="doc.name"/><br/>
+                        <strong style="font-size:16px;"><span>วันที่</span></strong> <span t-esc="context_timestamp(doc.date_order).strftime('%d/%m/%Y')"/><br/>
+                    </t>
+                    <t t-elif="doc.state in ['wait_for_approve','cancel']">
+                        <strong style="color:#1e90ff;"><span>#######</span></strong>
+                    </t>
+                    <t t-else="">
+                        <strong ><h2>ใบสั่งขาย</h2></strong><br/>
+                        <strong style="font-size:16px;"><span>เลขที่</span></strong> <span t-esc="doc.name"/><br/>
+                        <strong style="font-size:16px;"><span>วันที่</span></strong> <span t-esc="context_timestamp(doc.date_order).strftime('%d/%m/%Y')"/><br/>
+                    </t>
+                </div>
+                
+            </div>
+            <div class="row" style="margin-left:1px;margin-right:1px; height:180px; width:100%; margin-top:5px;">
+                <div class="col-6" style="margin-right:0px;">
+                    <div class="row  border-radius" style="height:170px;width:435px; ">
+                        <div class="col-3" >
+                            <span>ชื่อผู้ซื้อ</span><br/>
+                            <span>ที่อยู่</span><br/><br/><br/><br/>
+                            <span>โทร</span>
+                        </div>
+                        <div class="col-9" ><div style="width:110%; height:120px;margin-left:-20px;">
+                                <span t-esc="doc.partner_id.internal_code"/>&amp;nbsp;&amp;nbsp;
+                                <span t-esc="doc.partner_id.name"/><br/>
+                                <span t-esc="doc.partner_id.street"/><br/>
+                                <span t-esc="doc.partner_id.street2"/>
+                                <span t-esc="doc.partner_id.street3"/>
+                                <span t-esc="doc.partner_id.city"/>
+                                <span t-esc="doc.partner_id.state_id.name"/>
+                                <span t-esc="doc.partner_id.zip"/>
+                                <span t-esc="doc.with_context({'lang':'th_TH'}).partner_id.country_id.name"/>  <br/>
+                            </div>
+                            
+                            <t t-if="doc.partner_id.phone">
+                                <span t-esc="doc.partner_id.phone" style="margin-left:-20px;"/>
+                            </t>
+                            <br/>
+                        <!-- <span>Tax ID: <span t-field="doc.partner_id.vat" /> </span> -->
+                        </div>
+                    </div>
+                    <div class="col-12 row" style="height:30px;margin-top:5px;margin-left:-15px;margin-right:-15px;">
+                        <div class="border-radius" style="height:30px; margin-left:-15px;margin-right:-15px;width:965px;">
+                            <div class="row" >
+                                <div style="margin-left:20px;">หมายเหตุ &amp;nbsp;&amp;nbsp;</div><div t-esc="doc.partner_shipping_id.comment" style="width:600px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 row border-radius" style="border:1px solid black; margin-left:0px; height:170px; width:100%; ">
+                    <div class="col-3" >
+                        <span>ชื่อร้านค้า</span><br/>
+                        <span>ที่จัดส่ง</span><br/><br/><br/><br/>
+                        <span>เงื่อนไข</span>
+                    </div>
+                    <div class="col-9" >
+                        <div style="width:110%; height:120px;margin-left:-10px;">
+                                <span t-esc="doc.partner_shipping_id.parent_id.internal_code"/>&amp;nbsp;&amp;nbsp;
+                                <span t-esc="doc.partner_shipping_id.name"/><br/>
+                                <span t-esc="doc.partner_shipping_id.street"/><br/>
+                                <span t-esc="doc.partner_shipping_id.street2"/>
+                                <span t-esc="doc.partner_shipping_id.street3"/>
+                                <span t-esc="doc.partner_shipping_id.city"/>
+                                <span t-esc="doc.partner_shipping_id.state_id.name"/>
+                                <span t-esc="doc.partner_shipping_id.zip"/>
+                                <span t-esc="doc.with_context({'lang':'th_TH'}).partner_shipping_id.country_id.name"/>  <br/>
+                        </div>
+                        
+                        <t t-if="doc.payment_term_id">
+                            <div style="float:left; width:400px;">
+                                <span t-esc="doc.with_context({'lang':'th_TH'}).payment_term_id.name" style="margin-left:-10px; width:400px; display:inline;"/>
+                            </div>
+                            
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    <t t-call="web.internal_layout">
+        <t t-set="doc" t-value="doc.with_context({'lang':th_TH})" />
+        <t t-set="item_per_page" t-value="15" />
+        <t t-set="total_item" t-value="len(doc.order_line)"/>
+        <t t-set="current_page" t-value="1"/>
+        <t t-set="total_page" t-value="doc.ceil(total_item,item_per_page)"/>
+        <t t-set="start" t-value="0"/>
+        <t t-set="end" t-value="15"/>
+            <t t-foreach="range(0,total_page,1)" t-as="page">
+            <div class="page" style="position:relative !important;">
+                <div class="oe_structure"></div>
+                <t t-if="current_page == 1">
+                <div  class="container" style="height:310px;  width:100%;">
+                
+                    
+                </div>
+                </t>
+                <t t-elif="current_page &gt; 1">
+                <div class="container" style="height:350px;  width:100%;">
+                    
+                </div>
+                </t>
+                <div >
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="display_discount" t-value="any([l.discount for l in doc.order_line])"/>
+                <t t-if="current_page &lt; total_page">
+                    <div class="border-radius" style="width:100%;">
+                    <table style="height:205mm; !important; ">
+                    <thead style="width:100%;">
+                        <tr style="height:43px;border-bottom:1px solid black;">
+                            <th style="width:5%;color:black;" class="text-center-header border-right-black">ลำดับ</th>
+                            <th style="width:10%; color:black;" class="text-center-header border-left-right">รหัสสินค้า</th>
+                            <th style="width:43%; color:black;" class="text-center-header border-left-right">ชื่อสินค้า</th>
+                            <th style="width:9%; color:black;" class="text-center-header border-left-right">จำนวน</th>
+                            <th style="width:9%; color:black;" class="text-center-header border-left-right">หน่วย</th>
+                            <th style="width:10%; color:black;" class="text-center-header border-left-right">ราคา</th>
+                            <th style="width:14%; color:black;" class="text-center-header border-left">จำนวนเงิน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                            <tr style="height:10mm !important;" > 
+                                <td class="border-right-black">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="border-left">
+                                    <!-- <span /> -->
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-elif="(start == end) and (end &lt; total_item)">
+                            <tr style="height:10mm !important;" >
+                                <!-- <td class="border-left-right" >
+                                    <span style="margin-left:3px;" t-esc="start+1"/>
+                                </td> -->
+                                <td class="border-right-black">
+                                    <span style="margin-left:5px;" t-esc="start+1"/>
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                    <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                    <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                </td>
+                                <td class="text-left border-left-right" >
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-center border-left-right" >
+                                    <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left" >
+                                    <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                    </t>
+                                </td>
+                                
+                                
+                            </tr>
+                        </t>
+                        <t t-else="">
+                            <tr style="height:10mm !important;" >
+                            <!-- <td class="border-left-right" >
+                                <span style="margin-left:3px;" t-esc="start+1"/>
+                            </td> -->
+                            <t t-if="doc.order_line[start]">
+                                <td class="border-right-black">
+                                    <span style="margin-left:5px;" t-esc="start+1"/>
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                    <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                    <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                </td>
+
+                                <td class="text-left border-left-right" >
+                                    <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                </td>
+                                <td class="text-right border-left-right" >
+                                    <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>                                    
+                                </td>
+                                <td class="text-center border-left-right" >
+                                    <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-center border-left-right" >
+                                    <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                </td>
+                                <td class="text-right border-left" >
+                                    <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                    </t>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td class="border-right-black">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span/> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="border-left-right">
+                                    <!-- <span /> -->
+                                </td>
+                                <td class="border-left">
+                                    <!-- <span /> -->
+                                </td>
+                            </t>
+                            
+                        </tr>
+                        </t>
+                        <t t-if="start == total_item-1">
+                            <t t-set="start" t-value="total_item-1"/>
+                            <t t-set="end" t-value="total_item-1"/>
+                        </t>
+                        <t t-else="">
+                            <t t-set="start" t-value="start + 1"/>
+                        </t>
+                        <!-- <t t-set="log_start" t-value="doc.log_start(start)"/> -->
+                    </t>
+                    </tbody>
+                </table>
+                </div>
+                <div class="border-radius" style="width:100%;height:150px; margin-top:5px;">
+                    <table style="width:100%;  margin-top:5px;" >
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left">
+                                <t t-if="doc.bill_discount_percent &gt; 0.00">
+                                    <span>ส่วนลด <span t-esc="'{0:,.2f}'.format(doc.bill_discount_percent)"/><span>%</span></span>
+                                </t>
+                                <t t-else="">
+                                    <span>ส่วนลด</span>
+                                </t>
+                                
+                            </td>
+                            <td style="width:10%;" class="text-right"><span /></td>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left"><span>มูลค่าสินค้าที่ยกเว้นภาษีมูลค่าเพิ่ม*</span></td>
+                            <t t-if="doc.amount_tax == 0.00">
+                                <td style="width:10%;" class="text-right"><span /></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:10%;" class="text-right"><span/></td>
+                            </t>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left"><span>มูลค่าสินค้าที่เสียภาษีมูลค่าเพิ่ม</span></td>
+                            <t t-if="doc.amount_tax &gt; 0.00">
+                                <td style="width:10%;" class="text-right"><span /></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:10%;" class="text-right"><span/></td>
+                            </t>
+                            
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;">
+                                <div class="row">
+                                    <div class="col-1"></div>
+                                    <div class="col-4 text-center">
+                                        <span>................................</span>
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-4 text-center">
+                                        <span>................................</span>
+                                    </div>
+                                    <div class="col-1"></div>
+                                </div>
+                            </td>
+                            <t t-if="doc.amount_tax &gt; 0.00">
+                                <td style="width:30%;" class="text-left"><span>ภาษีมูลค่าเพิ่ม 7 %</span></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:30%;" class="text-left"><span>ภาษีมูลค่าเพิ่ม 0 %</span></td>
+                            </t>
+                            <td style="width:10%;" class="text-right"><span /></td>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;" class="text-center">
+                                <div class="row">
+                                    <div class="col-1"></div>
+                                    <div class="col-4 text-center">
+                                        <span>พนักงานขาย</span>
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-4 text-center">
+                                        <span>หัวหน้าสโตร์</span>
+                                    </div>
+                                    <div class="col-1"></div>
+                                </div>
+                            </td>
+                            <td style="width:30%;" class="text-left"><span>รวมทั้งสิ้น</span></td>
+                            <td style="width:10%;" class="text-right"><span /></td>
+                        </tr>
+                    </table>
+                    <div class="row mt32 mb32" style="height:10px; margin-top:16px;">
+                        <div class="col-2"><small t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></div>
+                        <div class="col-8"></div>
+                        <div class="col-2 text-right"><small>หน้าที่ <small t-esc="current_page"/>/<small t-esc="total_page"/></small></div>
+                    </div>
+                </div>
+                </t>
+                <t t-elif="total_page == 1">
+                    <div class="border-radius" style="width:100%;">
+                    <table style="height:205mm; !important;  width:100%;">
+                    <thead style="width:100%;">
+                        <tr style="height:43px;border-bottom:1px solid black;">
+                            <th style="width:5%;color:black;" class="text-center-header border-right-black">ลำดับ</th>
+                            <th style="width:10%; color:black;" class="text-center-header border-left-right">รหัสสินค้า</th>
+                            <th style="width:43%; color:black;" class="text-center-header border-left-right">ชื่อสินค้า</th>
+                            <th style="width:9%; color:black;" class="text-center-header border-left-right">จำนวน</th>
+                            <th style="width:9%; color:black;" class="text-center-header border-left-right">หน่วย</th>
+                            <th style="width:10%; color:black;" class="text-center-header border-left-right">ราคา</th>
+                            <th style="width:14%; color:black;" class="text-center-header border-left">จำนวนเงิน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                            <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                    <tr style="height:10mm !important;" >
+                                    <td class="border-right-black">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="border-left">
+                                        <!-- <span /> -->
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="(start == end) and (end &lt; total_item)">
+                                <tr style="height:10mm !important;" >
+                                    <!-- <td class="border-left-right" >
+                                        <span style="margin-left:3px;" t-esc="start+1"/>
+                                    </td> -->
+                                    <td class="border-right-black">
+                                        <span style="margin-left:5px;" t-esc="start+1"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                        <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                        <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                    </td>
+                                    <td class="text-left border-left-right" >
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-center border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left" >
+                                        <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <tr style="height:10mm !important;">
+                                <!-- <td class="border-left-right" >
+                                    <span style="margin-left:3px;" t-esc="start+1"/>
+                                </td> -->
+                                <t t-if="doc.order_line[start]">
+                                    <td class="border-right-black">
+                                        <span style="margin-left:5px;" t-esc="start+1"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                        <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                        <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                    </td>
+                                    <td class="text-left border-left-right" >
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-center border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left" >
+                                        <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                        </t>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <!-- <td class="border-left-right" >
+                                        <span/>
+                                    </td> -->
+                                    <td class="border-right-black">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span/> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <span /> -->
+                                    </td>
+                                    <td class="border-left">
+                                        <!-- <span /> -->
+                                    </td>
+                                </t>
+                                
+                            </tr>
+                            </t>
+                            <t t-if="start == total_item-1">
+                                <t t-set="start" t-value="total_item-1"/>
+                                <t t-set="end" t-value="total_item-1"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="start" t-value="start + 1"/>
+                            </t>
+                            <!-- <t t-set="log_start" t-value="doc.log_start(start)"/> -->
+                        </t>
+                    </tbody>
+                </table>
+                </div>
+                <div class="border-radius" style="width:100%;height:150px; margin-top:5px;">
+                    <t t-set="data" t-value="doc.with_context(lang='en_EN')"/>
+                    <t t-set="tax_totals" t-value="json.loads(data.tax_totals_json)"/>
+                    <t t-set="amount_tax" t-value="0"/>
+                    <t t-set="amount_total_tax" t-value="0"/>
+                    <t t-set="amount_total_untax" t-value="tax_totals['amount_untaxed']"/>
+                    <t t-if="len(tax_totals['groups_by_subtotal']) &gt; 0">
+                        <t t-foreach="tax_totals['groups_by_subtotal']['Untaxed Amount']" t-as="amount_by_group">
+                            <t t-set="amount_tax" t-value="amount_by_group['tax_group_amount']"/>
+                            <t t-set="amount_total_tax" t-value="amount_by_group['tax_group_base_amount']"/>
+                            <t t-set="amount_total_untax" t-value="amount_total_untax - amount_by_group['tax_group_base_amount']"/>
+                        </t>
+                    </t>
+                    <!-- <span t-esc="tax_totals"/> -->
+                    <table style="width:100%;  margin-top:5px;" >
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left">
+                                <t t-if="doc.bill_discount_percent &gt; 0.00">
+                                    <span>ส่วนลด <span t-esc="'{0:,.2f}'.format(doc.bill_discount_percent)"/><span>%</span></span>
+                                </t>
+                                <t t-else="">
+                                    <span>ส่วนลด</span>
+                                </t>
+                            </td>
+                            <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.bill_discount)" style="margin-right:2px;"/></td>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left"><span>มูลค่าสินค้าที่ยกเว้นภาษีมูลค่าเพิ่ม*</span></td>
+                            <t t-if="amount_total_untax &gt; 0.00">
+                                <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(amount_total_untax)" style="margin-right:2px;"/></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:10%;" class="text-right"><span/></td>
+                            </t>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left"><span>มูลค่าสินค้าที่เสียภาษีมูลค่าเพิ่ม</span></td>
+                            <t t-if="amount_tax &gt; 0.00">
+                                <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(amount_total_tax)" style="margin-right:2px;"/></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:10%;" class="text-right"><span/></td>
+                            </t>
+                            
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;">
+                                <div class="row">
+                                    <div class="col-1"></div>
+                                    <div class="col-4 text-center">
+                                        <span>................................</span>
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-4 text-center">
+                                        <span>................................</span>
+                                    </div>
+                                    <div class="col-1"></div>
+                                </div>
+                            </td>
+                            <t t-if="doc.amount_tax &gt; 0.00">
+                                <td style="width:30%;" class="text-left"><span>ภาษีมูลค่าเพิ่ม 7 %</span></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:30%;" class="text-left"><span>ภาษีมูลค่าเพิ่ม 0 %</span></td>
+                            </t>
+                            <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.amount_tax)" style="margin-right:2px;"/></td>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;" class="text-center">
+                                <div class="row">
+                                    <div class="col-1"></div>
+                                    <div class="col-4 text-center">
+                                        <span>พนักงานขาย</span>
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-4 text-center">
+                                        <span>หัวหน้าสโตร์</span>
+                                    </div>
+                                    <div class="col-1"></div>
+                                </div>
+                            </td>
+                            <td style="width:30%;" class="text-left"><span>รวมทั้งสิ้น</span></td>
+                            <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.amount_total)" style="margin-right:2px;"/></td>
+                        </tr>
+                    </table>
+                    <div class="row mt32 mb32" style="height:10px; margin-top:16px;">
+                        <div class="col-2"><small t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></div>
+                        <div class="col-8"></div>
+                        <div class="col-2 text-right"><small>หน้าที่ <small t-esc="current_page"/>/<small t-esc="total_page"/></small></div>
+                    </div>
+                </div>
+                
+                </t>
+                <t t-else="">
+                    <t t-set="isLastLine" t-value="False"/>
+                    <div class="border-radius" style="width:100%;">
+                    <table style="height:205mm; !important;  width:100%; " >
+                        <thead style="width:100%;">
+                            <tr style="height:43px;border-bottom:1px solid black;">
+                                <th style="width:5%;color:black;" class="text-center-header border-right-black">ลำดับ</th>
+                                <th style="width:10%; color:black;" class="text-center-header border-left-right">รหัสสินค้า</th>
+                                <th style="width:43%; color:black;" class="text-center-header border-left-right">ชื่อสินค้า</th>
+                                <th style="width:9%; color:black;" class="text-center-header border-left-right">จำนวน</th>
+                                <th style="width:9%; color:black;" class="text-center-header border-left-right">หน่วย</th>
+                                <th style="width:10%; color:black;" class="text-center-header border-left-right">ราคา</th>
+                                <th style="width:14%; color:black;" class="text-center-header border-left">จำนวนเงิน</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                            <t t-if="(start == end) and (start == total_item-1) and (end == total_item-1)">
+                                <t t-if="end == total_item-1 and isLastLine == False">
+                                    <tr style="height:10mm !important;">
+                                        <td class="border-right-black" >
+                                            <span style="margin-left:5px;" t-esc="start+1"/>
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                            <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                            <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                            <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                        </td>
+                                        <td class="text-left border-left-right" >
+                                            <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                        </td>
+                                        <td class="text-right border-left-right" >
+                                            <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                        </td>
+                                        <td class="text-center border-left-right" >
+                                            <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                        </td>
+                                        <td class="text-right border-left-right" >
+                                            <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                        </td>
+                                        <td class="text-right border-left" >
+                                            <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                                <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <t t-set="isLastLine" t-value="True"/>
+                                </t>
+                                <t t-elif="end == total_item-1 and isLastLine == True">
+                                    <tr style="height:10mm !important;">
+                                        <td class="border-right-black">
+                                        <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span /> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span /> -->
+                                        </td>
+                                        <td class="border-left">
+                                            <!-- <span /> -->
+                                        </td>
+                                    
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr style="height:10mm !important;">
+                                        <td class="border-right-black">
+                                        <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span /> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span /> -->
+                                        </td>
+                                        <td class="border-left">
+                                            <!-- <span /> -->
+                                        </td>
+                                    
+                                    </tr>
+                                </t>
+                                
+                            </t>
+                            <t t-elif="(start == end) and (end &lt; total_item)">
+                                <tr style="height:10mm !important;" >
+                                    <!-- <td class="border-left-right" >
+                                        <span style="margin-left:3px;" t-esc="start+1"/>
+                                    </td> -->
+                                    <td class="border-right-black" >
+                                        <span style="margin-left:5px;" t-esc="start+1"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                        <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                        <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                    </td>
+                                    <td class="text-left border-left-right" >
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-center border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left" >
+                                        <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="(start == end) and (end == total_item-1)">
+                                <tr style="height:10mm !important;" >
+                                    <!-- <td class="border-left-right" >
+                                        <span style="margin-left:3px;" t-esc="start+1"/>
+                                    </td> -->
+                                    <td class="border-right-black" >
+                                        <span style="margin-left:5px;" t-esc="start+1"/>
+                                    </td>
+                                    <td class="border-left-right">
+                                        <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                        <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                        <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                    </td>
+                                    <td class="text-left border-left-right" >
+                                        <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-center border-left-right" >
+                                        <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left-right" >
+                                        <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                    </td>
+                                    <td class="text-right border-left" >
+                                        <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <t t-if="isLastLine == True">
+                                    <tr style="height:10mm !important;">
+                                        <td class="border-right-black">
+                                        <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span/> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span /> -->
+                                        </td>
+                                        <td class="border-left-right">
+                                            <!-- <span /> -->
+                                        </td>
+                                        <td class="border-left">
+                                            <!-- <span /> -->
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="start &lt; total_item-1">
+                                        <tr style="height:10mm !important;" >
+                                            <!-- <td class="border-left-right" >
+                                                <span style="margin-left:3px;" t-esc="start+1"/>
+                                            </td> -->
+                                            <td class="border-right-black" >
+                                                <span style="margin-left:5px;" t-esc="start+1"/>
+                                            </td>
+                                            <td class="border-left-right">
+                                                <!-- <t t-set="product_name" t-value="doc.order_line[start].product_id.name"/>
+                                                <t t-set="product_code" t-value="product_name[product_name.find('[')+1 : product_name.find(']')]"/> -->
+                                                <!-- <span style="margin-left:2px;" t-esc="product_code"/> -->
+                                                <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.default_code"/>
+                                            </td>
+                                            <td class="text-left border-left-right" >
+                                                <span style="margin-left:2px;" t-esc="doc.order_line[start].product_id.name"/>
+                                            </td>
+                                            <td class="text-right border-left-right" >
+                                                <span t-esc="'{0:,.0f}'.format(abs(doc.order_line[start].product_uom_qty))" style="margin-right:2px;"/>
+                                            </td>
+                                            <td class="text-center border-left-right" >
+                                                <span t-field="doc.order_line[start].product_uom" style="margin-right:2px;"/>
+                                            </td>
+                                            <td class="text-right border-left-right" >
+                                                <span t-field="doc.order_line[start].price_unit" style="margin-right:2px;"/>
+                                            </td>
+                                            <td class="text-right border-left" >
+                                                <t t-if="doc.order_line[start].price_tax &gt; 0.00">
+                                                    <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;"></span>
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="'{0:,.2f}'.format(abs(doc.order_line[start].price_subtotal))"/><span  style="margin-right:2px;">*</span>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-elif="start == total_item-1">
+                                    </t>
+                                    <t t-else=""></t>
+                                </t>
+                                
+                            </t>
+                            <t t-if="start == total_item">
+                                <t t-set="start" t-value="total_item"/>
+                                <t t-set="end" t-value="total_item"/>
+                            </t>
+                            <t t-elif="start == total_item-1">
+                                <t t-set="start" t-value="total_item-1"/>
+                                <t t-set="end" t-value="total_item-1"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="start" t-value="start + 1"/>
+                            </t>
+                            <!-- <t t-set="log_start" t-value="doc.log_start(start)"/> -->
+                        </t>
+                    </tbody>
+                </table>
+                </div>
+                <div class="border-radius" style="width:100%;height:150px; margin-top:5px;">
+                    <t t-set="data" t-value="doc.with_context(lang='en_EN')"/>
+                    <t t-set="tax_totals" t-value="json.loads(data.tax_totals_json)"/>
+                    <t t-set="amount_tax" t-value="0"/>
+                    <t t-set="amount_total_tax" t-value="0"/>
+                    <t t-set="amount_total_untax" t-value="tax_totals['amount_untaxed']"/>
+                    <t t-if="len(tax_totals['groups_by_subtotal']) &gt; 0">
+                        <t t-foreach="tax_totals['groups_by_subtotal']['Untaxed Amount']" t-as="amount_by_group">
+                            <t t-set="amount_tax" t-value="amount_by_group['tax_group_amount']"/>
+                            <t t-set="amount_total_tax" t-value="amount_by_group['tax_group_base_amount']"/>
+                            <t t-set="amount_total_untax" t-value="amount_total_untax - amount_by_group['tax_group_base_amount']"/>
+                        </t>
+                    </t>
+                    <!-- <span t-esc="tax_totals"/> -->
+                    <table style="width:100%;  margin-top:5px;" >
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left">
+                                <t t-if="doc.bill_discount_percent &gt; 0.00">
+                                    <span>ส่วนลด <span t-esc="'{0:,.2f}'.format(doc.bill_discount_percent)"/><span>%</span></span>
+                                </t>
+                                <t t-else="">
+                                    <span>ส่วนลด</span>
+                                </t>
+                            </td>
+                            <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.bill_discount)" style="margin-right:2px;"/></td>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left"><span>มูลค่าสินค้าที่ยกเว้นภาษีมูลค่าเพิ่ม*</span></td>
+                            <t t-if="amount_total_untax &gt; 0.00">
+                                <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(amount_total_untax)" style="margin-right:2px;"/></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:10%;" class="text-right"><span/></td>
+                            </t>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;"></td>
+                            <td style="width:30%;" class="text-left"><span>มูลค่าสินค้าที่เสียภาษีมูลค่าเพิ่ม</span></td>
+                            <t t-if="amount_tax &gt; 0.00">
+                                <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(amount_total_tax)" style="margin-right:2px;"/></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:10%;" class="text-right"><span/></td>
+                            </t>
+                            
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;">
+                                <div class="row">
+                                    <div class="col-1"></div>
+                                    <div class="col-4 text-center">
+                                        <span>................................</span>
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-4 text-center">
+                                        <span>................................</span>
+                                    </div>
+                                    <div class="col-1"></div>
+                                </div>
+                            </td>
+                            <t t-if="doc.amount_tax &gt; 0.00">
+                                <td style="width:30%;" class="text-left"><span>ภาษีมูลค่าเพิ่ม 7 %</span></td>
+                            </t>
+                            <t t-else="">
+                                <td style="width:30%;" class="text-left"><span>ภาษีมูลค่าเพิ่ม 0 %</span></td>
+                            </t>
+                            <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.amount_tax)" style="margin-right:2px;"/></td>
+                        </tr>
+                        <tr style="height:25px !important;">
+                            <td style="width:60%;" class="text-center">
+                                <div class="row">
+                                    <div class="col-1"></div>
+                                    <div class="col-4 text-center">
+                                        <span>พนักงานขาย</span>
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-4 text-center">
+                                        <span>หัวหน้าสโตร์</span>
+                                    </div>
+                                    <div class="col-1"></div>
+                                </div>
+                            </td>
+                            <td style="width:30%;" class="text-left"><span>รวมทั้งสิ้น</span></td>
+                            <td style="width:10%;" class="text-right"><span t-esc="'{0:,.2f}'.format(doc.amount_total)" style="margin-right:2px;"/></td>
+                        </tr>
+                    </table>
+                    <div class="row mt32 mb32" style="height:10px; margin-top:16px;">
+                        <div class="col-2"><small t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></div>
+                        <div class="col-8"></div>
+                        <div class="col-2 text-right"><small>หน้าที่ <small t-esc="current_page"/>/<small t-esc="total_page"/></small></div>
+                    </div>
+                </div>
+                
+                
+                </t>
+                </div>
+            </div>
+            <t t-set="current_page" t-value="current_page+1"/>
+            </t>
+        </t>
+    </template>
+    <template id="sale_report_quotation_document_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                    <t t-call="custom_sale_quotation_report_template.sale_report_quotation_document" t-lang="doc.partner_id.lang"/>
+                    
+            </t>
+        </t>
+    </template>
+
+    <record id="sale_report_quotation" model="ir.actions.report">
+      <field name="name">ใบเสนอราคา/ใบสั่งขาย</field>
+      <field name="model">sale.order</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="paperformat_id" ref="custom_sale_quotation_report_template.paper_format_A4_zero_margin_bottom"/>
+      <field name="report_name">custom_sale_quotation_report_template.sale_report_quotation_document_id</field>
+      <field name="report_file">custom_sale_quotation_report_template.sale_report_quotation_document_id</field>
+      <field name="binding_model_id" eval="False"/>
+      <field name="binding_type">report</field>
+    </record>
+  </data>
+</odoo>

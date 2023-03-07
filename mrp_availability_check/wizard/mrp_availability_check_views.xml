@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="mrp_availability_check_view_form" model="ir.ui.view">
+        <field name="name">mrp.availability.check.form</field>
+        <field name="model">mrp.availability.check</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="product_id" domain="[('bom_ids','!=',False),('bom_ids.type','!=','phantom')]"/>
+                        <field name="product_tmpl_id" invisible="1"/>
+                        <field name="bom_id"
+                            domain="['&amp;', '|', ('product_id','=',product_id),
+                            '&amp;', ('product_tmpl_id.product_variant_ids','=',product_id),
+                            ('product_id','=',False), ('type', '=', 'normal')]"/>
+                        <field name="warehouse_id"/>
+                    </group>
+                    <group>
+                        <label for="requested_qty" string="Quantity"/>
+                        <div class="o_row">
+                            <field name="requested_qty"/><field name="product_uom_id"/>
+                        </div>
+                    </group>
+                </group>
+                <footer>
+                    <button name="do_bom_explosion" type="object" string="Check" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mrp_availability_check_view_form2" model="ir.ui.view">
+        <field name="name">mrp.availability.check.form2</field>
+        <field name="model">mrp.availability.check</field>
+        <field name="arch" type="xml">
+            <form string="BoM Availability Check" create="false" edit="false">
+                <header>
+                    <button name="%(mrp_availability_check.action_report_bom_explosion_pdf)d" type="action"
+                        string="Print BoM Explosion PDF" class="oe_highlight"/>
+                    <button name="%(mrp_availability_check.action_report_availability_check_pdf)d" type="action"
+                        string="Print BoM Availability Check PDF" class="oe_highlight"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="product_id" readonly="1"/>
+                        <field name="bom_id" readonly="1"/>
+                        <field name="type"/>
+                        <field name="warehouse_id" readonly="1"/>
+                    </group>
+                    <group>
+                        <label for="requested_qty" string="Quantity"/>
+                        <div class="o_row">
+                            <field name="requested_qty" readonly="1"/><field name="product_uom_id"/>
+                        </div>
+                        <field name="lt"/>
+                        <field name="dlt"/>
+                        <field name="clt"/>
+                    </group>
+                </group>
+                <group string="BOM Explosion">
+                    <field name="line_ids" nolabel="1" colspan="2">
+                        <tree decoration-danger="critical_path == True" create="0" delete="0" editable="0">
+                            <field name="bom_level"/>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom_id"/>
+                            <field name="product_type"/>
+                            <field name="buy"/>
+                            <field name="sub"/>
+                            <field name="make"/>
+                            <field name="mto"/>
+                            <field name="is_stock" string="RP"/>
+                            <field name="produce_delay" string="Manuf. Lead Time"/>
+                            <field name="purchase_delay" string="Pur. Lead Time"/>
+                            <field name="bom_id"/>
+                            <field name="lt"/>
+                            <field name="dlt"/>
+                            <field name="clt"/>
+                            <field name="critical_path"/>
+                        </tree>
+                    </field>
+                </group>
+                <group string="Availability Check Results">
+                    <field name="sum_line_ids" nolabel="1" colspan="2">
+                        <tree create="0" delete="0" editable="0" decoration-danger="available == False">
+                            <field name="product_id" />
+                            <field name="product_qty"/>
+                            <field name="product_uom_id" groups="uom.group_uom"/>
+                            <button type="object" name="action_product_forecast_report" icon="fa-area-chart" attrs="{'invisible': [('product_type', '!=', 'product')]}"/>
+                            <field name="qty_available"/>
+                            <field name="qty_virtual" />
+                            <field name="free_qty" />
+                            <field name="qty_incoming"/>
+                            <field name="qty_outgoing" />
+                            <field name="qty_delta"/>
+                            <field name="available" invisible="1"/>
+                            <field name="product_type" invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mrp_availability_check_action" model="ir.actions.act_window">
+        <field name="name">BoM Availability Check</field>
+        <field name="res_model">mrp.availability.check</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="mrp_availability_check_menu"
+              action="mrp_availability_check_action"
+              parent="mrp.menu_mrp_reporting"
+              sequence="60"/>
+</odoo>

@@ -1,0 +1,1616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_with_payments_layout">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="item_per_page" t-value="15" />
+                    <t t-set="total_item" t-value="len(o.invoice_line_ids)"/>
+                    <t t-set="current_page" t-value="1"/>
+                    <t t-set="total_page" t-value="o.ceil(total_item, item_per_page)"/>
+                    <t t-set="items" t-value="o.invoice_line_ids"/>
+
+                    <t t-foreach="range(0,total_page,1)" t-as="page">
+                        <div class="page page_report_print_invoice_document_with_payments" style="
+                            page-break-after: always;
+                            border: 2px soid;
+                            display: flex;
+                            padding: 0mm;
+                            margin: 0mm;
+                            width: 210mm; 
+                            height: 297mm;">
+                            <t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
+                            <t t-set="amount_tax" t-value="0"/>
+                            <t t-if="len(tax_totals['groups_by_subtotal']) > 0">
+                                <t t-foreach="tax_totals['groups_by_subtotal']['Untaxed Amount']" t-as="amount_by_group">
+                                    <t t-set="amount_tax" t-value="amount_by_group['tax_group_amount']"/>
+                                </t>
+                            </t>
+
+                            <t t-if='current_page == 1'>
+                                <t t-call="custom_account.invoice_layout_page1" />
+                            </t>
+
+                            <t t-if='current_page == 2'> <!-- top 348 -->
+                                <t t-call="custom_account.invoice_layout_page2" />
+                            </t>
+
+                            <t t-if='current_page == 3'> <!-- top 696 -->
+                                <t t-call="custom_account.invoice_layout_page3" />
+                            </t>
+
+                            <t t-if='current_page == 4'> <!-- top 1045 -->
+                                <t t-call="custom_account.invoice_layout_page4" />
+                            </t>
+
+                            <t t-if='current_page == 5'> <!-- top 1393 -->
+                                <t t-call="custom_account.invoice_layout_page5" />
+                            </t>
+
+                            <t t-set="current_page" t-value="current_page + 1"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- top 0 -->
+        <template id="invoice_layout_page1">
+            <div class="row">
+                <div calss="col-12 invoice_number" style="
+                    position: fixed;
+                    top: 15mm;
+                    left: 215mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-field="o.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-12 date_invoice" style="
+                    position: fixed;
+                    top: 25mm;
+                    left: 215mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-esc="o._format_date_text_th(o.invoice_date)"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_name" style="
+                    position: fixed;
+                    top: 36mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_id.name"/>
+                </div>
+                <div calss="col-6 delivery_name" style="
+                    position: fixed;
+                    top: 38mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_shipping_id.parent_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_shipping_id.parent_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_shipping_id.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_address" style="
+                    position: fixed;
+                    top: 43mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_id.street2"/>
+                    <span t-field="o.partner_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_id.city"/>
+                    <span t-field="o.partner_id.zip"/>
+                    <span t-field="o.partner_id.country_id.name"/>
+                    <br/>
+                    <span> เลขประจำตัวผู้เสียภาษี</span>
+                    <span t-field="o.partner_id.vat"/>
+                </div>
+                <div calss="col-6 delivery_address" style="
+                    position: fixed;
+                    top: 43mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_shipping_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.street2"/>
+                    <span t-field="o.partner_shipping_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.city"/>
+                    <span t-field="o.partner_shipping_id.zip"/>
+                    <span t-field="o.partner_shipping_id.country_id.name"/>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-2 ref_origin" style="
+                    position: fixed;
+                    top: 78mm;
+                    left: 5mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_origin"/>
+                </div>
+                <div calss="col-2 trems" style="
+                    position: fixed;
+                    top: 78mm;
+                    left: 34mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_payment_term_id.name"/>
+                </div>
+                <div calss="col-2 due_date" style="
+                    position: fixed;
+                    top: 78mm;
+                    left: 67mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-esc="o._format_date_text_th(o.due_date)"/>
+                </div>
+                <div calss="col-2 sale_speron" style="
+                    position: fixed;
+                    top: 78mm;
+                    left: 102mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_user_id.name"/>
+                </div>
+                <div calss="col-4 notes" style="
+                    position: fixed;
+                    top: 78mm;
+                    left: 138mm;
+                    width: 100mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: left;">
+                    <span t-field="o.partner_shipping_id.comment"/>
+                </div>
+            </div>
+            <table name="invoice_line_table" style="position: fixed; top: 100mm; width: 100%; left: 5mm;">
+                <tbody style="width: 100%;">
+                    <t t-set="index" t-value="1"/>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="index - 1 &lt; total_item">
+                            <tr>
+                                <td style="
+                                    width: 3%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-esc="index"/>
+                                </td>
+                                <td style="
+                                    padding-left: 4px;
+                                    width: 12%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.default_code"/>
+                                </td>
+                                <td style="
+                                    width: 49%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.name"/>
+                                </td>
+                                <td style="
+                                    width: 13%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-field="items[index - 1].quantity" t-options='{"widget": "float", "precision": 0}'/>
+                                    <span t-field="items[index - 1].product_uom_id.name"/>
+                                </td>
+                                <td style="
+                                    padding-right: 4px;
+                                    width: 8%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_unit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="
+                                    width: 11%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="width: 4%; padding-bottom: 4mm;"></td>
+                                <t t-set="index" t-value="index + 1"/>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-if="current_page == total_page">
+                <div class="row">
+                    <div calss="col-12 number_to_text" style="
+                        position: fixed;
+                        top: 265mm;
+                        left: 5mm;
+                        width: 153mm;
+                        font-size: 16px; 
+                        font-weight: 500;
+                        text-align: center;">
+                        <p>(<span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount_total, 'th_TH', 'th')"/>)</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 263mm;
+                        right: 38mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="o.bill_discount_percent > 0">
+                            <span t-field="o.bill_discount_percent" t-options='{"widget": "float", "precision": 2}'/>%
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 263mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.bill_discount" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_untax" style="
+                        position: fixed;
+                        top: 272mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax == 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_untaxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax_total" style="
+                        position: fixed;
+                        top: 281mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_taxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount > 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax" style="
+                        position: fixed;
+                        top: 290mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0">
+                            <span t-esc="amount_tax" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_total" style="
+                        position: fixed;
+                        top: 299mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.amount_total" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- top 348 -->
+        <template id="invoice_layout_page2">
+            <div class="row">
+                <div calss="col-12 invoice_number" style="
+                    position: fixed;
+                    top: 363mm;
+                    left: 215mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-field="o.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-12 date_invoice" style="
+                    position: fixed;
+                    top: 373mm;
+                    left: 215mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-esc="o._format_date_text_th(o.invoice_date)"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_name" style="
+                    position: fixed;
+                    top: 384mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_id.name"/>
+                </div>
+                <div calss="col-6 delivery_name" style="
+                    position: fixed;
+                    top: 386mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_shipping_id.parent_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_shipping_id.parent_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_shipping_id.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_address" style="
+                    position: fixed;
+                    top: 391mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_id.street2"/>
+                    <span t-field="o.partner_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_id.city"/>
+                    <span t-field="o.partner_id.zip"/>
+                    <span t-field="o.partner_id.country_id.name"/>
+                    <br/>
+                    <span> เลขประจำตัวผู้เสียภาษี</span>
+                    <span t-field="o.partner_id.vat"/>
+                </div>
+                <div calss="col-6 delivery_address" style="
+                    position: fixed;
+                    top: 391mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_shipping_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.street2"/>
+                    <span t-field="o.partner_shipping_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.city"/>
+                    <span t-field="o.partner_shipping_id.zip"/>
+                    <span t-field="o.partner_shipping_id.country_id.name"/>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-2 ref_origin" style="
+                    position: fixed;
+                    top: 426mm;
+                    left: 5mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_origin"/>
+                </div>
+                <div calss="col-2 trems" style="
+                    position: fixed;
+                    top: 426mm;
+                    left: 34mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_payment_term_id.name"/>
+                </div>
+                <div calss="col-2 due_date" style="
+                    position: fixed;
+                    top: 426mm;
+                    left: 67mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-esc="o._format_date_text_th(o.due_date)"/>
+                </div>
+                <div calss="col-2 sale_speron" style="
+                    position: fixed;
+                    top: 426mm;
+                    left: 102mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_user_id.name"/>
+                </div>
+                <div calss="col-4 notes" style="
+                    position: fixed;
+                    top: 426mm;
+                    left: 138mm;
+                    width: 100mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: left;">
+                    <span t-field="o.partner_shipping_id.comment"/>
+                </div>
+            </div>
+
+            <table name="invoice_line_table" style="position: fixed; top: 448mm; width: 100%; left: 5mm;">
+                <tbody style="width: 100%;">
+                    <t t-set="index" t-value="16"/>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="index - 1 &lt; total_item">
+                            <tr>
+                                <td style="
+                                    width: 3%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-esc="index"/>
+                                </td>
+                                <td style="
+                                    padding-left: 4px;
+                                    width: 12%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.default_code"/>
+                                </td>
+                                <td style="
+                                    width: 49%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.name"/>
+                                </td>
+                                <td style="
+                                    width: 13%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-field="items[index - 1].quantity" t-options='{"widget": "float", "precision": 0}'/>
+                                    <span t-field="items[index - 1].product_uom_id.name"/>
+                                </td>
+                                <td style="
+                                    padding-right: 4px;
+                                    width: 8%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_unit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="
+                                    width: 11%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="width: 4%; padding-bottom: 4mm;"></td>
+                                <t t-set="index" t-value="index + 1"/>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-if="current_page == total_page" >
+                <div class="row">
+                    <div calss="col-12 number_to_text" style="
+                        position: fixed;
+                        top: 613mm;
+                        left: 5mm;
+                        width: 153mm;
+                        font-size: 16px; 
+                        font-weight: 500;
+                        text-align: center;">
+                        <p>(<span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount_total, 'th_TH', 'th')"/>)</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 611mm;
+                        right: 38mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="o.bill_discount_percent > 0">
+                            <span t-field="o.bill_discount_percent" t-options='{"widget": "float", "precision": 2}'/>%
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 611mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.bill_discount" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_untax" style="
+                        position: fixed;
+                        top: 620mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax == 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_untaxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax_total" style="
+                        position: fixed;
+                        top: 629mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_taxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount > 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax" style="
+                        position: fixed;
+                        top: 638mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0">
+                            <span t-esc="amount_tax" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_total" style="
+                        position: fixed;
+                        top: 647mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.amount_total" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- top 696 -->
+        <template id="invoice_layout_page3">
+            <div class="row">
+                <div calss="col-12 invoice_number" style="
+                    position: fixed;
+                    top: 711mm;
+                    left: 215mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-field="o.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-12 date_invoice" style="
+                    position: fixed;
+                    top: 721mm;
+                    left: 215mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-esc="o._format_date_text_th(o.invoice_date)"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_name" style="
+                    position: fixed;
+                    top: 732mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_id.name"/>
+                </div>
+                <div calss="col-6 delivery_name" style="
+                    position: fixed;
+                    top: 734mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_shipping_id.parent_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_shipping_id.parent_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_shipping_id.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_address" style="
+                    position: fixed;
+                    top: 739mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_id.street2"/>
+                    <span t-field="o.partner_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_id.city"/>
+                    <span t-field="o.partner_id.zip"/>
+                    <span t-field="o.partner_id.country_id.name"/>
+                    <br/>
+                    <span> เลขประจำตัวผู้เสียภาษี</span>
+                    <span t-field="o.partner_id.vat"/>
+                </div>
+                <div calss="col-6 delivery_address" style="
+                    position: fixed;
+                    top: 739mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_shipping_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.street2"/>
+                    <span t-field="o.partner_shipping_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.city"/>
+                    <span t-field="o.partner_shipping_id.zip"/>
+                    <span t-field="o.partner_shipping_id.country_id.name"/>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-2 ref_origin" style="
+                    position: fixed;
+                    top: 774mm;
+                    left: 5mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_origin"/>
+                </div>
+                <div calss="col-2 trems" style="
+                    position: fixed;
+                    top: 774mm;
+                    left: 34mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_payment_term_id.name"/>
+                </div>
+                <div calss="col-2 due_date" style="
+                    position: fixed;
+                    top: 774mm;
+                    left: 67mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-esc="o._format_date_text_th(o.due_date)"/>
+                </div>
+                <div calss="col-2 sale_speron" style="
+                    position: fixed;
+                    top: 774mm;
+                    left: 102mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_user_id.name"/>
+                </div>
+                <div calss="col-4 notes" style="
+                    position: fixed;
+                    top: 774mm;
+                    left: 138mm;
+                    width: 100mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: left;">
+                    <span t-field="o.partner_shipping_id.comment"/>
+                </div>
+            </div>
+
+            <table name="invoice_line_table" style="position: fixed; top: 796mm; width: 100%; left: 5mm;">
+                <tbody style="width: 100%;">
+                    <t t-set="index" t-value="31"/>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="index - 1 &lt; total_item">
+                            <tr>
+                                <td style="
+                                    width: 3%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-esc="index"/>
+                                </td>
+                                <td style="
+                                    padding-left: 4px;
+                                    width: 12%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.default_code"/>
+                                </td>
+                                <td style="
+                                    width: 49%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.name"/>
+                                </td>
+                                <td style="
+                                    width: 13%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-field="items[index - 1].quantity" t-options='{"widget": "float", "precision": 0}'/>
+                                    <span t-field="items[index - 1].product_uom_id.name"/>
+                                </td>
+                                <td style="
+                                    padding-right: 4px;
+                                    width: 8%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_unit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="
+                                    width: 11%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="width: 4%; padding-bottom: 4mm;"></td>
+                                <t t-set="index" t-value="index + 1"/>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-if="current_page == total_page">
+                <div class="row">
+                    <div calss="col-12 number_to_text" style="
+                        position: fixed;
+                        top: 961mm;
+                        left: 5mm;
+                        width: 153mm;
+                        font-size: 16px; 
+                        font-weight: 500;
+                        text-align: center;">
+                        <p>(<span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount_total, 'th_TH', 'th')"/>)</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 959mm;
+                        right: 38mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="o.bill_discount_percent > 0">
+                            <span t-field="o.bill_discount_percent" t-options='{"widget": "float", "precision": 2}'/>%
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 959mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.bill_discount" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_untax" style="
+                        position: fixed;
+                        top: 968mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax == 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_untaxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax_total" style="
+                        position: fixed;
+                        top: 977mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_taxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount > 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax" style="
+                        position: fixed;
+                        top: 986mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0">
+                            <span t-esc="amount_tax" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_total" style="
+                        position: fixed;
+                        top: 995mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.amount_total" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- top 1045 -->
+        <template id="invoice_layout_page4">
+            <div class="row">
+                <div calss="col-12 invoice_number" style="
+                    position: fixed;
+                    top: 1060mm;
+                    left: 215mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-field="o.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-12 date_invoice" style="
+                    position: fixed;
+                    top: 1070mm;
+                    left: 215mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-esc="o._format_date_text_th(o.invoice_date)"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_name" style="
+                    position: fixed;
+                    top: 1081mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_id.name"/>
+                </div>
+                <div calss="col-6 delivery_name" style="
+                    position: fixed;
+                    top: 1081mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_shipping_id.parent_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_shipping_id.parent_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_shipping_id.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_address" style="
+                    position: fixed;
+                    top: 1088mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_id.street2"/>
+                    <span t-field="o.partner_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_id.city"/>
+                    <span t-field="o.partner_id.zip"/>
+                    <span t-field="o.partner_id.country_id.name"/>
+                    <br/>
+                    <span> เลขประจำตัวผู้เสียภาษี</span>
+                    <span t-field="o.partner_id.vat"/>
+                </div>
+                <div calss="col-6 delivery_address" style="
+                    position: fixed;
+                    top: 1088mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_shipping_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.street2"/>
+                    <span t-field="o.partner_shipping_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.city"/>
+                    <span t-field="o.partner_shipping_id.zip"/>
+                    <span t-field="o.partner_shipping_id.country_id.name"/>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-2 ref_origin" style="
+                    position: fixed;
+                    top: 1123mm;
+                    left: 5mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_origin"/>
+                </div>
+                <div calss="col-2 trems" style="
+                    position: fixed;
+                    top: 1123mm;
+                    left: 34mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_payment_term_id.name"/>
+                </div>
+                <div calss="col-2 due_date" style="
+                    position: fixed;
+                    top: 1123mm;
+                    left: 67mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-esc="o._format_date_text_th(o.due_date)"/>
+                </div>
+                <div calss="col-2 sale_speron" style="
+                    position: fixed;
+                    top: 1123mm;
+                    left: 102mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_user_id.name"/>
+                </div>
+                <div calss="col-4 notes" style="
+                    position: fixed;
+                    top: 1123mm;
+                    left: 138mm;
+                    width: 100mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: left;">
+                    <span t-field="o.partner_shipping_id.comment"/>
+                </div>
+            </div>
+
+            <table name="invoice_line_table" style="position: fixed; top: 1145mm; width: 100%; left: 5mm;">
+                <tbody style="width: 100%;">
+                    <t t-set="index" t-value="46"/>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="index - 1 &lt; total_item">
+                            <tr>
+                                <td style="
+                                    width: 3%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-esc="index"/>
+                                </td>
+                                <td style="
+                                    padding-left: 4px;
+                                    width: 12%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.default_code"/>
+                                </td>
+                                <td style="
+                                    width: 49%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.name"/>
+                                </td>
+                                <td style="
+                                    width: 13%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-field="items[index - 1].quantity" t-options='{"widget": "float", "precision": 0}'/>
+                                    <span t-field="items[index - 1].product_uom_id.name"/>
+                                </td>
+                                <td style="
+                                    padding-right: 4px;
+                                    width: 8%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_unit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="
+                                    width: 11%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="width: 4%; padding-bottom: 4mm;"></td>
+                                <t t-set="index" t-value="index + 1"/>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-if="current_page == total_page">
+                <div class="row">
+                    <div calss="col-12 number_to_text" style="
+                        position: fixed;
+                        top: 1310mm;
+                        left: 5mm;
+                        width: 153mm;
+                        font-size: 16px; 
+                        font-weight: 500;
+                        text-align: center;">
+                        <p>(<span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount_total, 'th_TH', 'th')"/>)</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 1308mm;
+                        right: 38mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="o.bill_discount_percent > 0">
+                            <span t-field="o.bill_discount_percent" t-options='{"widget": "float", "precision": 2}'/>%
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 1308mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.bill_discount" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_untax" style="
+                        position: fixed;
+                        top: 1317mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax == 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_untaxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax_total" style="
+                        position: fixed;
+                        top: 1326mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_taxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount > 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax" style="
+                        position: fixed;
+                        top: 1335mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0">
+                            <span t-esc="amount_tax" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_total" style="
+                        position: fixed;
+                        top: 1344mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.amount_total" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- top 1393 -->
+        <template id="invoice_layout_page5">
+            <div class="row">
+                <div calss="col-12 invoice_number" style="
+                    position: fixed;
+                    top: 1408mm;
+                    left: 215mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-field="o.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-12 date_invoice" style="
+                    position: fixed;
+                    top: 1418mm;
+                    left: 215mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;">
+                    <span t-esc="o._format_date_text_th(o.invoice_date)"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_name" style="
+                    position: fixed;
+                    top: 1429mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_id.name"/>
+                </div>
+                <div calss="col-6 delivery_name" style="
+                    position: fixed;
+                    top: 1431mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <t t-if="o.partner_shipping_id.parent_id.internal_code">
+                        <span> (</span>
+                        <span t-field="o.partner_shipping_id.parent_id.internal_code"/>
+                        <span>)</span>
+                    </t>
+                    <span t-field="o.partner_shipping_id.name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-6 partner_address" style="
+                    position: fixed;
+                    top: 1436mm;
+                    left: 20mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_id.street2"/>
+                    <span t-field="o.partner_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_id.city"/>
+                    <span t-field="o.partner_id.zip"/>
+                    <span t-field="o.partner_id.country_id.name"/>
+                    <br/>
+                    <span> เลขประจำตัวผู้เสียภาษี</span>
+                    <span t-field="o.partner_id.vat"/>
+                </div>
+                <div calss="col-6 delivery_address" style="
+                    position: fixed;
+                    top: 1436mm;
+                    left: 140mm;
+                    width: 90mm;
+                    font-size: 14px; 
+                    font-weight: 500;">
+                    <span t-field="o.partner_shipping_id.street"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.street2"/>
+                    <span t-field="o.partner_shipping_id.street3"/>
+                    <br/>
+                    <span t-field="o.partner_shipping_id.city"/>
+                    <span t-field="o.partner_shipping_id.zip"/>
+                    <span t-field="o.partner_shipping_id.country_id.name"/>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div calss="col-2 ref_origin" style="
+                    position: fixed;
+                    top: 1471mm;
+                    left: 5mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_origin"/>
+                </div>
+                <div calss="col-2 trems" style="
+                    position: fixed;
+                    top: 1471mm;
+                    left: 34mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_payment_term_id.name"/>
+                </div>
+                <div calss="col-2 due_date" style="
+                    position: fixed;
+                    top: 1471mm;
+                    left: 67mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-esc="o._format_date_text_th(o.due_date)"/>
+                </div>
+                <div calss="col-2 sale_speron" style="
+                    position: fixed;
+                    top: 1471mm;
+                    left: 102mm;
+                    width: 30mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: center;">
+                    <span t-field="o.invoice_user_id.name"/>
+                </div>
+                <div calss="col-4 notes" style="
+                    position: fixed;
+                    top: 1471mm;
+                    left: 138mm;
+                    width: 100mm;
+                    font-size: 12px; 
+                    font-weight: 500;
+                    text-align: left;">
+                    <span t-field="o.partner_shipping_id.comment"/>
+                </div>
+            </div>
+
+            <table name="invoice_line_table" style="position: fixed; top: 1493mm; width: 100%; left: 5mm;">
+                <tbody style="width: 100%;">
+                    <t t-set="index" t-value="61"/>
+                    <t t-foreach="range(0,item_per_page,1)" t-as="l">
+                        <t t-if="index - 1 &lt; total_item">
+                            <tr>
+                                <td style="
+                                    width: 3%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-esc="index"/>
+                                </td>
+                                <td style="
+                                    padding-left: 4px;
+                                    width: 12%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.default_code"/>
+                                </td>
+                                <td style="
+                                    width: 49%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: left;">
+                                    <span t-field="items[index - 1].product_id.name"/>
+                                </td>
+                                <td style="
+                                    width: 13%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: center;">
+                                    <span t-field="items[index - 1].quantity" t-options='{"widget": "float", "precision": 0}'/>
+                                    <span t-field="items[index - 1].product_uom_id.name"/>
+                                </td>
+                                <td style="
+                                    padding-right: 4px;
+                                    width: 8%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_unit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="
+                                    width: 11%;
+                                    font-size: 14px;
+                                    padding-bottom: 4mm;
+                                    font-weight: 500;
+                                    text-align: right;">
+                                    <span t-field="items[index - 1].price_subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="width: 4%; padding-bottom: 4mm;"></td>
+                                <t t-set="index" t-value="index + 1"/>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-if="current_page == total_page">
+                <div class="row">
+                    <div calss="col-12 number_to_text" style="
+                        position: fixed;
+                        top: 1658mm;
+                        left: 5mm;
+                        width: 153mm;
+                        font-size: 16px; 
+                        font-weight: 500;
+                        text-align: center;">
+                        <p>(<span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount_total, 'th_TH', 'th')"/>)</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 1656mm;
+                        right: 38mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="o.bill_discount_percent > 0">
+                            <span t-field="o.bill_discount_percent" t-options='{"widget": "float", "precision": 2}'/>%
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 discount_amount" style="
+                        position: fixed;
+                        top: 1656mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.bill_discount" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_untax" style="
+                        position: fixed;
+                        top: 1665mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax == 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_untaxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax_total" style="
+                        position: fixed;
+                        top: 1674mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0 and o.bill_discount == 0">
+                            <span t-esc="o._get_total_amount_taxed()" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                        <t t-if="amount_tax > 0 and o.bill_discount > 0">
+                            <span t-esc="tax_totals['amount_untaxed']" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_tax" style="
+                        position: fixed;
+                        top: 1683mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <t t-if="amount_tax > 0">
+                            <span t-esc="amount_tax" t-options='{"widget": "float", "precision": 2}'/>
+                        </t>
+                    </div>
+                </div>
+                <div class="row">
+                    <div calss="col-12 amount_total" style="
+                        position: fixed;
+                        top: 1692mm;
+                        right: 5mm;
+                        width: 30mm;
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-align: right;">
+                        <span t-field="o.amount_total" t-options='{"widget": "float", "precision": 2}'/>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

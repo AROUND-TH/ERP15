@@ -1,0 +1,150 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* custom_sale_pricelist
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-06 09:43+0000\n"
+"PO-Revision-Date: 2022-01-06 17:05+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: th_TH\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__baseprice_subtotal
+msgid "Base Price Subtotal"
+msgstr "รวมราคาตั้งต้น"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_product_pricelist__compare_pricelist_base_id
+msgid "Base Pricelist for compare (ราคาประกาศ)"
+msgstr "Base Pricelist for compare (ราคาประกาศ)"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__amount_base
+msgid "Base Total"
+msgstr "ราคาตั้งต้นรวม"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__compare_pricelist_base_id
+msgid "Compare Base Pricelist"
+msgstr "รายการราคาประกาศ"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__compare_baseprice_unit
+msgid "Compare Base Unit Price"
+msgstr "ราคาประกาศ"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__compare_pricelist_gp_id
+msgid "Compare GP Pricelist"
+msgstr "รายการราคาประกาศ+GP"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__compare_gpprice_unit
+msgid "Compare GP Unit Price"
+msgstr "ราคาประกาศ+GP"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_product_pricelist__display_name
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__display_name
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__display_name
+msgid "Display Name"
+msgstr "ชื่อที่ใช้แสดง"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__freight_subtotal
+msgid "Freight Subtotal"
+msgstr "รวมค่าขนส่ง"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__amount_freight
+msgid "Freight Total"
+msgstr "ค่าขนส่งรวม"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__gpprice_subtotal
+msgid "GP Price Subtotal"
+msgstr "รวมราคา GP"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_product_pricelist__compare_pricelist_gp_id
+msgid "GP Pricelist for compare (ราคา+GP)"
+msgstr "GP Pricelist for compare (ราคา+GP)"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__gp_subtotal
+msgid "GP Subtotal"
+msgstr "รวม GP"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__amount_gp
+msgid "GP Total"
+msgstr "GP รวม"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_product_pricelist__id
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order__id
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__id
+msgid "ID"
+msgstr "รหัส"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,help:custom_sale_pricelist.field_sale_order__compare_pricelist_gp_id
+msgid ""
+"If you change GP pricelist for compare, only newly added lines will be "
+"affected."
+msgstr ""
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,help:custom_sale_pricelist.field_sale_order__compare_pricelist_base_id
+msgid ""
+"If you change base pricelist for compare, only newly added lines will be "
+"affected."
+msgstr ""
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_product_pricelist____last_update
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order____last_update
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line____last_update
+msgid "Last Modified on"
+msgstr "แก้ไขครั้งสุดท้ายเมื่อ"
+
+#. module: custom_sale_pricelist
+#: model:ir.model,name:custom_sale_pricelist.model_product_pricelist
+msgid "Pricelist"
+msgstr "รายการราคา"
+
+#. module: custom_sale_pricelist
+#: code:addons/custom_sale_pricelist/models/sale_order.py:0
+#, python-format
+msgid "Product prices have been recomputed according to pricelist <b>%s<b> "
+msgstr ""
+
+#. module: custom_sale_pricelist
+#: model:ir.model,name:custom_sale_pricelist.model_sale_order
+msgid "Sales Order"
+msgstr "ใบสั่งขาย"
+
+#. module: custom_sale_pricelist
+#: model:ir.model,name:custom_sale_pricelist.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "รายการคำสั่งขาย"
+
+#. module: custom_sale_pricelist
+#: model:ir.model.fields,field_description:custom_sale_pricelist.field_sale_order_line__price_subtotal_nodiscount
+msgid "Subtotal Without Discount"
+msgstr "ราคารวม ไม่มีส่วนลด"
+
+#. module: custom_sale_pricelist
+#: code:addons/custom_sale_pricelist/models/sale_order_line.py:0
+#, python-format
+msgid "Warning for %s"
+msgstr "แจ้งเตือนสำหรับ %s"
