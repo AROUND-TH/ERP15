@@ -1,0 +1,556 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sh_all_in_one_backdate_adv
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-19 07:38+0000\n"
+"PO-Revision-Date: 2021-10-19 07:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_bill
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_bill
+msgid "Bill has Same Backdate"
+msgstr "Bill có cùng ngày tồn đọng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.mrp_production_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.purchase_order_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sale_order_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.stock_picking_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.stock_scrap_backdate_wizard_view_form
+msgid "Cancel"
+msgstr "Hủy bỏ"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_res_company
+msgid "Companies"
+msgstr "Các công ty"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__company_id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__company_id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__company_id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__company_id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__company_id
+msgid "Company"
+msgstr "Công ty"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_res_config_settings
+msgid "Config Settings"
+msgstr "Cấu hình cài đặt"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.mrp_production_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.purchase_order_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sale_order_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.stock_picking_backdate_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.stock_scrap_backdate_wizard_view_form
+msgid "Confirm"
+msgstr "Xác nhận"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__create_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__create_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__create_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__create_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__create_uid
+msgid "Created by"
+msgstr "Được tạo bởi"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__create_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__create_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__create_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__create_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__create_date
+msgid "Created on"
+msgstr "Được tạo ra"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__date_done
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_scrap__date_done
+msgid "Date"
+msgstr "Ngày"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_stock_move
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_stock_move
+msgid "Delivery Order has Same Backdate "
+msgstr "Đơn đặt hàng có cùng một ngược lại"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__display_name
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__display_name
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__display_name
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__display_name
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__enable_backdate_for_mrp
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__enable_backdate_for_mrp
+msgid "Enable Backdate for MRP"
+msgstr "Bật backdate cho MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_picking
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_picking
+msgid "Enable Backdate for Picking"
+msgstr "Bật backdate để chọn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_purchase_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_purchase_order
+msgid "Enable Backdate for Purchase Order"
+msgstr "Bật backdate cho đơn đặt hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_sale_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_sale_order
+msgid "Enable Backdate for Sale Order"
+msgstr "Bật đơn đặt hàng để bán backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_scrap
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_scrap
+msgid "Enable Backdate for Scrap"
+msgstr "Bật backdate cho phế liệu"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_for_mrp_production
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_for_mrp_production
+msgid "Enable Remark for MRP Production"
+msgstr "Bật nhận xét cho sản xuất MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_for_picking
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_for_picking
+msgid "Enable Remark for Picking"
+msgstr "Bật nhận xét để chọn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_for_purchase_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_for_purchase_order
+msgid "Enable Remark for Purchase Order"
+msgstr "Bật nhận xét cho đơn đặt hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_for_sale_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_for_sale_order
+msgid "Enable Remark for Sale Order"
+msgstr "Bật nhận xét để bán hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_for_scrap
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_for_scrap
+msgid "Enable Remark for Scrap"
+msgstr "Bật nhận xét cho phế liệu"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__id
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__id
+msgid "ID"
+msgstr "TÔI"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__backdate_for_invoice
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__backdate_for_invoice
+msgid "Invoice has Same Backdate"
+msgstr "Hóa đơn có cùng backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_mrp_production__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_purchase_order__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sale_order__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__is_boolean
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_scrap__is_boolean
+msgid "Is Boolean"
+msgstr "Là boolean"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_mrp_production__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_purchase_order__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sale_order__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__is_remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_scrap__is_remarks
+msgid "Is Remarks"
+msgstr "Là nhận xét"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__is_remarks_for_mrp
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__is_remarks_for_mrp
+msgid "Is Remarks for MRP"
+msgstr "Là nhận xét cho MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_bank_statement_line__is_remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_move__is_remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_payment__is_remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__is_remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__is_remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__is_remarks_for_purchase
+msgid "Is Remarks for Purchase"
+msgstr "Là nhận xét để mua hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_bank_statement_line__is_remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_move__is_remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_payment__is_remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__is_remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__is_remarks_for_sale
+msgid "Is Remarks for Sale"
+msgstr "Là nhận xét để bán"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__is_remarks_for_picking
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__is_remarks_for_picking
+msgid "Is Remarks for picking"
+msgstr "Là nhận xét để chọn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__is_remarks_for_sale
+msgid "Is Remarks for sale"
+msgstr "Là nhận xét để bán"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__is_remarks_for_scrap
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__is_remarks_for_scrap
+msgid "Is Remarks for scrap"
+msgstr "Là nhận xét cho phế liệu"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_mrp_production__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_purchase_order__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sale_order__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__is_remarks_mandatory
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_scrap__is_remarks_mandatory
+msgid "Is remarks mandatory"
+msgstr "Là nhận xét bắt buộc"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_account_move
+msgid "Journal Entry"
+msgstr "Mục nhập nhật ký"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard____last_update
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard____last_update
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard____last_update
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard____last_update
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard____last_update
+msgid "Last Modified on"
+msgstr "Sửa đổi lần cuối"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__write_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__write_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__write_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__write_uid
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__write_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__write_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__write_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__write_date
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối vào"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sh_mrp_backdate_res_config_settings
+msgid "MRP Backdate Settings"
+msgstr "Cài đặt backdate MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sh_mrp_backdate_wizard
+msgid "MRP Backdate Wizard"
+msgstr "Trình hướng dẫn Backdate MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.actions.server,name:sh_all_in_one_backdate_adv.model_mrp_production_action_open_backdate_wizard
+#: model:ir.actions.server,name:sh_all_in_one_backdate_adv.model_purchase_order_action_open_backdate_wizard
+#: model:ir.actions.server,name:sh_all_in_one_backdate_adv.model_sale_order_action_open_backdate_wizard
+#: model:ir.actions.server,name:sh_all_in_one_backdate_adv.model_stock_picking_action_open_backdate_wizard
+#: model:ir.actions.server,name:sh_all_in_one_backdate_adv.model_stock_scrap_action_open_backdate_wizard
+msgid "Mass Assign Backdate"
+msgstr "Gán hàng loạt backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:res.groups,name:sh_all_in_one_backdate_adv.group_mass_assign_backdate_mrp
+msgid "Mass Assign Backdate(MRP)"
+msgstr "Gán hàng loạt backdate (MRP)"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:res.groups,name:sh_all_in_one_backdate_adv.group_mass_assign_backdate_purchase
+msgid "Mass Assign Backdate(Purchase)"
+msgstr "Gán hàng loạt backdate (mua hàng)"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:res.groups,name:sh_all_in_one_backdate_adv.group_mass_assign_backdate_sale
+msgid "Mass Assign Backdate(Sale)"
+msgstr "Gán hàng loạt Backdate (Bán)"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:res.groups,name:sh_all_in_one_backdate_adv.group_mass_assign_backdate_stock
+msgid "Mass Assign Backdate(Stock)"
+msgstr "Gán hàng loạt backdate (cổ phiếu)"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__mrp_production_ids
+msgid "Mrp Production"
+msgstr "Sản xuất MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: code:addons/sh_all_in_one_backdate_adv/sh_stock_backdate/models/stock_scrap.py:0
+#, python-format
+msgid "New"
+msgstr "Mới"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__date_order
+msgid "Order Date"
+msgstr "Ngày đặt hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sh_picking_backdate_wizard
+msgid "Picking Backdate Wizard"
+msgstr "Chọn thuật sĩ backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: code:addons/sh_all_in_one_backdate_adv/sh_purchase_backdate/models/purchase_order.py:0
+#, python-format
+msgid "Please define an accounting purchase journal for the company %s (%s)."
+msgstr "Vui lòng xác định một tạp chí mua hàng kế toán cho công ty %s ( %s)."
+
+#. module: sh_all_in_one_backdate_adv
+#: code:addons/sh_all_in_one_backdate_adv/sh_sale_backdate/models/sale_order.py:0
+#, python-format
+msgid "Please define an accounting sales journal for the company %s (%s)."
+msgstr "Vui lòng xác định một tạp chí bán hàng kế toán cho công ty %s ( %s)."
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr "Di chuyển sản phẩm (dòng di chuyển chứng khoán)"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_mrp_production
+msgid "Production Order"
+msgstr "Lệnh sản xuất"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sh_purchase_backdate_res_config_settings
+msgid "Purchase Backdate Settings"
+msgstr "Mua cài đặt backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sh_purchase_backdate_wizard
+msgid "Purchase Backdate Wizard"
+msgstr "Mua Trình hướng dẫn Backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_purchase_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__purchase_order_ids
+msgid "Purchase Order"
+msgstr "Đơn đặt hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__date_planned
+msgid "Receipt Date"
+msgstr "Ngày nhận"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_mandatory_for_mrp_production
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_mandatory_for_mrp_production
+msgid "Remark Mandatory for MRP Production"
+msgstr "Ghi chú bắt buộc đối với sản xuất MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_mandatory_for_picking
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_mandatory_for_picking
+msgid "Remark Mandatory for Picking"
+msgstr "Ghi chú bắt buộc để chọn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_mandatory_for_purchase_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_mandatory_for_purchase_order
+msgid "Remark Mandatory for Purchase Order"
+msgstr "Ghi chú bắt buộc đối với đơn đặt hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_mandatory_for_sale_order
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_mandatory_for_sale_order
+msgid "Remark Mandatory for Sale Order"
+msgstr "Ghi chú bắt buộc để bán hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_company__remark_mandatory_for_scrap
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_res_config_settings__remark_mandatory_for_scrap
+msgid "Remark Mandatory for Scrap"
+msgstr "Ghi chú bắt buộc đối với phế liệu"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_mrp_production__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_purchase_order__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sale_order__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_purchase_backdate_wizard__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__remarks
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_scrap__remarks
+msgid "Remarks"
+msgstr "Nhận xét"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__remarks_for_mrp
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__remarks_for_mrp
+msgid "Remarks for MRP"
+msgstr "Nhận xét cho MRP"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_bank_statement_line__remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_move__remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_payment__remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__remarks_for_purchase
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__remarks_for_purchase
+msgid "Remarks for Purchase"
+msgstr "Nhận xét để mua"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_bank_statement_line__remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_move__remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_account_payment__remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__remarks_for_sale
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_picking__remarks_for_sale
+msgid "Remarks for Sale"
+msgstr "Nhận xét để bán"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__remarks_for_picking
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__remarks_for_picking
+msgid "Remarks for picking"
+msgstr "Nhận xét để chọn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__remarks_for_sale
+msgid "Remarks for sale"
+msgstr "Nhận xét để bán"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__remarks_for_scrap
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move_line__remarks_for_scrap
+msgid "Remarks for scrap"
+msgstr "Nhận xét cho phế liệu"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sh_sale_backdate_res_config_settings
+msgid "Sale Backdate Settings"
+msgstr "Bán cài đặt backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sh_sale_backdate_wizard
+msgid "Sale Backdate Wizard"
+msgstr "Bán thuật sĩ backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_sale_backdate_wizard__sale_order_ids
+msgid "Sale Order"
+msgstr "Để bán"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Hóa đơn thanh toán trước bán hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sale_order
+msgid "Sales Order"
+msgstr "Đơn đặt hàng"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_mrp_backdate_wizard__date_planned_start
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__scheduled_date
+msgid "Scheduled Date"
+msgstr "Lịch hẹn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,help:sh_all_in_one_backdate_adv.field_stock_move_line__date
+msgid "Scheduled date until move is done, then date of actual move processing"
+msgstr "Ngày theo lịch trình cho đến khi di chuyển được thực hiện, sau đó ngày xử lý di chuyển thực tế"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_stock_scrap
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_scrap_backdate_wizard__scrap_ids
+msgid "Scrap"
+msgstr "Sắt vụn"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_sh_scrap_backdate_wizard
+msgid "Scrap Backdate Wizard"
+msgstr "Phù thủy ngược"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sh_stock_backdate_res_config_settings
+msgid "Stock Backdate Picking Settings"
+msgstr "Cài đặt chọn backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model_terms:ir.ui.view,arch_db:sh_all_in_one_backdate_adv.sh_stock_backdate_res_config_settings
+msgid "Stock Backdate Scrap Settings"
+msgstr "Cài đặt phế liệu backdate"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_stock_move
+msgid "Stock Move"
+msgstr "Cổ phiếu di chuyển"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_sh_picking_backdate_wizard__stock_picking_ids
+msgid "Stock Picking"
+msgstr "Chọn cổ phiếu"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model,name:sh_all_in_one_backdate_adv.model_stock_picking
+msgid "Transfer"
+msgstr "Chuyển khoản"
+
+#. module: sh_all_in_one_backdate_adv
+#: model:ir.model.fields,field_description:sh_all_in_one_backdate_adv.field_stock_move__scrap_id
+msgid "scrap id"
+msgstr "ID phế liệu"
