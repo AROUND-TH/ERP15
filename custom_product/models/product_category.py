@@ -20,21 +20,21 @@ class ProductCategory(models.Model):
         default=4,
     )
 
-    @api.constrains('running_digit')
-    def _validate_running_digit(self):
-        for rec in self:
-            if rec.running_digit <= 0:
-                raise ValidationError(_("Running No must be greater than 0."))
+    # @api.constrains('running_digit')
+    # def _validate_running_digit(self):
+    #     for rec in self:
+    #         if rec.running_digit <= 0:
+    #             raise ValidationError(_("Running No must be greater than 0."))
 
     @api.depends('material_id')
     def _compute_running_prefix(self):
         for rec in self:
-            if not rec.material_id or rec.running_digit <= 0:
-                rec.running_prefix = False
-            else:
+            if rec.material_id:
                 prefix = rec.material_id.name.upper()
                 prefix += "%(y)s"
                 rec.running_prefix = prefix
+            else:
+                rec.running_prefix = False
 
 
     @api.onchange('running_prefix')
