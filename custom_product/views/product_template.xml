@@ -10,6 +10,10 @@
                 <attribute name="force_save">1</attribute>
                 <attribute name="attrs">{'readonly': [('categ_id','!=',False)]}</attribute>
             </field>
+            <field name="sale_ok" position="attributes">
+                <attribute name="force_save">1</attribute>
+                <attribute name="readonly">1</attribute>
+            </field>
         </field>
     </record>
     <record id="product_template_form_view_manager" model="ir.ui.view">
@@ -20,6 +24,9 @@
         <field name="arch" type="xml">
             <field name="categ_id" position="attributes">
                 <attribute name="attrs">{'readonly': False}</attribute>
+            </field>
+            <field name="sale_ok" position="attributes">
+                <attribute name="readonly">0</attribute>
             </field>
         </field>
     </record>

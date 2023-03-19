@@ -7,6 +7,7 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
 
+    # @Override method button_validate
     def button_validate(self):
         res = super(StockPicking, self).button_validate()
 
@@ -16,10 +17,11 @@ class StockPicking(models.Model):
 
                 if product and product.custom_fleet_ok == True:
                     if product.qty_available > 0:
-                        product.sale_ok = True
+                        pass
+                        # @Remark for manual flag "Can be Sold"
+                        # product.sale_ok = True
                     else:
                         product.sale_ok = False
 
         return res
-
 
