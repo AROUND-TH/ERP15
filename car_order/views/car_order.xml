@@ -25,9 +25,10 @@
             <form string="Car Order" duplicate="0">
                 <field name="sale_id" invisible="1"/>
                 <header>
-                    <button name="action_done" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                    <field name="state" widget="statusbar"/>
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_done" type="object" string="Done" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', 'in', ['draft', 'cancel'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -62,17 +63,20 @@
                             <field name="payment_term_id"/>
                             <field name="pricelist_id"/>
                             <field name="currency_id" invisible="1"/>
-
                         </group>
                     </group>
-                    <group name="company_header" string="Product">
-                        <group>
+                    <group name="company_header" >
+                        <group string="Product">
                             <field name="product_id"/>
-                        </group>
-                        <group>
+                            <field name="pricelist_price"/>
                             <field name="start_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                             <field name="sale_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                             <field name="reserve_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                        </group>
+                        <group string="Warranty">
+                            <field name="number_of_years_warranty" string="Year"/>
+                            <field name="number_of_distance_warranty" string="Distance"/>
+                            <field name="value_of_warranty" string="Value" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                         </group>
                     </group>
                     <group name="company_header" string="Company">
@@ -84,7 +88,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Details">
+                        <page string="Premium">
                             <field name="order_line">
                                 <tree
                                     string="Order Lines"
@@ -99,6 +103,13 @@
                                 <group colspan="4"/>
                                 <group class="oe_subtotal_footer oe_right" colspan="2" >
                                     <field name="amount_total" />
+                                    <label for="margin" groups="base.group_user"/>
+                                    <div class="text-nowrap" groups="base.group_user">
+                                        <field name="margin" class="oe_inline"/>
+                                        <span class="oe_inline">
+                                            (<field name="margin_percent" nolabel="1" class="oe_inline" widget="percentage"/>)
+                                        </span>
+                                    </div>
                                 </group>
                                 <div class="oe_clear"/>
                             </group>
