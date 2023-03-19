@@ -88,7 +88,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Premium">
+                        <page string="Details">
                             <field name="order_line">
                                 <tree
                                     string="Order Lines"

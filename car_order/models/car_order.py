@@ -224,6 +224,11 @@ class CarOrder(models.Model):
                 taxes = self.product_id.taxes_id.compute_all(price_unit=rec.sale_price, currency=rec.currency_id,
                                                              product=rec.product_id, partner=rec.partner_shipping_id)
                 price_subtotal = taxes['total_excluded']
+                for line_id in rec.order_line:
+                    taxes = line_id.product_id.taxes_id.compute_all(price_unit=line_id.price, currency=rec.currency_id,
+                                                                    product=line_id.product_id,
+                                                                    partner=rec.partner_shipping_id)
+                    price_subtotal += taxes['total_excluded']
                 # find margin
                 margin = price_subtotal - (rec._get_purchase_price() * qty)
                 margin_percent = price_subtotal and margin / price_subtotal
@@ -253,7 +258,7 @@ class CarOrder(models.Model):
         for line in self.order_line:
             order_line.append((0, 0, {
                 'product_id': line.product_id.id,
-                'price_unit': 0
+                'price_unit': line.price
             }))
         sale_id = self.env['sale.order'].create({
             "car_order_id": self.id,
