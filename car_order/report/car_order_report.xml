@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_event_registration_badge" model="ir.actions.report">
+        <field name="name">ฟอร์มรายละเอียดการขาย</field>
+        <field name="model">car.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">car_order.car_order_report_template</field>
+        <field name="report_file">car_order.car_order_report_template</field>
+        <field name="print_report_name">'Form การขายรถยนต์ - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_car_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
