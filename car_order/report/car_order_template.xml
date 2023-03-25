@@ -5,88 +5,308 @@
             .border-bottom-black {
                 border-bottom: 1px solid;
             }
-        </style>
-        <t t-foreach="docs" t-as="doc">
-            <t t-call="web.html_container">
-                <div class="page mx-5">
-                    <t t-set="partner_id" t-value="doc.partner_id"/>
-                    <t t-set="vehicle_id" t-value="doc.product_id.product_tmpl_id.custom_vehicle_id"/>
-                    <h3 class="my-3 text-center">รายละเอียดการขายรถยนต์</h3>
-                    <div class="row col-12 d-inline-flex">
-                        <div class="col-1">ชื่อผู้ซื้อ</div>
-                        <div class="col-11"><p t-field="partner_id.name" class="border-bottom-black pl-2"/></div>
-                        <div class="col-1">ที่อยู่</div>
-                        <div class="col-11">
-                            <p t-field="partner_id.contact_address" class="border-bottom-black pl-2"/></div>
-                        <div class="col-1">โทรศัพท์</div>
-                        <div class="col-11"><p t-field="partner_id.phone" class="border-bottom-black pl-2"/></div>
-                        <div class="col-4 d-inline-flex p-0">
-                            <div class="col-3">รุ่นรถ</div>
-                            <div class="col-9 pr-0"><p t-field="vehicle_id.model_id.name" class="border-bottom-black pl-2"/></div>
-                        </div>
-                        <div class="col-4 d-inline-flex p-0">
-                            <div class="col-1 text-center">สี</div>
-                            <div class="col-11 p-0"><p t-field="vehicle_id.color" class="border-bottom-black pl-2"/></div>
-                        </div>
-                        <div class="col-4 d-inline-flex p-0">
-                            <div class="col-2 text-center">เลขตัวถัง</div>
-                            <div class="col-10 pl-0"><p t-field="vehicle_id.vin_sn" class="border-bottom-black pl-2"/></div>
-                        </div>
-                        <div class="col-6 d-inline-flex">
-                            <div class="col-2 p-0">ราคา Price List</div>
-                            <div class="col-6 pl-1 pr-0 mr-2"><p t-field="doc.pricelist_price" class="border-bottom-black pl-2"/></div>
-                            <div class="col-1">
-                                <span>บาท</span>
-                            </div>
-                        </div>
-                        <div class="col-6 d-inline-flex justify-content-end">
-                            <div class="col-2 text-right p-0">ราคาเปิดใบเสร็จ</div>
-                            <div class="col-6 px-4"><p t-field="doc.start_price" class="border-bottom-black pl-2"/></div>
-                            <div class="col-1">
-                                <span>บาท</span>
-                            </div>
+            .border-bottom-black-after_1:after {
+                border-top: 1px solid;
+                content: "";
+                position: absolute;
+                top: 80%;
+                left: 110px;
+                width: 130px;
+                z-index: -1;
+            }
+            .border-bottom-black-after_2:after {
+                border-top: 1px solid;
+                content: "";
+                position: absolute;
+                top: 80%;
+                left: 140px;
+                width: 140px;
+                z-index: -1;
+            }.border-bottom-black-after_3:after {
+                border-top: 1px solid;
+                content: "";
+                position: absolute;
+                top: 80%;
+                left: 80px;
+                width: 130px;
+                z-index: -1;
+            }
 
-                        </div>
-                        <div class="col-6 d-inline-flex">
-                            <div class="col-2 p-0">ราคาขาย</div>
-                            <div class="col-6 pl-1 pr-0 mr-2"><p t-field="doc.sale_price" class="border-bottom-black pl-2"/></div>
-                            <div class="col-1">
-                                <span>บาท</span>
+        </style>
+        <div class="page">
+            <t t-set="partner_id" t-value="doc.partner_id"/>
+            <t t-set="vehicle_id" t-value="doc.product_id.product_tmpl_id.custom_vehicle_id"/>
+            <h3>รายละเอียดการขายรถยนต์</h3>
+            <div class="row">
+                <div class="col-2">ชื่อผู้ซื้อ</div>
+                <div class="col-10"><p t-field="partner_id.name" class="border-bottom-black pl-2"/></div>
+            </div>
+            <div class="row">
+                <div class="col-2">ที่อยู่</div>
+                <div class="col-10">
+                    <p t-field="partner_id.contact_address" class="border-bottom-black pl-2"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">โทรศัพท์</div>
+                <div class="col-10">
+                    <p t-field="partner_id.phone" class="border-bottom-black pl-2"/>
+                </div>
+            </div>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td class="w-auto">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-3">รุ่นรถ</div>
+                                <div class="col-9 p-0">
+                                    <p t-field="vehicle_id.model_id.name" class="border-bottom-black pl-2"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-6 d-inline-flex justify-content-end">
-                            <div class="col-2 text-right p-0">เงินจอง</div>
-                            <div class="col-6 px-4"><p t-field="doc.reserve_price" class="border-bottom-black pl-2"/></div>
-                            <div class="col-1">
-                                <span>บาท</span>
+                        </td>
+                        <td class="w-auto">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-2">สี</div>
+                                <div class="col-10 p-0">
+                                    <p t-field="vehicle_id.color" class="border-bottom-black pl-2"/>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <p>รายการ</p>
-                    <div class="row">
-                        <t t-foreach="doc.order_line" t-as="line_id">
-                            <div class="col-4">
-                                <p t-field="line_id.product_id.name"/>
+                        </td>
+                        <td class="w-auto">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-4 px-0 text-center">เลขตัวถัง</div>
+                                <div class="col-8 p-0">
+                                    <p t-field="vehicle_id.vin_sn" class="border-bottom-black pl-2"/>
+                                </div>
                             </div>
-                            <div class="col-4 d-inline-flex justify-content-end">
-                                <div class="col-9">
-                                    <p t-field="line_id.price_company_header_1" class="border-bottom-black"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td class="w-50">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-5">ราคา Price List</div>
+                                <div class="col-5 p-0">
+                                    <p t-field="doc.pricelist_price" class="border-bottom-black pl-2"/>
                                 </div>
                                 <div class="col-2">
-                                    <p>บาท</p>
+                                    <span>บาท</span>
                                 </div>
                             </div>
-                            <div class="col-4 d-inline-flex justify-content-end">
+                        </td>
+                        <td class="w-50">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-5">ราคาเปิดใบเสร็จ</div>
+                                <div class="col-5 p-0">
+                                    <p t-field="doc.start_price" class="border-bottom-black pl-2"/>
+                                </div>
+                                <div class="col-2">
+                                    <span>บาท</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-50">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-5">ราคาขาย</div>
+                                <div class="col-5 p-0">
+                                    <p t-field="doc.sale_price" class="border-bottom-black pl-2"/>
+                                </div>
+                                <div class="col-2">
+                                    <span>บาท</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="w-50">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-5">เงินจอง</div>
+                                <div class="col-5 p-0">
+                                    <p t-field="doc.reserve_price" class="border-bottom-black pl-2"/>
+                                </div>
+                                <div class="col-2">
+                                    <span>บาท</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="w-100">
+                <t t-set="sum_header_1" t-value="sum(doc.order_line.mapped('price_company_header_1'))"/>
+                <t t-set="sum_header_2" t-value="sum(doc.order_line.mapped('price_company_header_2'))"/>
+                <tbody>
+                    <t t-foreach="doc.order_line" t-as="line_id">
+                        <tr>
+                            <td style="width: 40%">
+                                <p t-field="line_id.product_id.name"/>
+                            </td>
+                            <td style="width: 30%">
+                                <div class="row d-inline-flex w-100">
+                                    <div class="col-9">
+                                        <p t-field="line_id.price_company_header_1" class="border-bottom-black"/>
+                                    </div>
+                                    <div>
+                                        <p>บาท</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width: 30%">
+                                <div class="row d-inline-flex w-100">
+                                    <div class="col-9">
+                                        <p t-field="line_id.price_company_header_2" class="border-bottom-black"/>
+                                    </div>
+                                    <div>
+                                        <p>บาท</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td style="width: 40%" class="text-right pr-5">
+                            <p class="font-weight-bold">รวม</p>
+                        </td>
+                        <td style="width: 30%">
+                            <div class="row d-inline-flex w-100">
                                 <div class="col-9">
-                                    <p t-field="line_id.price_company_header_2" class="border-bottom-black"/>
+                                    <p t-out="sum_header_1" class="border-bottom-black font-weight-bold"/>
                                 </div>
-                                <div class="col-2 mr-3">
-                                    <p>บาท</p>
+                                <div>
+                                    <p class="font-weight-bold">บาท</p>
                                 </div>
                             </div>
-                        </t>
-                    </div>
+                        </td>
+                        <td style="width: 30%">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-9">
+                                    <p t-out="sum_header_2" class="border-bottom-black font-weight-bold"/>
+                                </div>
+                                <div>
+                                    <p class="font-weight-bold">บาท</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 40%"/>
+                        <td style="width: 30%" class="text-right">
+                            <p class="font-weight-bold mr-2">จำนวนเงินรวมทั้งสิ้น</p>
+                        </td>
+                        <td style="width: 30%">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-9">
+                                    <p t-out="(sum_header_1 + sum_header_2)" class="border-bottom-black font-weight-bold"/>
+                                </div>
+                                <div>
+                                    <p class="font-weight-bold">บาท</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-inline-flex w-100">
+                <p class="font-weight-bold font-italic pr-1">ชื่อบริษัทไฟแนนซ์</p>
+                <p t-field="doc.finance_id.x_name" class="border-bottom-black px-1 text-center" style="width: 200px;"/>
+                ยอดจัด<p class="border-bottom-black px-1" t-field="doc.finance_amount"/>บาท
+                ดอกเบี้ย<p class="border-bottom-black px-1" t-field="doc.finance_interest"/>%
+                <p class="border-bottom-black px-1" t-field="doc.finance_number_of_installment"/>งวดๆ ละ
+                <p class="border-bottom-black px-1" t-field="doc.finance_installment"/>บาท
+            </div>
+            <div class="d-inline-flex w-100">
+                <p class="font-weight-bold font-italic">เงื่อนไขการรับประกัน : </p>
+                <p t-out="doc._get_warranty_info()" class="border-bottom-black pl-2 w-75"/>
+            </div>
+            <div class="row">
+              <div class="col-4 text-right pr-0">
+                <p ><em>รายการของแถมมาตรฐาน :</em></p>
+              </div>
+              <div class="col-8">
+                <p >กรอบป้ายทะเบียน, หมอน, ยางปูพื้นลายกระดุม, ฟิล์มตามที่บริษัทกำหนด</p>
+              </div>
+            </div>
+            <div class="d-inline-flex">
+                <p class="font-weight-bold font-italic pr-1">การติดฟิล์ม ยี่ห้อ</p>
+                <p t-field="doc.acc_film_brand" class="border-bottom-black px-1 text-center" style="width: 100px;"/>
+                ( บานหน้า<p class="border-bottom-black px-1" t-field="doc.acc_film_front"/>%
+                รอบคัน<p class="border-bottom-black px-1" t-field="doc.acc_film_around"/>%
+                หลังคา<p class="border-bottom-black px-1" t-field="doc.acc_film_roof"/>%
+                อื่นๆ
+                <p class="border-bottom-black px-1 text-center" style="width: 120px" t-out="doc._get_acc_film_other_info()"/> )
+            </div>
+            <div class="d-inline-flex w-100">
+                <p class="font-weight-bold font-italic">ติดตั้งเครื่องเสียง : </p>
+                <p t-field="doc.acc_sound_detail" class="border-bottom-black pl-2 w-75"/>
+            </div>
+            <table class="w-100">
+                <tbody>
+                    <t t-set="commission_index" t-value="0"/>
+                    <t t-foreach="doc.commission_line" t-as="line_id">
+                        <tr>
+                            <t t-if="commission_index == 0">
+                                <td style="width: 40%" class="text-center">
+                                    <p class="font-weight-bold font-italic pr-1">รายการแถม ค่าคอมและอื่นๆ:</p>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td style="width: 40%"/>
+                            </t>
+                            <td style="width: 30%" >
+                                <p t-field="line_id.product_id.name" class="ml-4"/>
+                            </td>
+                            <td style="width: 30%">
+                                <div class="row d-inline-flex w-100">
+                                    <div class="col-9">
+                                        <p t-field="line_id.price" class="border-bottom-black"/>
+                                    </div>
+                                    <div>
+                                        <p>บาท</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <t t-set="commission_index" t-value="commission_index+1"/>
+                    </t>
+                    <tr>
+                        <td style="width: 40%"/>
+                        <td style="width: 30%" class="text-right">
+                            <p class="font-weight-bold mr-2">รวม</p>
+                        </td>
+                        <td style="width: 30%">
+                            <div class="row d-inline-flex w-100">
+                                <div class="col-9">
+                                    <p t-out="sum(doc.commission_line.mapped('price'))" class="border-bottom-black font-weight-bold"/>
+                                </div>
+                                <div>
+                                    <p class="font-weight-bold">บาท</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row mt-5">
+                <div class="col-4 px-0">
+                    <p class="ml-4 border-bottom-black-after_1">ผู้ขาย(จัดทำ)</p>
                 </div>
+                <div class="col-4 px-0">
+                    <p class="border-bottom-black-after_2">ผู้ตรวจสอบ(ฝ่ายขาย)</p>
+                </div>
+                <div class="col-4 px-0">
+                    <p class="border-bottom-black-after_3">ผู้ตรวจสอบ</p>
+                </div>
+            </div>
+
+        </div>
+    </template>
+    <template id="report_car_order">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="car_order.car_order_report_template" t-lang="doc.partner_id.lang"/>
             </t>
         </t>
     </template>

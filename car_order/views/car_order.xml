@@ -126,6 +126,7 @@
                                 </group>
                                 <group>
                                     <field name="finance_installment" string="Installment" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <field name="finance_number_of_installment" string="Number of installments"/>
                                     <field name="finance_commission" string="Commission" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
                                 </group>
                             </group>

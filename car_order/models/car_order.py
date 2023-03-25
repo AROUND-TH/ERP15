@@ -6,7 +6,7 @@ class CarOrderLine(models.Model):
     _name = "car.order.line"
     _description = "Car Order Line"
 
-    product_id = fields.Many2one('product.product', required=True, domain="[('detailed_type', '=', 'service')]")
+    product_id = fields.Many2one('product.product', required=True)
     price_company_header_1 = fields.Float(string="Company 1", default=0)
     price_company_header_2 = fields.Float(string="Company 2", default=0)
     price = fields.Float(compute="_compute_price")
@@ -89,6 +89,8 @@ class CarOrder(models.Model):
                                     states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     finance_installment = fields.Float(readonly=True,
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+    finance_number_of_installment = fields.Integer(readonly=True, states={'draft': [('readonly', False)],
+                                                                          'confirm': [('readonly', False)]})
     finance_commission = fields.Float(readonly=True,
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # accessories
@@ -295,3 +297,10 @@ class CarOrder(models.Model):
 
     def action_view_invoice(self):
         return self.sale_id.action_view_invoice()
+
+    # report
+    def _get_warranty_info(self):
+        return f'Warranty {self.number_of_years_warranty} ปี, {self.number_of_distance_warranty} กม.'
+
+    def _get_acc_film_other_info(self):
+        return self.acc_film_other or '-'
