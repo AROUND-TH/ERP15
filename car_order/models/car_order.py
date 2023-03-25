@@ -6,7 +6,7 @@ class CarOrderLine(models.Model):
     _name = "car.order.line"
     _description = "Car Order Line"
 
-    product_id = fields.Many2one('product.product', required=True)
+    product_id = fields.Many2one('product.product', required=True, domain="[('detailed_type', '=', 'service')]")
     price_company_header_1 = fields.Float(string="Company 1", default=0)
     price_company_header_2 = fields.Float(string="Company 2", default=0)
     price = fields.Float(compute="_compute_price")
