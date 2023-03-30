@@ -28,6 +28,7 @@
                     <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                     <button name="action_done" type="object" string="Done" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
                     <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', 'in', ['draft', 'cancel'])]}"/>
+                    <button name="action_print_report" type="object" string="รายละเอียดการขาย" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                 </header>
                 <sheet>

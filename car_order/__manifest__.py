@@ -15,9 +15,10 @@
         'fleet_product_link',
     ],
     "data": [
+        "data/ir_sequence_data.xml",
+        "data/paper_format.xml",
         "report/car_order_report.xml",
         "report/car_order_template.xml",
-        "data/ir_sequence_data.xml",
         "security/ir.model.access.csv",
         "views/car_order.xml",
     ]

@@ -298,9 +298,12 @@ class CarOrder(models.Model):
     def action_view_invoice(self):
         return self.sale_id.action_view_invoice()
 
+    def action_print_report(self):
+        return self.env.ref('car_order.action_report_car_order').report_action(self)
+
     # report
     def _get_warranty_info(self):
-        return f'Warranty {self.number_of_years_warranty} ปี, {self.number_of_distance_warranty} กม.'
+        return f'ประกัน {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
 
     def _get_acc_film_other_info(self):
         return self.acc_film_other or '-'
