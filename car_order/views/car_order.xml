@@ -67,20 +67,20 @@
                         </group>
                     </group>
                     <group name="company_header" >
-                        <group string="Product">
+                        <group string="ราคา">
                             <field name="product_id"/>
                             <field name="pricelist_price"/>
                             <field name="start_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
-                            <field name="sale_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="sale_price"  widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                             <field name="reserve_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                         </group>
-                        <group string="Warranty">
-                            <field name="number_of_years_warranty" string="Year"/>
-                            <field name="number_of_distance_warranty" string="Distance"/>
-                            <field name="value_of_warranty" string="Value" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                        <group string="เงื่อนไขการรับประกัน">
+                            <field name="number_of_years_warranty"/>
+                            <field name="number_of_distance_warranty"/>
+                            <field name="value_of_warranty" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                         </group>
                     </group>
-                    <group name="company_header" string="Company">
+                    <group name="company_header" string="บริษัทสั่งจ่าย">
                         <group>
                             <field name="company_header_1"/>
                         </group>
@@ -89,7 +89,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Details">
+                        <page string="รายละเอียด">
                             <field name="order_line">
                                 <tree
                                     string="Order Lines"
@@ -115,48 +115,48 @@
                                 <div class="oe_clear"/>
                             </group>
                         </page>
-                        <page string="Finance">
+                        <page string="ไฟแนนซ์">
                             <group>
                                 <group>
                                     <field name="finance_id"/>
-                                    <field name="finance_amount" string="Amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-                                    <label for="finance_interest" string="Interest"/>
+                                    <field name="finance_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <label for="finance_interest" />
                                     <div>
                                         <field name="finance_interest" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
                                     </div>
                                 </group>
                                 <group>
-                                    <field name="finance_installment" string="Installment" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-                                    <field name="finance_number_of_installment" string="Number of installments"/>
-                                    <field name="finance_commission" string="Commission" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <field name="finance_installment" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <field name="finance_number_of_installment"/>
+                                    <field name="finance_commission" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
                                 </group>
                             </group>
 
                         </page>
-                        <page string="Accessories">
+                        <page string="อุปกรณ์">
                             <group>
-                                <group string="Film">
-                                    <field name="acc_film_brand" string="Brand"/>
-                                    <label for="acc_film_front" string="Front"/>
+                                <group string="ฟิล์ม">
+                                    <field name="acc_film_brand"/>
+                                    <label for="acc_film_front"/>
                                     <div >
                                         <field name="acc_film_front" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
                                     </div>
-                                    <label for="acc_film_around" string="Side and Back"/>
+                                    <label for="acc_film_around"/>
                                     <div >
                                         <field name="acc_film_around" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
                                     </div>
-                                    <label for="acc_film_roof" string="Roof"/>
+                                    <label for="acc_film_roof"/>
                                     <div >
                                         <field name="acc_film_roof" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
                                     </div>
-                                    <field name="acc_film_other" string="Other"/>
+                                    <field name="acc_film_other"/>
                                 </group>
-                                <group string="Sound System">
-                                    <field name="acc_sound_detail" string="Description"/>
+                                <group string="เครื่องเสียง">
+                                    <field name="acc_sound_detail"/>
                                 </group>
                             </group>
                         </page>
-                        <page string="Commission">
+                        <page string="คอมมิชชั่น">
                             <field name="commission_line">
                                 <tree editable="bottom">
                                     <field name="product_id"/>
@@ -178,7 +178,7 @@
     </record>
 
     <record id="action_car_order" model="ir.actions.act_window">
-        <field name="name">Car Orders</field>
+        <field name="name">ใบจอง / รายละเอียดการขาย</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">car.order</field>
         <field name="view_mode">form,tree</field>
@@ -199,7 +199,7 @@
     </record>
 
     <menuitem id="menu_car_order"
-        name="Car Orders"
+        name="ใบจอง / รายละเอียดการขาย"
         action="action_car_order"
         parent="sale.sale_order_menu"
         sequence="2" groups="sales_team.group_sale_salesman"/>

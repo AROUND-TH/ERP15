@@ -6,9 +6,10 @@ class CarOrderLine(models.Model):
     _name = "car.order.line"
     _description = "Car Order Line"
 
-    product_id = fields.Many2one('product.product', required=True, domain="[('detailed_type', '=', 'service')]")
-    price_company_header_1 = fields.Float(string="Company 1", default=0)
-    price_company_header_2 = fields.Float(string="Company 2", default=0)
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True,
+                                 domain="[('detailed_type', '=', 'service')]")
+    price_company_header_1 = fields.Float(string="สั่งจ่ายในนามบริษัทที่ 1", default=0)
+    price_company_header_2 = fields.Float(string="สั่งจ่ายในนามบริษัทที่ 2", default=0)
     price = fields.Float(compute="_compute_price")
     order_id = fields.Many2one('car.order')
 
@@ -22,8 +23,9 @@ class CarOrderCommission(models.Model):
     _name = "car.order.commission"
     _description = "Commission in Car Order"
 
-    product_id = fields.Many2one('product.product', required=True, domain="[('detailed_type', '=', 'service')]")
-    price = fields.Float(required=True)
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True,
+                                 domain="[('detailed_type', '=', 'service')]")
+    price = fields.Float("ราคา", required=True)
     order_id = fields.Many2one('car.order')
 
 
@@ -35,87 +37,87 @@ class CarOrder(models.Model):
     name = fields.Char(string='Number', required=True, copy=False, readonly=True,
                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, index=True,
                        default=lambda self: _('New'))
-    partner_id = fields.Many2one('res.partner', string='Customer', readonly=True,
+    partner_id = fields.Many2one('res.partner', string='ลูกค้า', readonly=True,
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                  required=True, change_default=True,
                                  index=True, domain="[('type', '!=', 'private')]")
-    partner_invoice_id = fields.Many2one('res.partner', string='Invoice Address', readonly=True, required=True,
+    partner_invoice_id = fields.Many2one('res.partner', string='ที่อยู่ใบแจ้งหนี้', readonly=True, required=True,
                                          states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                          domain="[('type', '!=', 'private')]")
-    partner_shipping_id = fields.Many2one('res.partner', string='Delivery Address', readonly=True, required=True,
+    partner_shipping_id = fields.Many2one('res.partner', string='ที่อยู่สำหรับการจัดส่ง', readonly=True, required=True,
                                           states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                           domain="[('type', '!=', 'private')]")
-    date_order = fields.Datetime(string='Order Date', default=fields.datetime.now(), required=True, readonly=True,
+    date_order = fields.Datetime(string='วันที่ทำเอกสาร', default=fields.datetime.now(), required=True, readonly=True,
                                  index=True, states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                  copy=False)
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', required=True, readonly=True,
                                    states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    pricelist_price = fields.Char('Pricelist Price', compute="_compute_pricelist_price", store=True)
+    pricelist_price = fields.Char('ราคา Pricelist', compute="_compute_pricelist_price", store=True)
     currency_id = fields.Many2one(related='pricelist_id.currency_id', depends=["pricelist_id"], store=True,
                                   ondelete="restrict")
-    payment_term_id = fields.Many2one('account.payment.term', string='Payment Terms', readonly=True, required=True,
+    payment_term_id = fields.Many2one('account.payment.term', string='เงื่อนไขการชำระเงิน', readonly=True, required=True,
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    product_id = fields.Many2one('product.product', string="Car", domain="[('custom_fleet_ok', '=', True)]",
+    product_id = fields.Many2one('product.product', string="รถ", domain="[('custom_fleet_ok', '=', True)]",
                                  required=True, readonly=True, index=True,
-                                 states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
-                                 copy=False)
-    start_price = fields.Float(required=True, readonly=True,
+                                 states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+    start_price = fields.Float(required=True, readonly=True, string="ราคาเปิดใบเสร็จ",
                                states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, copy=False)
-    sale_price = fields.Float(required=True, readonly=True,
+    sale_price = fields.Float(required=True, readonly=True, string="ราคาขาย",
                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, copy=False)
-    reserve_price = fields.Float(required=True, readonly=True,
+    reserve_price = fields.Float(required=True, readonly=True, string="เงินจอง",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, copy=False)
-    company_header_1 = fields.Many2one('x_company_header', string='Company 1', readonly=True, required=True,
+    company_header_1 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 1', readonly=True, required=True,
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    company_header_2 = fields.Many2one('x_company_header', string='Company 2', readonly=True, required=False,
+    company_header_2 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 2', readonly=True, required=False,
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # warranty
-    number_of_years_warranty = fields.Integer(readonly=True,
+    number_of_years_warranty = fields.Integer(readonly=True, string="ปี",
                                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    number_of_distance_warranty = fields.Float(readonly=True, states={'draft': [('readonly', False)],
-                                                                      'confirm': [('readonly', False)]})
-    value_of_warranty = fields.Float(readonly=True,
+    number_of_distance_warranty = fields.Float(readonly=True, string="ระยะทาง", states={'draft': [('readonly', False)],
+                                                                                        'confirm': [
+                                                                                            ('readonly', False)]})
+    value_of_warranty = fields.Float(readonly=True, string="เป็นเงินมลูค่า",
                                      states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # detail line
-    order_line = fields.One2many('car.order.line', 'order_id', readonly=True,
+    order_line = fields.One2many('car.order.line', 'order_id', readonly=True, string="รายการ",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    amount_total = fields.Monetary(string='Premium', store=True, compute='_amount_all')
+    amount_total = fields.Monetary(string='จำนวนเงินรวมทั้งสิ้น', store=True, compute='_amount_all')
     # finance
-    finance_id = fields.Many2one('x_finance', readonly=True,
+    finance_id = fields.Many2one('x_finance', readonly=True, string="ช่ือบริษัทไฟแนนซ์",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    finance_amount = fields.Float(readonly=True,
+    finance_amount = fields.Float(readonly=True, string="ยอดจัด",
                                   states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    finance_interest = fields.Float(readonly=True,
+    finance_interest = fields.Float(readonly=True, string="ดอกเบี้ย",
                                     states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    finance_installment = fields.Float(readonly=True,
+    finance_installment = fields.Float(readonly=True, string="งวดละ",
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    finance_number_of_installment = fields.Integer(readonly=True, states={'draft': [('readonly', False)],
+    finance_number_of_installment = fields.Integer(readonly=True, string="จำนวนงวด", states={'draft': [('readonly', False)],
                                                                           'confirm': [('readonly', False)]})
-    finance_commission = fields.Float(readonly=True,
+    finance_commission = fields.Float(readonly=True, string="ค่าคอมจาก บ.ไฟแนนซ์",
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # accessories
-    acc_film_brand = fields.Char(readonly=True,
+    acc_film_brand = fields.Char(readonly=True, string="ยี่ห้อ",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    acc_film_front = fields.Integer(readonly=True,
+    acc_film_front = fields.Integer(readonly=True, string="บานหน้า",
                                     states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    acc_film_around = fields.Integer(readonly=True,
+    acc_film_around = fields.Integer(readonly=True, string="รอบคัน",
                                      states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    acc_film_roof = fields.Integer(readonly=True,
+    acc_film_roof = fields.Integer(readonly=True, string="หลังคา",
                                    states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    acc_film_other = fields.Char(readonly=True,
+    acc_film_other = fields.Char(readonly=True, string="อื่นๆ",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    acc_sound_detail = fields.Char(readonly=True,
+    acc_sound_detail = fields.Char(readonly=True, string="รายละเอียด",
                                    states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # commission and others
-    commission_line = fields.One2many('car.order.commission', 'order_id', readonly=True,
+    commission_line = fields.One2many('car.order.commission', 'order_id', readonly=True, string="รายการ Commission",
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    commission_amount_total = fields.Monetary(string='Total', store=True, compute='_commission_amount')
+    commission_amount_total = fields.Monetary(string='รวมค่า Commission', store=True, compute='_commission_amount')
 
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('confirm', 'Confirm'),
-        ('done', 'Done'),
-        ('cancel', 'Cancelled'),
+        ('draft', 'ใบเสนอราคา / ใบจอง'),
+        ('confirm', 'รายละเอียดการขายรถยนตร์'),
+        ('done', 'ยืนยันแล้ว'),
+        ('cancel', 'ยกเลิก'),
     ], string='Status', readonly=True, default='draft')
     sale_id = fields.Many2one('sale.order', readonly=True)
     invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced')
