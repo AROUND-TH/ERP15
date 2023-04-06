@@ -61,11 +61,11 @@ class CarOrder(models.Model):
                                  required=True, readonly=True, index=True,
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     start_price = fields.Float(required=True, readonly=True, string="ราคาเปิดใบเสร็จ",
-                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, copy=False)
+                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     sale_price = fields.Float(required=True, readonly=True, string="ราคาขาย",
-                              states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, copy=False)
+                              states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     reserve_price = fields.Float(required=True, readonly=True, string="เงินจอง",
-                                 states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, copy=False)
+                                 states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     company_header_1 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 1', readonly=True, required=True,
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     company_header_2 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 2', readonly=True, required=False,
@@ -309,3 +309,12 @@ class CarOrder(models.Model):
 
     def _get_acc_film_other_info(self):
         return self.acc_film_other or '-'
+
+    def copy_data(self, default=None):
+        if default is None:
+            default = {}
+        if 'order_line' not in default:
+            default['order_line'] = [(0, 0, line.copy_data()[0]) for line in self.order_line]
+        if 'commission_line' not in default:
+            default['commission_line'] = [(0, 0, line.copy_data()[0]) for line in self.commission_line]
+        return super(CarOrder, self).copy_data(default)

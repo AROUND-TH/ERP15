@@ -6,7 +6,7 @@
         <field name="model">car.order</field>
         <field name="priority">2</field>
         <field name="arch" type="xml">
-            <tree string="Car Orders" duplicate="0">
+            <tree string="Car Orders">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="product_id"/>
@@ -22,7 +22,7 @@
         <field name="name">car.order.form</field>
         <field name="model">car.order</field>
         <field name="arch" type="xml">
-            <form string="Car Order" duplicate="0">
+            <form string="Car Order" duplicate="1">
                 <field name="sale_id" invisible="1"/>
                 <header>
                     <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
