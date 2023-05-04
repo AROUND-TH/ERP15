@@ -119,7 +119,7 @@ class CarOrder(models.Model):
         ('done', 'ยืนยันแล้ว'),
         ('cancel', 'ยกเลิก'),
     ], string='Status', readonly=True, default='draft')
-    sale_id = fields.Many2one('sale.order', readonly=True)
+    sale_id = fields.Many2one('sale.order', readonly=True, copy=False)
     invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced')
 
     margin = fields.Monetary("Margin", compute='_compute_margin', store=True)
