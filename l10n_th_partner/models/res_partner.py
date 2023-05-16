@@ -27,15 +27,13 @@ class ResPartner(models.Model):
         """Add inverted company names at creation if unavailable."""
         context = dict(self.env.context)
         name = vals.get("name", context.get("default_name"))
-        if vals.get("is_company", False) and name:
-            vals["name_company"] = name
         return super().create(vals)
 
     def _inverse_name_company(self):
         for rec in self:
             if not rec.is_company or not rec.name:
                 rec.name_company = False
-            else:
+            elif not rec.name_company:
                 rec.name_company = rec.name
 
     @api.model
@@ -62,7 +60,6 @@ class ResPartner(models.Model):
                 prefix = rec.partner_company_type_id.prefix
                 suffix = rec.partner_company_type_id.suffix
             rec.name = " ".join(p for p in (prefix, rec.name_company, suffix) if p)
-            rec._inverse_name()
 
     @api.onchange("company_type")
     def _onchange_company_type(self):
