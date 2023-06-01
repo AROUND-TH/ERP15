@@ -278,7 +278,9 @@ class WithholdingTaxCert(models.Model):
                     {
                         "name": record.payment_id.name or record.move_id.name,
                         "date": record.payment_id.date or record.move_id.date,
-                        "ref_wt_cert_id": wt_reference or False,
+                        # Fixed issue on print reference replace WHT
+                        "ref_wt_cert_id": wt_reference or record.ref_wt_cert_id,
+                        # "ref_wt_cert_id": wt_reference or False,
                         "supplier_partner_id": partner_id or record.supplier_partner_id,
                         "income_tax_form": income_tax_form or record.income_tax_form,
                     }
