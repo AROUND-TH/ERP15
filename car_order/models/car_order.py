@@ -23,10 +23,26 @@ class CarOrderCommission(models.Model):
     _name = "car.order.commission"
     _description = "Commission in Car Order"
 
-    product_id = fields.Many2one('product.product', string="สินค้า", required=True,
-                                 domain="[('detailed_type', '=', 'service')]")
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True)
     price = fields.Float("ราคา", required=True)
     order_id = fields.Many2one('car.order')
+
+
+class CarOrderFreebie(models.Model):
+    _name = "car.order.freebie"
+    _description = "Freebie in Car Order"
+
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True)
+    cost = fields.Float("Sales Cost", required=True, readonly=True)
+    sale_price = fields.Float("Sale Price", required=True)
+    order_id = fields.Many2one('car.order')
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id:
+            standard_price = self.product_id.standard_price
+            self.cost = standard_price
+            self.sale_price = standard_price
 
 
 class CarOrder(models.Model):
@@ -47,12 +63,13 @@ class CarOrder(models.Model):
     partner_shipping_id = fields.Many2one('res.partner', string='ที่อยู่สำหรับการจัดส่ง', readonly=True, required=True,
                                           states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                           domain="[('type', '!=', 'private')]")
+    salesman_id = fields.Many2one('hr.employee', string="พนักงานขาย")
     date_order = fields.Datetime(string='วันที่ทำเอกสาร', default=fields.datetime.now(), required=True, readonly=True,
                                  index=True, states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                  copy=False)
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', required=True, readonly=True,
                                    states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    pricelist_price = fields.Char('ราคา Pricelist', compute="_compute_pricelist_price", store=True)
+    pricelist_price = fields.Float('ราคา Pricelist', compute="_compute_pricelist_price", store=True)
     currency_id = fields.Many2one(related='pricelist_id.currency_id', depends=["pricelist_id"], store=True,
                                   ondelete="restrict")
     payment_term_id = fields.Many2one('account.payment.term', string='เงื่อนไขการชำระเงิน', readonly=True, required=True,
@@ -63,6 +80,8 @@ class CarOrder(models.Model):
     start_price = fields.Float(required=True, readonly=True, string="ราคาเปิดใบเสร็จ",
                                states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     sale_price = fields.Float(required=True, readonly=True, string="ราคาขาย",
+                              states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+    discount_price = fields.Float(required=True, readonly=True, string="ส่วนลด",
                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     reserve_price = fields.Float(required=True, readonly=True, string="เงินจอง",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
@@ -112,7 +131,10 @@ class CarOrder(models.Model):
     commission_line = fields.One2many('car.order.commission', 'order_id', readonly=True, string="รายการ Commission",
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     commission_amount_total = fields.Monetary(string='รวมค่า Commission', store=True, compute='_commission_amount')
-
+    # freebie
+    freebie_line = fields.One2many('car.order.freebie', 'order_id', readonly=True, string="รายการของแถม",
+                                      states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+    freebie_amount_total = fields.Monetary(string='รวมค่าของแถม', store=True, compute='_freebie_amount')
     state = fields.Selection([
         ('draft', 'ใบเสนอราคา / ใบจอง'),
         ('confirm', 'รายละเอียดการขายรถยนตร์'),
@@ -123,7 +145,37 @@ class CarOrder(models.Model):
     invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced')
 
     margin = fields.Monetary("Margin", compute='_compute_margin', store=True)
-    margin_percent = fields.Float("Margin (%)", compute='_compute_margin', store=True)
+    margin_percent = fields.Char("Margin (%)", compute='_compute_margin', store=True)
+
+    # ux field
+    commission_product_categ = fields.Many2one('product.category', compute="_compute_commission_product_categ")
+
+    def _compute_commission_product_categ(self):
+        category = self.env['ir.config_parameter'].sudo().get_param('car_order_commission_product_category')
+        for rec in self:
+            rec.commission_product_categ = int(category)
+
+    @api.model
+    def default_get(self, field_list):
+        result = super().default_get(field_list)
+        result['x_studio_free_list'] = [
+            (0, 0, {'x_name': "Warranty 2 ปี หรือ 50,000 กม."}),
+            (0, 0, {'x_name': "ฟิล์มเซรามิค Blaupunkt"}),
+            (0, 0, {'x_name': "ชุดพรมปูพื้น"}),
+            (0, 0, {'x_name': "ชุดผ้ายางปูพื้น"}),
+            (0, 0, {'x_name': "ขัดเคลือบสีก่อนส่งมอบ"}),
+            (0, 0, {'x_name': "กรอบป้ายทะเบียน"}),
+            (0, 0, {'x_name': "บัตร B card member club"}),
+            (0, 0, {'x_name': "ส่วนลดค่าแรง 10% ค่าอะไหล่ 20%"}),
+            (0, 0, {'x_name': "บริการRoadside Service 1 ครั้ง/ปี(เฉพาะกรุงเทพและปริมณฑล)"}),
+            (0, 0, {'x_name': "บริการล้างรถฟรีเดือนละ1 ครั้ง"}),
+            (0, 0, {'x_name': "Voucher ส่วนลด1,000 บาท"}),
+            (0, 0, {'x_name': "Gift Set Premium วันส่งมอบรถ"}),
+        ]
+        employee_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+        if employee_id:
+            result['salesman_id'] = employee_id
+        return result
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -155,7 +207,7 @@ class CarOrder(models.Model):
     @api.depends('pricelist_id', 'product_id', 'date_order')
     def _compute_pricelist_price(self):
         for rec in self:
-            price = "-"
+            price = 0.0
             if rec.product_id and rec.pricelist_id:
                 item = rec.pricelist_id.item_ids.filtered(
                     lambda i: i.product_tmpl_id == rec.product_id.product_tmpl_id and (
@@ -164,7 +216,7 @@ class CarOrder(models.Model):
                 if len(item) > 1:
                     raise ValidationError(_(f"Fond pricelist of {rec.product_id.name} more then one."))
                 if item:
-                    price = item.price
+                    price = item.fixed_price
             rec.pricelist_price = price
 
     @api.depends('order_line.price_company_header_1', 'order_line.price_company_header_2')
@@ -185,6 +237,16 @@ class CarOrder(models.Model):
                 amount += line.price
             order.update({
                 'commission_amount_total': amount
+            })
+
+    @api.depends('freebie_line.sale_price')
+    def _freebie_amount(self):
+        for order in self:
+            amount = 0
+            for line in order.freebie_line:
+                amount += line.sale_price
+            order.update({
+                'freebie_amount_total': amount
             })
 
     def _convert_purchase_price(self, product_cost, from_uom):
@@ -219,25 +281,19 @@ class CarOrder(models.Model):
             purchase_price += self._convert_purchase_price(line.product_id.standard_price, line.product_id.uom_id)
         return purchase_price
 
-    @api.depends('product_id', 'sale_price', 'partner_shipping_id', 'order_line', 'order_line.price')
+    @api.depends('pricelist_id', 'product_id', 'sale_price', 'discount_price', 'freebie_amount_total')
     def _compute_margin(self):
         for rec in self:
             margin, margin_percent = 0, 0
-            if rec.product_id and rec.partner_shipping_id:
-                qty = 1
-                taxes = self.product_id.taxes_id.compute_all(price_unit=rec.sale_price, currency=rec.currency_id,
-                                                             product=rec.product_id, partner=rec.partner_shipping_id)
-                price_subtotal = taxes['total_excluded']
-                for line_id in rec.order_line:
-                    taxes = line_id.product_id.taxes_id.compute_all(price_unit=line_id.price, currency=rec.currency_id,
-                                                                    product=line_id.product_id,
-                                                                    partner=rec.partner_shipping_id)
-                    price_subtotal += taxes['total_excluded']
-                # find margin
-                margin = price_subtotal - (rec._get_purchase_price() * qty)
-                margin_percent = price_subtotal and margin / price_subtotal
+            if rec.pricelist_id and rec.pricelist_price:
+                cost = rec.product_id.standard_price
+                sale_price = rec.pricelist_price - rec.discount_price
+                sale_price_after_freebie = sale_price - rec.freebie_amount_total
+                margin = sale_price_after_freebie - cost
+                margin_percent = round((margin / cost) * 100, 2)
+
             rec.margin = margin
-            rec.margin_percent = margin_percent
+            rec.margin_percent = str(margin_percent) + "%"
 
     @api.model
     def create(self, vals):
@@ -259,7 +315,7 @@ class CarOrder(models.Model):
             'product_id': self.product_id.id,
             'price_unit': self.sale_price
         })]
-        for line in self.order_line:
+        for line in self.order_line.filtered(lambda i: i.product_id.is_car_order_expenses):
             order_line.append((0, 0, {
                 'product_id': line.product_id.id,
                 'price_unit': line.price
@@ -318,3 +374,11 @@ class CarOrder(models.Model):
         if 'commission_line' not in default:
             default['commission_line'] = [(0, 0, line.copy_data()[0]) for line in self.commission_line]
         return super(CarOrder, self).copy_data(default)
+
+    def action_update_cost(self):
+        for rec in self:
+            for freebie_id in rec.freebie_line:
+                if freebie_id.product_id:
+                    standard_price = freebie_id.product_id.standard_price
+                    freebie_id.cost = standard_price
+                    freebie_id.sale_price = standard_price

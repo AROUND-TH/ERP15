@@ -5,3 +5,5 @@ access_car_order_line,car.order.line,model_car_order_line,base.group_user,1,0,0,
 access_car_order_line_manager,car.order.line,model_car_order_line,base.group_system,1,1,1,1
 access_car_order_commission,car.order.commission,model_car_order_commission,base.group_user,1,0,0,0
 access_car_order_commission_manager,car.order.commission,model_car_order_commission,base.group_system,1,1,1,1
+access_car_order_freebie,car.order.freebie,model_car_order_freebie,base.group_user,1,0,0,0
+access_car_order_freebie_manager,car.order.freebie,model_car_order_freebie,base.group_system,1,1,1,1

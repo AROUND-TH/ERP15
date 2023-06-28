@@ -12,6 +12,7 @@
         'product',
         'account',
         'sale',
+        'hr',
         'fleet_product_link',
     ],
     "data": [
@@ -20,6 +21,8 @@
         "report/car_order_report.xml",
         "report/car_order_template.xml",
         "security/ir.model.access.csv",
+        "views/res_config_settings_view.xml",
+        "views/product_template.xml",
         "views/car_order.xml",
     ]
 }

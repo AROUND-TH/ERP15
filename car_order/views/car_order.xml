@@ -58,6 +58,7 @@
                             <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True}'/>
                             <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
                             <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+                            <field name="salesman_id"/>
                         </group>
                         <group name="order_details">
                             <field name="date_order"/>
@@ -69,9 +70,10 @@
                     <group name="company_header" >
                         <group string="ราคา">
                             <field name="product_id"/>
-                            <field name="pricelist_price"/>
+                            <field name="pricelist_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                             <field name="start_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                             <field name="sale_price"  widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="discount_price"  widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                             <field name="reserve_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                         </group>
                         <group string="เงื่อนไขการรับประกัน">
@@ -108,7 +110,7 @@
                                     <div class="text-nowrap" groups="base.group_user">
                                         <field name="margin" class="oe_inline"/>
                                         <span class="oe_inline">
-                                            (<field name="margin_percent" nolabel="1" class="oe_inline" widget="percentage"/>)
+                                            (<field name="margin_percent" nolabel="1" class="oe_inline"/>)
                                         </span>
                                     </div>
                                 </group>
@@ -157,9 +159,10 @@
                             </group>
                         </page>
                         <page string="คอมมิชชั่น">
+                            <field name="commission_product_categ" invisible="1"/>
                             <field name="commission_line">
                                 <tree editable="bottom">
-                                    <field name="product_id"/>
+                                    <field name="product_id" domain="[('categ_id', '=', parent.commission_product_categ)]"/>
                                     <field name="price"/>
                                 </tree>
                             </field>
@@ -171,6 +174,23 @@
                                 <div class="oe_clear"/>
                             </group>
                         </page>
+                         <page string="ของแถม">
+                            <field name="freebie_line">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="cost" force_save="1"/>
+                                    <field name="sale_price"/>
+                                </tree>
+                            </field>
+                             <button name="action_update_cost" type="object" string="Update Cost" states="draft,confirm"/>
+                             <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4"/>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="freebie_amount_total" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                         </page>
                     </notebook>
                 </sheet>
             </form>
