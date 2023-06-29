@@ -42,7 +42,7 @@ class CarOrderFreebie(models.Model):
         if self.product_id:
             standard_price = self.product_id.standard_price
             self.cost = standard_price
-            self.sale_price = standard_price
+            self.sale_price = self.product_id.list_price
 
 
 class CarOrder(models.Model):
@@ -64,6 +64,7 @@ class CarOrder(models.Model):
                                           states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                           domain="[('type', '!=', 'private')]")
     salesman_id = fields.Many2one('hr.employee', string="พนักงานขาย")
+    team_id = fields.Many2one('crm.team', string="Sales Team")
     date_order = fields.Datetime(string='วันที่ทำเอกสาร', default=fields.datetime.now(), required=True, readonly=True,
                                  index=True, states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                  copy=False)
@@ -158,6 +159,8 @@ class CarOrder(models.Model):
     @api.model
     def default_get(self, field_list):
         result = super().default_get(field_list)
+        category = self.env['ir.config_parameter'].sudo().get_param('car_order_commission_product_category')
+        result['commission_product_categ'] = int(category)
         result['x_studio_free_list'] = [
             (0, 0, {'x_name': "Warranty 2 ปี หรือ 50,000 กม."}),
             (0, 0, {'x_name': "ฟิล์มเซรามิค Blaupunkt"}),
@@ -203,6 +206,14 @@ class CarOrder(models.Model):
             'partner_shipping_id': addr['delivery'],
         }
         self.update(values)
+
+    @api.onchange('salesman_id')
+    def onchange_user_id(self):
+        if self.salesman_id:
+            default_team = self.env.context.get('default_team_id', False) or self.team_id.id
+            self.team_id = self.env['crm.team'].with_context(
+                default_team_id=default_team
+            )._get_default_team_id(user_id=self.salesman_id.user_id.id, domain=None)
 
     @api.depends('pricelist_id', 'product_id', 'date_order')
     def _compute_pricelist_price(self):
@@ -379,6 +390,4 @@ class CarOrder(models.Model):
         for rec in self:
             for freebie_id in rec.freebie_line:
                 if freebie_id.product_id:
-                    standard_price = freebie_id.product_id.standard_price
-                    freebie_id.cost = standard_price
-                    freebie_id.sale_price = standard_price
+                    freebie_id.cost = freebie_id.product_id.standard_price
