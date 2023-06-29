@@ -163,7 +163,7 @@
                             <field name="commission_product_categ" invisible="1"/>
                             <field name="commission_line">
                                 <tree editable="bottom">
-                                    <field name="product_id" domain="[('categ_id', '=', parent.commission_product_categ)]"/>
+                                    <field name="product_id" domain="[('categ_id', '=', parent.commission_product_categ)]" options="{'no_create_edit': True,'no_open': True}"/>
                                     <field name="price"/>
                                 </tree>
                             </field>
