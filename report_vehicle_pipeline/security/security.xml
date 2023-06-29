@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="report_vehicle_pipeline_category" model="ir.module.category">
+            <field name="name">Report</field>
+            <field name="sequence">500</field>
+        </record>
+        <record id="report_vehicle_pipeline_permission" model="ir.module.category">
+            <field name="name">Report Vehicle in Pipeline</field>
+            <field name="parent_id" ref="report_vehicle_pipeline_category"/>
+            <field name="description">Report Vehicle in Pipeline Permission</field>
+        </record>
+
+        <record id="group_report_vehicle_pipeline_normal" model="res.groups">
+            <field name="name">Report Vehicle in Pipeline Normal</field>
+            <field name="category_id" ref="report_vehicle_pipeline_permission"/>
+            <!-- <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/> -->
+        </record>
+        <record id="group_report_vehicle_pipeline_full" model="res.groups">
+            <field name="name">Report Vehicle in Pipeline Full</field>
+            <field name="category_id" ref="report_vehicle_pipeline_permission"/>
+            <field name="implied_ids" eval="[(4, ref('group_report_vehicle_pipeline_normal'))]"/>
+        </record>
+
+    </data>
+</odoo>

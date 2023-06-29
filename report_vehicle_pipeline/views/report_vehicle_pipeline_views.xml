@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="report_vehicle_pipeline2_tree" model="ir.ui.view">
+        <field name="name">report.vehicle.pipeline2.tree</field>
+        <field name="model">report.vehicle.pipeline2</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <tree string="Report Vehicle in Pipeline 2" create="0" edit="0" delete="0">
+                <field name="date_approve"/>
+                <field name="product_id"/>
+                <field name="partner_ref"/>
+                <field name="x_studio_model_vehicle"/>
+                <field name="x_studio_model_tags"/>
+                <field name="x_studio_exterior_color_"/>
+                <field name="x_studio_interior_color_"/>
+                <field name="x_studio_etd"/>
+                <field name="x_studio_eta"/>
+                <field name="x_studio_estimate_arrived_for_sale"/>
+                <field name="list_price"/>
+                <field name="currency_id"/>
+                <field name="x_studio_exchange_rate_est" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                <field name="currency_rate" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                <field name="total_rate_exchange" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                <field name="total_rate_real" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                <field name="deposit_price" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                <field name="date_planned" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="sale_price"/>
+                <field name="reserve_price"/>
+                <field name="x_studio_picture"/>
+                <field name="x_studio_inspection_sheet"/>
+                <field name="x_studio_received_bl_date"/>
+                <field name="x_studio_insurance_pay"/>
+                <field name="x_studio_bill_of_landing_no"/>
+                <field name="x_studio_bl_surrendered_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="report_vehicle_pipeline2_form" model="ir.ui.view">
+        <field name="name">report.vehicle.pipeline2.form</field>
+        <field name="model">report.vehicle.pipeline2</field>
+        <field name="arch" type="xml">
+            <form string="Report Vehicle in Pipeline 2" create="0" edit="0" delete="0">
+                <sheet>
+                    <group col="4" colspan="4">
+                        <field name="date_approve"/>
+                        <field name="product_id"/>
+                        <field name="partner_ref"/>
+                        <field name="x_studio_model_vehicle"/>
+                        <field name="x_studio_model_tags"/>
+                        <field name="x_studio_exterior_color_"/>
+                        <field name="x_studio_interior_color_"/>
+                        <field name="x_studio_etd"/>
+                        <field name="x_studio_eta"/>
+                        <field name="x_studio_estimate_arrived_for_sale"/>
+                        <field name="list_price"/>
+                        <field name="currency_id"/>
+                        <field name="x_studio_exchange_rate_est" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                        <field name="currency_rate" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                        <field name="total_rate_exchange" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                        <field name="total_rate_real" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                        <field name="deposit_price" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                        <field name="date_planned" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
+                        <field name="partner_id"/>
+                        <field name="user_id"/>
+                        <field name="sale_price"/>
+                        <field name="reserve_price"/>
+                        <field name="x_studio_picture"/>
+                        <field name="x_studio_inspection_sheet"/>
+                        <field name="x_studio_received_bl_date"/>
+                        <field name="x_studio_insurance_pay"/>
+                        <field name="x_studio_bill_of_landing_no"/>
+                        <field name="x_studio_bl_surrendered_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="report_vehicle_pipeline2_pivot" model="ir.ui.view">
+        <field name="name">report.vehicle.pipeline2.pivot</field>
+        <field name="model">report.vehicle.pipeline2</field>
+        <field name="arch" type="xml">
+            <pivot string="Report Vehicle in Pipeline 2" sample="1">
+                <field name="product_id" type="row"/>
+                <field name="list_price" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="report_vehicle_pipeline2_search" model="ir.ui.view">
+        <field name="name">report.vehicle.pipeline2.search</field>
+        <field name="model">report.vehicle.pipeline2</field>
+        <field name="arch" type="xml">
+            <search string="Report Vehicle in Pipeline 2">
+                <filter string="This Month" name="filter_this_month" date="date_approve" default_period="this_month"/>
+                <filter string="Last 30 Days" name="filter_last_30_days" domain="[('date_approve','&gt;=', (context_today() - relativedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
+                <filter string="Last 3 Months" name="filter_last_3_months" domain="[('date_approve','&gt;=', (context_today() - relativedelta(months=3)).strftime('%%Y-%%m-%%d'))]"/>
+                <filter string="Last 12 Months" name="filter_last_12_months" domain="[('date_approve','&gt;=', (context_today() - relativedelta(years=1)).strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Product" name="by_product_id" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter string="Model" name="by_model" domain="[]"  context="{'group_by': 'x_studio_model_vehicle'}"/>
+                    <filter string="Sale" name="by_sale" domain="[]" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_vehicle_pipeline2_action" model="ir.actions.act_window">
+            <field name="name">Report Vehicle in Pipeline 2</field>
+            <field name="res_model">report.vehicle.pipeline2</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,pivot,form</field>
+            <field name="view_id" ref="report_vehicle_pipeline2_tree"/>
+            <!-- <field name="context">{'search_default_filter_last_12_months': 1, 'search_default_by_product_id': 1}</field> -->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    There's no record yet
+                </p><p>
+                    This menu gives you the Report Vehicle in Pipeline 2.
+                </p>
+            </field>
+    </record>
+
+    <menuitem
+        action="report_vehicle_pipeline2_action"
+        id="report_vehicle_pipeline2_menu"
+        parent="purchase.purchase_report_main" sequence="3"/>
+
+    <!-- <menuitem
+        action="report_vehicle_pipeline2_action"
+        id="report_vehicle_pipeline2_stock_menu"
+        parent="stock.menu_warehouse_report" sequence="15"/> -->
+
+</odoo>
