@@ -31,6 +31,10 @@
                     <field name="narration_notes"/>
                 </xpath>
 
+                <xpath expr="//group[1]//group[1]//field[@name='ref']" position="after">
+                    <field name="company_for_report_id" options='{"always_reload": True, "no_quick_create": True}'/>
+                </xpath>
+
                 <!-- <field name="tax_totals_json" position="before">
                     <field name="amount_untaxed_nodiscount" string="รวมเป็นเงิน" attrs="{'invisible': [('move_type', '!=', 'out_invoice')]}"/>
                     <label for="bill_discount" string="ส่วนลด" attrs="{'invisible': [('move_type', '!=', 'out_invoice')]}"/>

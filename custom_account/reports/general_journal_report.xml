@@ -7,17 +7,24 @@
                 <t t-set="o" t-value="o.with_context(lang=lang)"/>
                 <div class="page page_general_journal_report">
                     <div class="row">
-                        <div class="col-8"></div>
+                        <div class="col-8">
+                            <span t-field="o.company_for_report_id"/>
+                        </div>
                         <div class="col-4 text-left">
                             เลขที่เอกสาร: <span t-field="o.name"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8"></div>
+                        <div class="col-8">
+                            <span t-field="o.company_for_report_id.partner_id"
+                                t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': true}"
+                            />
+                        </div>
                         <div class="col-4 text-left">
                             วันที่: <span t-field="o.date"/>
                         </div>
                     </div>
+                    <br/>
                     <div class="row">
                         <div class="col-12 text-center header-report">
                             <h2>
@@ -27,12 +34,12 @@
                     </div>
                     <div class="row">
                         <div class="col-12 text-left text-margin">
-                            Reference <span t-field="o.ref"/>
+                            Reference: <span t-field="o.ref"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 text-left text-margin">
-                            หมายเหตุ <span t-field="o.narration_notes"/>
+                            หมายเหตุ: <span t-field="o.narration_notes"/>
                         </div>
                     </div>
                     <br/>
@@ -50,37 +57,61 @@
                         <t t-set="sum_debit" t-value="0"/>
                         <t t-set="sum_credit" t-value="0"/>
                         <tr t-foreach="o.line_ids" t-as="line">
-                            <td class="text-left text-margin">
+                            <td class="text-left text-margin text-size">
                                 <t t-esc="line.account_id.code"/>
                                 <span> </span>
                                 <t t-esc="line.account_id.name"/>
                             </td>
-                            <td class="text-left text-margin"><t t-esc="line.partner_id.name"/></td>
-                            <td class="text-left text-margin"><t t-esc="line.name"/></td>
-                            <td class="text-center text-margin"><t t-esc="line.currency_id.name"/></td>
-                            <td class="text-center text-margin"><t t-esc="line.debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
-                            <td class="text-center text-margin"><t t-esc="line.credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            <td class="text-left text-margin text-size"><t t-esc="line.partner_id.name"/></td>
+                            <td class="text-left text-margin text-size"><t t-esc="line.name"/></td>
+                            <td class="text-center text-margin text-size"><t t-esc="line.currency_id.name"/></td>
+                            <td class="text-center text-margin text-size">
+                                <t t-if="line.debit != 0">
+                                    <t t-esc="o.format_monetary_without_currency(line.debit)"/>
+                                </t>
+                            </td>
+                            <td class="text-center text-margin text-size">
+                                <t t-if="line.credit != 0">
+                                    <t t-esc="o.format_monetary_without_currency(line.credit)"/>
+                                </t>
+                            </td>
                             <t t-set="sum_debit" t-value="sum_debit + line.debit"/>
                             <t t-set="sum_credit" t-value="sum_credit + line.credit"/>
                         </tr>
                         <tfoot>
                             <tr>
-                                <td class="text-center text-margin" colspan="4"></td>
-                                <td class="text-center text-margin"><t t-esc="sum_debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
-                                <td class="text-center text-margin"><t t-esc="sum_credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                <td class="text-center text-margin text-size" colspan="4"></td>
+                                <td class="text-center text-margin text-size">
+                                    <t t-esc="o.format_monetary_without_currency(sum_debit)"/>
+                                </td>
+                                <td class="text-center text-margin text-size">
+                                    <t t-esc="o.format_monetary_without_currency(sum_credit)"/>
+                                </td>
                             </tr>
                         </tfoot>
                     </table>
-                    <br/><br/><br/><br/><br/>
-                    <div class="row">
-                        <div class="col-4 text-center text-margin">
-                            ผู้จัดทำ ........................................
+                    <div class="footer_container">
+                        <div class="row">
+                            <div class="col-4 text-left text-margin">
+                                ผู้จัดทำ .................................................
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                ผู้ตรวจสอบ ..............................................
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                ผู้อนุมัติ .................................................
+                            </div>
                         </div>
-                        <div class="col-4 text-center text-margin">
-                            ผู้ตรวจสอบ .....................................
-                        </div>
-                        <div class="col-4 text-center text-margin">
-                            ผู้อนุมัติ ........................................
+                        <div class="row">
+                            <div class="col-4 text-left text-margin">
+                                วันที่ .......................................................
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                วันที่ .......................................................
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                วันที่ .......................................................
+                            </div>
                         </div>
                     </div>
                 </div>

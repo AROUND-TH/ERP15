@@ -83,7 +83,7 @@
                                     widget="res_partner_many2one"
                                     context="{'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 />
-                                <!-- <field name="partner_address"/> -->
+                                <field name="check_no"/>
                             </group>
                             <group>
                                 <field name="document_date"/>

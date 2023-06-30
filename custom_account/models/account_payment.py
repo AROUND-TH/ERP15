@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import Warning, UserError
-
+import locale
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
@@ -30,6 +30,16 @@ class AccountPayment(models.Model):
         default='not_reconcile',
     )
     note = fields.Text(string='Notes')
+
+    def format_monetary_without_currency(self, value):
+        locale.setlocale(locale.LC_ALL, '')  # Set the locale to the user's default
+
+        # Get the formatting information for the current locale
+        conv = locale.localeconv()
+
+        # Convert the value to a string representation with the appropriate formatting
+        formatted_value = locale.format_string("%s%.*f", (conv['positive_sign'], conv['frac_digits'], value), grouping=True)
+        return formatted_value
 
 
     @api.depends('state', 'is_reconciled', 'reconciled_invoices_count', 'reconciled_bills_count', 'reconciled_statements_count')

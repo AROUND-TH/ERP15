@@ -10,7 +10,7 @@
 
                 <xpath expr="//field[@name='partner_bank_id']" position="after">
                     <field name="bank_account_id"/>
-                    <field name="check_detail" attrs="{'invisible': [('bank_account_id', '!=', False)]}"/>
+                    <field name="check_detail"/>
                 </xpath>
 
                 <xpath expr="//field[@name='ref']" position="after">

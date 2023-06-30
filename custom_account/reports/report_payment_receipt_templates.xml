@@ -148,7 +148,9 @@
                     <div class="row">
                         <div class="col-12 payment_vendor_header">
                             <div class="col-4 text-center box_sign text-margin"><span t-field="o.company_id.name"/></div>
-                            <div class="col-4 text-center box_sign text-margin">ใบสำคัญจ่าย</div>
+                            <div class="col-4 text-center box_sign text-margin">
+                                <h2>ใบสำคัญจ่าย</h2>
+                            </div>
                             <div class="col-4 text-center box_sign text-margin">เลขที่เอกสาร <span t-field="o.name"/></div>
                         </div>
                     </div>
@@ -194,38 +196,60 @@
                         <t t-set="sum_credit" t-value="0"/>
                         <tr t-foreach="o.move_id.line_ids" t-as="line">
                             <td class="text-left text-margin"><t t-esc="line.account_id.code"/> <t t-esc="line.account_id.name"/></td>
-                            <td class="text-right text-margin"><t t-esc="line.debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
-                            <td class="text-right text-margin"><t t-esc="line.credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            <td class="text-right text-margin">
+                                <t t-if="line.debit != 0">
+                                    <t t-esc="o.format_monetary_without_currency(line.debit)"/>
+                                </t>
+                            </td>
+                            <td class="text-right text-margin">
+                                <t t-if="line.credit != 0">
+                                    <t t-esc="o.format_monetary_without_currency(line.credit)"/>
+                                </t>
+                            </td>
                             <t t-set="sum_debit" t-value="sum_debit + line.debit"/>
                             <t t-set="sum_credit" t-value="sum_credit + line.credit"/>
                         </tr>
                         <tfoot>
                             <tr>
                                 <td></td>
-                                <td class="text-right text-margin"><t t-esc="sum_debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
-                                <td class="text-right text-margin"><t t-esc="sum_credit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                <td class="text-right text-margin">
+                                    <t t-esc="o.format_monetary_without_currency(sum_debit)"/>
+                                </td>
+                                <td class="text-right text-margin">
+                                    <t t-esc="o.format_monetary_without_currency(sum_credit)"/>
+                                </td>
                             </tr>
                         </tfoot>
                     </table>
                     <div class="row">
                         <div class="col-12 payment_vendor_sign">
                             <div class="col-12 text-left box_sign text-margin">
-                                จำนวนเงิน <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
-                                ( <span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(sum_credit, 'th_TH', 'th')"/> )
+                                จ่ายสุทธิจำนวนเงิน <span t-esc="'{:,.2f} บาท'.format(o.amount)"/>
+                                ( <span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount, 'th_TH', 'th')"/> )
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 payment_vendor_sign">
-                            <div class="col-4 text-center box_sign text-margin">ผู้จัดทำ........................</div>
-                            <div class="col-4 text-center box_sign text-margin">ผู้ตรวจสอบ........................</div>
-                            <div class="col-4 text-center box_sign text-margin">ผู้ตรวจสอบ........................</div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 payment_vendor_sign">
-                            <div class="col-6 text-center box_sign text-margin">ผู้อนุมัติ...................................</div>
-                            <div class="col-6 text-center box_sign text-margin">ผู้รับเงิน...................................</div>
+                        <div class="col-12" style="position: fixed; bottom: -260mm; width: 98%;">
+                            <div class="col-12 payment_vendor_sign">
+                                <div class="col-4 text-center box_sign text-footer-margin">
+                                    ผู้จัดทำ.................................................
+                                </div>
+                                <div class="col-4 text-center box_sign text-footer-margin">
+                                    ผู้ตรวจสอบ.......................................
+                                </div>
+                                <div class="col-4 text-center box_sign text-footer-margin">
+                                    ผู้ตรวจสอบ.......................................
+                                </div>
+                            </div>
+                            <div class="col-12 payment_vendor_sign">
+                                <div class="col-6 text-center box_sign text-footer-margin">
+                                    ผู้อนุมัติ.................................................................
+                                </div>
+                                <div class="col-6 text-center box_sign text-footer-margin">
+                                    ผู้รับเงิน.................................................................
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
