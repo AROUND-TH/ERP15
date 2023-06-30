@@ -5,7 +5,7 @@ import datetime
 import re
 from odoo.tools.misc import formatLang, format_date, get_lang
 from odoo.exceptions import UserError
-
+import locale
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -28,6 +28,7 @@ class AccountMove(models.Model):
         states={'draft': [('readonly', False)]}, default=fields.Date.today())
 
     narration_notes = fields.Text(string='notes')
+    company_for_report_id = fields.Many2one(comodel_name='res.company', string='Company')
 
 
     @api.onchange('invoice_date', 'highest_name', 'company_id')
@@ -113,6 +114,16 @@ class AccountMove(models.Model):
             month_character = 'ธ.ค.'
 
         return month_character
+
+    def format_monetary_without_currency(self, value):
+        locale.setlocale(locale.LC_ALL, '')  # Set the locale to the user's default
+
+        # Get the formatting information for the current locale
+        conv = locale.localeconv()
+
+        # Convert the value to a string representation with the appropriate formatting
+        formatted_value = locale.format_string("%s%.*f", (conv['positive_sign'], conv['frac_digits'], value), grouping=True)
+        return formatted_value
 
 
 class AccountMoveLine(models.Model):

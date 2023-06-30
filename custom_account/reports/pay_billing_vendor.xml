@@ -58,17 +58,17 @@
                     <table class="table table-border" style="border: 1px solid #dddddd;">
                         <tbody>
                             <tr style="text-align:center;">
-                                <th>
+                                <th width="30%">
                                     <strong>
                                     <span t-field="doc.company_id.name"/>
                                     </strong>
                                 </th>
-                                <th>
+                                <th width="40%">
                                     <strong>
-                                    <span>ใบสำคัญจ่าย</span>
+                                        <h2>ใบสำคัญจ่าย</h2>
                                     </strong>
                                 </th>
-                                <th>
+                                <th width="30%">
                                     <strong>
                                     <span>เลขที่เอกสาร</span>
                                     <span t-field="doc.name"/>
@@ -106,6 +106,7 @@
                                                     หมายเหตุ <span t-field="doc.narration"/>
                                                 </td>
                                                 <td width="30%">
+                                                    Check No. <span t-field="doc.check_no"/>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -136,32 +137,36 @@
                                     <span t-field="move_line.account_id"/>
                                 </td>
                                 <td align="right">
-                                    <span t-field="move_line.debit"/>
-                                    <t t-set="sum_debit" t-value="sum_debit + move_line.debit"/>
+                                    <t t-if="move_line.debit != 0">
+                                        <t t-esc="doc.format_monetary_without_currency(move_line.debit)"/>
+                                        <t t-set="sum_debit" t-value="sum_debit + move_line.debit"/>
+                                    </t>
                                 </td>
                                 <td align="right">
-                                    <span t-field="move_line.credit"/>
-                                    <t t-set="sum_credit" t-value="sum_credit + move_line.credit"/>
+                                    <t t-if="move_line.credit != 0">
+                                        <t t-esc="doc.format_monetary_without_currency(move_line.credit)"/>
+                                        <t t-set="sum_credit" t-value="sum_credit + move_line.credit"/>
+                                    </t>
                                 </td>
                             </tr>
                             <tr style="font-size: 105%;">
                                 <td>
                                 </td>
-                                <td align="center">
+                                <td align="right">
                                     <strong>
-                                    <span t-esc="'{:,.2f} บาท'.format(sum_debit)"/>
+                                        <t t-esc="doc.format_monetary_without_currency(sum_debit)"/>
                                     </strong>
                                 </td>
-                                <td align="center">
+                                <td align="right">
                                     <strong>
-                                    <span t-esc="'{:,.2f} บาท'.format(sum_credit)"/>
+                                        <t t-esc="doc.format_monetary_without_currency(sum_credit)"/>
                                     </strong>
                                 </td>
                             </tr>
                             <tr style="font-size: 105%;">
                                 <td align="center">
                                     <strong>
-                                    <span>จำนวนเงิน</span>
+                                    <span>จ่ายสุทธิจำนวนเงิน</span>
                                     <span style="margin-right:5px;" t-esc="'{:,.2f} บาท'.format(doc.amount_total)"/>
                                     (
                                     <span t-esc="doc.company_currency_id.amount_to_text(sum_debit, 'th_TH', 'th')"/>
@@ -175,25 +180,35 @@
                         </tbody>
                     </table>
 
-                    <table class="table table-border" style="font-size: 85%; margin-top:50px;">
+                    <table class="table table-border" style="width:98%; font-size: 85%; position: fixed; bottom: -280mm;">
                         <tbody>
                             <tr style="text-align:center;">
                                 <td>
-                                    <span>ผู้จัดทำ.................................................................</span>
+                                    <span>
+                                        ผู้จัดทำ.................................................................
+                                    </span>
                                 </td>
                                 <td>
-                                    <span>ผู้ตรวจสอบ..............................................................</span>
+                                    <span>
+                                        ผู้ตรวจสอบ..............................................................
+                                    </span>
                                 </td>
                                 <td>
-                                    <span>ผู้อนุมัติ.................................................................</span>
+                                    <span>
+                                        ผู้อนุมัติ.................................................................
+                                    </span>
                                 </td>
                             </tr>
                             <tr style="text-align:center;">
-                                <td colspan='2'>
-                                    <span>ผู้ตรวจสอบ................................................................</span>
-                                </td>
                                 <td>
-                                    <span>ผู้รับเงิน.................................................................</span>
+                                    <span>
+                                        ผู้ตรวจสอบ................................................................
+                                    </span>
+                                </td>
+                                <td colspan='2'>
+                                    <span>
+                                        ผู้รับเงิน.................................................................
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>

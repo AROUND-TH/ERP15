@@ -6,7 +6,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import Warning, UserError, ValidationError
 
 from collections import defaultdict
-
+import locale
 import re
 
 
@@ -223,6 +223,7 @@ class PayBillingVendor(models.Model):
 
     reconcile_status = fields.Char(string='Reconcile', compute='_compute_reconcile_state')
     narration = fields.Html(string='Terms and Conditions')
+    check_no = fields.Char(string='Check No.')
 
     # @Sample method fields_view_get to modify view.
     # @api.model
@@ -234,6 +235,16 @@ class PayBillingVendor(models.Model):
     #             node.set('string', "Match")
     #         res['arch'] = etree.tostring(doc)
     #     return res
+
+    def format_monetary_without_currency(self, value):
+        locale.setlocale(locale.LC_ALL, '')  # Set the locale to the user's default
+
+        # Get the formatting information for the current locale
+        conv = locale.localeconv()
+
+        # Convert the value to a string representation with the appropriate formatting
+        formatted_value = locale.format_string("%s%.*f", (conv['positive_sign'], conv['frac_digits'], value), grouping=True)
+        return formatted_value
 
 
     @api.onchange('document_date', 'highest_name', 'company_id')

@@ -1,5 +1,6 @@
 .page_payment_receipt_vendor {
     page-break-after: always;
+    font-size: 85%;
 
     .payment_vendor_header {
         display: flex;
@@ -32,7 +33,11 @@
     }
 
     .text-margin {
-        padding: 20px 20px;
+        padding: 5px 10px;
+    }
+
+    .text-footer-margin {
+        padding: 15px 10px;
     }
 
     .text-detail {
@@ -169,6 +174,9 @@
 .page_general_journal_report {
     page-break-after: always;
     margin-top: 20px;
+    max-height: 273mm;
+    height: 273mm;
+    width: 100%;
 
     .header-report {
         margin-top: 40px;
@@ -177,5 +185,15 @@
 
     .text-margin {
         padding: 10px 10px;
+    }
+
+    .text-size {
+        font-size: 12px;
+    }
+
+    .footer_container {
+        position: fixed;
+        bottom: -260mm;
+        width: 100%;
     }
 }
