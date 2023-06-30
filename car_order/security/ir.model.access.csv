@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_car_order,car.order,model_car_order,base.group_user,1,0,0,0
 access_car_order_manager,car.order,model_car_order,base.group_system,1,1,1,1
-access_car_order_sale_manager,car.order,model_car_order,base.sales_team.group_sale_manager,1,1,1,1
+access_car_order_sale_manager,car.order,model_car_order,sales_team.group_sale_manager,1,1,1,1
 access_car_order_line,car.order.line,model_car_order_line,base.group_user,1,0,0,0
 access_car_order_line_manager,car.order.line,model_car_order_line,base.group_system,1,1,1,1
 access_car_order_line_sale_manager,car.order.line,model_car_order_line,sales_team.group_sale_manager,1,1,1,1
