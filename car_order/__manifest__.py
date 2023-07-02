@@ -20,6 +20,7 @@
         "data/paper_format.xml",
         "report/car_order_report.xml",
         "report/car_order_template.xml",
+        "report/quotation_template.xml",
         "security/ir.model.access.csv",
         "views/res_config_settings_view.xml",
         "views/product_template.xml",

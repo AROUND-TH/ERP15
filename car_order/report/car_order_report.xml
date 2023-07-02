@@ -10,4 +10,14 @@
         <field name="binding_type">report</field>
         <field name="paperformat_id" ref="paperformat_car_order"/>
     </record>
+    <record id="action_quotation_report" model="ir.actions.report">
+        <field name="name">ใบเสนอราคา</field>
+        <field name="model">car.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">car_order.report_quotation_form</field>
+        <field name="report_file">car_order.report_quotation_form</field>
+        <field name="print_report_name">'ใบเสนอราคา - %s' % object.name</field>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_car_order"/>
+    </record>
 </odoo>

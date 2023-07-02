@@ -1,3 +1,6 @@
+from itertools import groupby
+from pythainlp.util import thai_strftime
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
@@ -73,7 +76,8 @@ class CarOrder(models.Model):
     pricelist_price = fields.Float('ราคา Pricelist', compute="_compute_pricelist_price", store=True)
     currency_id = fields.Many2one(related='pricelist_id.currency_id', depends=["pricelist_id"], store=True,
                                   ondelete="restrict")
-    payment_term_id = fields.Many2one('account.payment.term', string='เงื่อนไขการชำระเงิน', readonly=True, required=True,
+    payment_term_id = fields.Many2one('account.payment.term', string='เงื่อนไขการชำระเงิน', readonly=True,
+                                      required=True,
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     product_id = fields.Many2one('product.product', string="รถ", domain="[('custom_fleet_ok', '=', True)]",
                                  required=True, readonly=True, index=True,
@@ -83,12 +87,14 @@ class CarOrder(models.Model):
     sale_price = fields.Float(required=True, readonly=True, string="ราคาขาย",
                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     discount_price = fields.Float(required=True, readonly=True, string="ส่วนลด",
-                              states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     reserve_price = fields.Float(required=True, readonly=True, string="เงินจอง",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    company_header_1 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 1', readonly=True, required=True,
+    company_header_1 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 1', readonly=True,
+                                       required=True,
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    company_header_2 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 2', readonly=True, required=False,
+    company_header_2 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 2', readonly=True,
+                                       required=False,
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # warranty
     number_of_years_warranty = fields.Integer(readonly=True, string="ปี",
@@ -111,8 +117,9 @@ class CarOrder(models.Model):
                                     states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     finance_installment = fields.Float(readonly=True, string="งวดละ",
                                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    finance_number_of_installment = fields.Integer(readonly=True, string="จำนวนงวด", states={'draft': [('readonly', False)],
-                                                                          'confirm': [('readonly', False)]})
+    finance_number_of_installment = fields.Integer(readonly=True, string="จำนวนงวด",
+                                                   states={'draft': [('readonly', False)],
+                                                           'confirm': [('readonly', False)]})
     finance_commission = fields.Float(readonly=True, string="ค่าคอมจาก บ.ไฟแนนซ์",
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # accessories
@@ -134,7 +141,7 @@ class CarOrder(models.Model):
     commission_amount_total = fields.Monetary(string='รวมค่า Commission', store=True, compute='_commission_amount')
     # freebie
     freebie_line = fields.One2many('car.order.freebie', 'order_id', readonly=True, string="รายการของแถม",
-                                      states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+                                   states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     freebie_amount_total = fields.Monetary(string='รวมค่าของแถม', store=True, compute='_freebie_amount')
     state = fields.Selection([
         ('draft', 'ใบเสนอราคา / ใบจอง'),
@@ -147,6 +154,9 @@ class CarOrder(models.Model):
 
     margin = fields.Monetary("Margin", compute='_compute_margin', store=True)
     margin_percent = fields.Char("Margin (%)", compute='_compute_margin', store=True)
+    quotation_date = fields.Date(string="วันที่เสนอราคา")
+    quotation_document = fields.Char(string="เอกสารที่ใช้ประกอบการจอง")
+    quotation_remark = fields.Char(string="หมายเหตุ")
 
     # ux field
     commission_product_categ = fields.Many2one('product.category', compute="_compute_commission_product_categ")
@@ -370,12 +380,31 @@ class CarOrder(models.Model):
     def action_print_report(self):
         return self.env.ref('car_order.action_report_car_order').report_action(self)
 
+    def action_print_quotation_report(self):
+        return self.env.ref('car_order.action_quotation_report').report_action(self)
+
     # report
     def _get_warranty_info(self):
         return f'ประกัน {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
 
     def _get_acc_film_other_info(self):
         return self.acc_film_other or '-'
+
+    def _get_quotation_date_thai_format(self):
+        if not self.quotation_date:
+            return ""
+        return thai_strftime(fields.Datetime.from_string(self.quotation_date), "%A %-d %B %Y")
+
+    def _get_group_finance_down_list(self):
+        values = list()
+        for k, group in groupby(self.x_studio_finance_down_list,
+                                lambda l: l['x_studio_down_amount'] and l['x_studio_finance_amount']):
+            _group = list(group)
+            down_amount, finance_amount = _group[0].x_studio_down_amount, _group[0].x_studio_finance_amount
+            data = [dict(name=list_id.x_name, payment=list_id.x_studio_down_payment, interest=list_id.x_studio_interest)
+                    for list_id in _group]
+            values.append(dict(down_amount=down_amount, finance_amount=finance_amount, data=data, row=len(data)))
+        return values
 
     def copy_data(self, default=None):
         if default is None:

@@ -29,6 +29,7 @@
                     <button name="action_done" type="object" string="Done" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
                     <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', 'in', ['draft', 'cancel'])]}"/>
                     <button name="action_print_report" type="object" string="รายละเอียดการขาย" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
+                    <button name="action_print_quotation_report" type="object" string="ใบเสนอราคา" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                 </header>
                 <sheet>
@@ -192,6 +193,27 @@
                                 <div class="oe_clear"/>
                             </group>
                          </page>
+                        <page string="ใบเสนอราคา">
+                            <group>
+                                <field name="quotation_date" colspan="2"/>
+                                <field name="quotation_document"/>
+                                <field name="quotation_remark"/>
+                            </group>
+                            <group>
+                                <field name="x_studio_finance_down_list" string="รายละเอียดการดาวน์รถ">
+                                  <tree editable="bottom">
+                                    <field name="x_studio_sequence" widget="handle"/>
+                                    <field optional="show" name="x_studio_down_amount" string="เงินดาวน์"/>
+                                    <field optional="show" name="x_studio_finance_amount" string="ยอดจัด"/>
+                                    <field name="x_name" string="ระยะเวลา"/>
+                                    <field optional="show" name="x_studio_down_payment" string="ค่างวด"/>
+                                    <field optional="show" name="x_studio_interest" string="ดอกเบี้ย"/>
+                                  </tree>
+                                </field>
+                                <field name="x_studio_free_list" string="ของแถม"/>
+                                <field name="x_studio_many2one_field_PLrSg" options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
