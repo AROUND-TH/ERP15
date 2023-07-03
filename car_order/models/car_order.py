@@ -351,7 +351,7 @@ class CarOrder(models.Model):
             "order_line": order_line
         })
         self.sale_id = sale_id
-        sale_id.action_confirm()
+        sale_id.with_user(self.env.user).sudo().action_confirm()
         self.state = "done"
 
     def action_cancel(self):
