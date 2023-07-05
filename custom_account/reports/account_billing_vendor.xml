@@ -8,11 +8,11 @@
             <field name="format">A4</field>
             <field name="orientation">Portrait</field>
             <field name="margin_top">40</field>
-            <field name="margin_bottom">30</field>
+            <field name="margin_bottom">25</field>
             <field name="margin_left">5</field>
             <field name="margin_right">5</field>
             <field name="header_line" eval="False"/>
-            <field name="header_spacing">35</field>
+            <field name="header_spacing">15</field>
             <field name="dpi">90</field>
         </record>
 
@@ -103,7 +103,7 @@
                     }
                     </style>
                     <div class="row">
-                        <div class="col h2 text-center" style="margin-top:0px; margin-bottom:20px;">
+                        <div class="col h2 text-center" style="margin-top:10px; margin-bottom:20px;">
                             <span><strong>ใบรับวางบิล</strong></span>
                         </div>
                     </div>
