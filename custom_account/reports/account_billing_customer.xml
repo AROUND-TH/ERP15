@@ -29,7 +29,7 @@
             <field name="paperformat_id" ref="paperformat_account_billing_customer"/>
         </record>
 
-        <!-- This external_layout_standard use for account_billing_customer and account_billing_vendor report. -->
+        <!-- This external_layout_standard use for account_billing_customer report. -->
         <template id="external_layout_standard">
             <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
                 <div class="row">
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </template>
-        <!-- This external_layout use for account_billing_customer and account_billing_vendor report. -->
+        <!-- This external_layout use for account_billing_customer report. -->
         <template id="external_layout">
             <t t-if="not o" t-set="o" t-value="doc"/>
             <t t-if="not company">

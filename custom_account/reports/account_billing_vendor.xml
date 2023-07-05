@@ -29,8 +29,72 @@
             <field name="paperformat_id" ref="paperformat_account_billing_vendor"/>
         </record>
 
+        <!-- This custom_layout_standard_account_billing use for account_billing_vendor report. -->
+        <template id="custom_layout_standard_account_billing">
+            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                <div class="row">
+                    <div class="col-1 mb4" align="center">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 65px;" alt="Logo"/>
+                    </div>
+                    <div class="col-11" name="company_address">
+                        <span t-if="company.company_details" t-field="company.company_details"></span>
+                    </div>
+                    <!-- <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/> -->
+                </div>
+                <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+                <!-- Remark this code to use fix header text on company_details. -->
+                <!-- <div class="row" style="margin-top:-15px;">
+                    <div class="col-6" name="company_vat_phone">
+                        <span t-if="company.vat" t-esc="'Tax ID: {}'.format(company.vat)" style="margin-right:8px;"></span>
+                        <span t-if="company.phone" t-esc="'เบอร์โทร: {}'.format(company.phone)"></span>
+                    </div>
+                </div> -->
+            </div>
+
+            <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout {{  'o_layout_background' if company.layout_background in ['Geometric', 'Custom']  else  '' }}" t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8') if company.layout_background_image and company.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' if company.layout_background == 'Geometric' else ''}});" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-5">
+                    <!-- This div ensures that the address is not cropped by the header. -->
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
+            </div>
+
+            <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <ul class="list-inline mb4">
+                        <div t-field="company.report_footer"/>
+                    </ul>
+
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <!-- This custom_layout_account_billing use for account_billing_vendor report. -->
+        <template id="custom_layout_account_billing">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-call="custom_account.custom_layout_standard_account_billing"><t t-out="0"/></t>
+        </template>
+
         <template id="account_billing_vendor_document">
-            <t t-call="custom_account.external_layout">
+            <t t-call="custom_account.custom_layout_account_billing">
                 <div class="page" style="font-size: 80%;">
                     <style>
                     .rem-border-td td {
@@ -123,6 +187,9 @@
                                 </th>
                             </tr>
                         </thead>
+                        <t t-set="sum_amount_untaxed" t-value="0"/>
+                        <t t-set="sum_amount_tax" t-value="0"/>
+                        <t t-set="sum_amount_total" t-value="0"/>
                         <tbody>
                             <tr t-foreach="doc.line_ids" t-as="table_line">
                                 <td>
@@ -143,8 +210,28 @@
                                 <td>
                                     <span t-field="table_line.amount_total"/>
                                 </td>
+                                <t t-set="sum_amount_untaxed" t-value="sum_amount_untaxed + table_line.amount_untaxed"/>
+                                <t t-set="sum_amount_tax" t-value="sum_amount_tax + table_line.amount_tax"/>
+                                <t t-set="sum_amount_total" t-value="sum_amount_total + table_line.amount_total"/>
                             </tr>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="text-center text-margin text-size" colspan="2"/>
+                                <th class="text-left text-margin" style="font-size: 110%;">
+                                    <span>(ยอดรวม)</span>
+                                </th>
+                                <th class="text-left text-margin">
+                                    <t t-esc="sum_amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': doc.company_currency_id}"/>
+                                </th>
+                                <th class="text-left text-margin">
+                                    <t t-esc="sum_amount_tax" t-options="{'widget': 'monetary', 'display_currency': doc.company_currency_id}"/>
+                                </th>
+                                <th class="text-left text-margin">
+                                    <t t-esc="sum_amount_total" t-options="{'widget': 'monetary', 'display_currency': doc.company_currency_id}"/>
+                                </th>
+                            </tr>
+                        </tfoot>
                     </table>
                     <style>
                     .right-bar {
@@ -154,19 +241,19 @@
                     <table class="table" style="margin-top:60px; font-size:85%; text-align:center;">
                         <thead>
                             <tr>
-                                <th class="right-bar">
+                                <th class="right-bar" style="font-size: 110%;">
                                     <span>รวม</span>
                                 </th>
                                 <th class="right-bar">
                                     <span t-field="doc.line_count"/>
                                 </th>
-                                <th class="right-bar">
+                                <th class="right-bar" style="font-size: 110%;">
                                     <span>ฉบับ</span>
                                 </th>
                                 <th class="right-bar">
                                     <span t-field="doc.amount_total"/>
                                 </th>
-                                <th>
+                                <th style="font-size: 110%;">
                                     (
                                     <span t-field="doc.amount_total_text"/>
                                     )
@@ -191,12 +278,12 @@
                             <span/>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:50px; margin-bottom:0px;">
+                    <div class="row" style="margin-top:120px; margin-bottom:0px;">
                         <div class="col-6">
-                            <span style="margin-left:30px;">ผู้วางบิล.....................................................</span>
+                            <span style="margin-left:30px;">ผู้จัดทำ........................................................</span>
                         </div>
                         <div class="col-6">
-                            <span style="margin-left:30px;">ผู้รับวางบิล................................................</span>
+                            <span style="margin-left:30px;">ผู้รับเอกสาร...................................................</span>
                         </div>
                     </div>
                     <!-- <div class="row" style="margin-top:0px; margin-bottom:0px;">
@@ -209,10 +296,10 @@
                     </div> -->
                     <div class="row" style="margin-top:0px; margin-bottom:0px;">
                         <div class="col-6">
-                            <span style="margin-left:30px;">วันที่..........................................................</span>
+                            <span style="margin-left:30px;">วันที่...........................................................</span>
                         </div>
                         <div class="col-6">
-                            <span style="margin-left:30px;">วันที่..........................................................</span>
+                            <span style="margin-left:30px;">วันที่...............................................................</span>
                         </div>
                     </div>
                 </div>
