@@ -17,11 +17,11 @@
             </h4>
             <div class="d-inline-flex">
                 <p style="width: 74px;">ชื่อผู้ซื้อ</p>
-                <p style="width: 360px;" class="border-bottom-black" t-field="partner_id.name"/>
+                <p style="width: 280px;" class="border-bottom-black" t-field="partner_id.name"/>
                 <p style="width: 80px;" class="text-center">วันที่จอง</p>
-                <p style="width: 120px;" class="border-bottom-black pl-1" t-esc="doc._get_date_thai_format(doc.x_studio_reservation_date)"/>
+                <p style="width: 230px;" class="border-bottom-black pl-1" t-esc="doc._get_date_thai_format(doc.x_studio_reservation_date)"/>
                 <p style="width: 100px;" class="text-center">วันที่ส่งมอบ</p>
-                <p style="width: 130px;" class="border-bottom-black" t-esc="doc.x_studio_estimated_delivery_date or '-'"/>
+                <p style="width: 100px;" class="border-bottom-black" t-esc="doc.x_studio_estimated_delivery_date or '-'"/>
             </div>
             <div class="d-inline-flex">
                 <p style="width: 74px;">ที่อยู่</p>
@@ -219,8 +219,7 @@
                                 <p t-field="freebie_id.product_id.name"/>
                             </td>
                             <td width="60px;">
-                                <p class="border-bottom-black pl-2" t-field="freebie_id.sale_price"
-                                   t-options='{"widget": "float", "precision": 2}'/>
+                                <p class="border-bottom-black text-right pr-1" t-field="freebie_id.sale_price" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                             </td>
                             <td width="30px"><p class="pl-4">บาท</p></td>
                         </tr>
@@ -231,8 +230,7 @@
                                 <p class="text-center"><strong>รวมของแถม</strong></p>
                             </td>
                             <td width="60px;">
-                                <p class="border-bottom-black pl-2" t-field="doc.freebie_amount_total"
-                                   t-options='{"widget": "float", "precision": 2}'/>
+                                <p class="border-bottom-black text-right pr-1" t-field="doc.freebie_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                             </td>
                             <td width="30px"><p class="pl-4">บาท</p></td>
                         </tr>
@@ -241,7 +239,7 @@
                                 <p class="text-center"><strong>ราคาขาย (Net) หักของแถมม</strong></p>
                             </td>
                             <td width="60px;">
-                                <p class="border-bottom-black pl-2" t-esc="doc.sale_price - doc.freebie_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                <p class="border-bottom-black text-right pr-1" t-esc="doc.sale_price - doc.freebie_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                             </td>
                             <td width="30px"><p class="pl-4">บาท</p></td>
                         </tr>
@@ -252,8 +250,7 @@
                                 <p t-field="line_id.product_id.name"/>
                             </td>
                             <td width="60px;">
-                                <p class="border-bottom-black pl-2" t-field="line_id.price"
-                                   t-options='{"widget": "float", "precision": 2}'/>
+                                <p class="border-bottom-black text-right pr-1" t-field="line_id.price" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                             </td>
                             <td width="30px"><p class="pl-4">บาท</p></td>
                         </tr>
@@ -264,8 +261,7 @@
                                 <p class="text-center"><strong>รวมค่า Commission</strong></p>
                             </td>
                             <td width="60px;">
-                                <p class="border-bottom-black pl-2" t-field="doc.commission_amount_total"
-                                   t-options='{"widget": "float", "precision": 2}'/>
+                                <p class="border-bottom-black text-right pr-1" t-field="doc.commission_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                             </td>
                             <td width="30px"><p class="pl-4">บาท</p></td>
                         </tr>
