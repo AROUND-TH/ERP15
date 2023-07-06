@@ -19,7 +19,7 @@
             <h4 class="text-center" style="padding-bottom: 10px">
                 <strong>ใบเสนอราคา</strong>
             </h4>
-            <p class="text-right" t-esc="doc._get_quotation_date_thai_format()"/>
+            <p class="text-right" t-esc="doc._get_date_thai_format(doc.quotation_date)"/>
             <p>เรียน:
                 <span t-field="doc.partner_id.name"/>
             </p>
@@ -29,9 +29,11 @@
                         <span t-field="vehicle_id.model_id.name"/>
                     </p>
                     <p>ราคา:
-                        <span t-field="doc.sale_price"/>
+                        <span t-field="doc.sale_price" t-options='{"widget": "float", "precision": 2}'/>
+                        <span>&#160;บาท</span>
                         - ส่วนลดพิเศษ
-                        <span t-field="doc.discount_price"/>
+                        <span t-field="doc.discount_price" t-options='{"widget": "float", "precision": 2}'/>
+                        <span>&#160;บาท</span>
                     </p>
                     <p>กำหนดรับรถ:
                         <span t-field="doc.x_studio_estimated_delivery_date"/>
@@ -44,6 +46,7 @@
                     </p>
                     <p>ราคาสุทธิ:
                         <t t-esc="doc.sale_price - doc.discount_price" t-options='{"widget": "float", "precision": 2}'/>
+                        <span>&#160;บาท</span>
                     </p>
                 </div>
             </div>
@@ -122,9 +125,9 @@
                 <div class="col-4"/>
                 <div class="col-4"/>
                 <div class="col-4 text-center">
-                    <p t-field="doc.salesman_id.name"></p>
+                    <p t-field="doc.x_studio_many2one_field_PLrSg.name"></p>
                     <p>
-                        <span class="pr-1" t-field="doc.salesman_id.department_id.name"/>
+                        <span class="pr-1" t-field="doc.x_studio_many2one_field_PLrSg.department_id.name"/>
                         Tel.
                         <span t-field="doc.salesman_id.mobile_phone"/>
                     </p>

@@ -390,10 +390,10 @@ class CarOrder(models.Model):
     def _get_acc_film_other_info(self):
         return self.acc_film_other or '-'
 
-    def _get_quotation_date_thai_format(self):
-        if not self.quotation_date:
-            return ""
-        return thai_strftime(fields.Datetime.from_string(self.quotation_date), "%A %-d %B %Y")
+    def _get_date_thai_format(self, date):
+        if not date:
+            return "-"
+        return thai_strftime(fields.Datetime.from_string(date), "%A %-d %B %Y")
 
     def _get_group_finance_down_list(self):
         values = list()
@@ -413,6 +413,10 @@ class CarOrder(models.Model):
             default['order_line'] = [(0, 0, line.copy_data()[0]) for line in self.order_line]
         if 'commission_line' not in default:
             default['commission_line'] = [(0, 0, line.copy_data()[0]) for line in self.commission_line]
+        if 'freebie_line' not in default:
+            default['freebie_line'] = [(0, 0, line.copy_data()[0]) for line in self.freebie_line]
+        if 'x_studio_finance_down_list' not in default:
+            default['x_studio_finance_down_list'] = [(0, 0, line.copy_data()[0]) for line in self.x_studio_finance_down_list]
         return super(CarOrder, self).copy_data(default)
 
     def action_update_cost(self):
