@@ -157,7 +157,8 @@ class CarOrder(models.Model):
     quotation_date = fields.Date(string="วันที่เสนอราคา")
     quotation_document = fields.Char(string="เอกสารที่ใช้ประกอบการจอง")
     quotation_remark = fields.Char(string="หมายเหตุ")
-
+    amount_autoessense = fields.Float(required=True, readonly=True, string="ค่าใช้จ่าย บ.ออโต้ เอสเซ้นส์",
+                                      states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     # ux field
     commission_product_categ = fields.Many2one('product.category', compute="_compute_commission_product_categ")
 

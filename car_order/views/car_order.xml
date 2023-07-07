@@ -67,6 +67,7 @@
                             <field name="payment_term_id"/>
                             <field name="pricelist_id"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="amount_autoessense" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
                         </group>
                     </group>
                     <group name="company_header" >
