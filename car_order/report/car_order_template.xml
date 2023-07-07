@@ -127,7 +127,11 @@
                 <tbody>
                     <tr>
                         <td>
-                            <p class="text-right">ค่าใช้จ่าย บ.ออโต้ เอสเซ้นส์</p>
+                            <p class="text-right">
+                              ค่าใช้จ่าย บ.ออโต้ เอส
+                              <br/>
+                              <span t-esc="doc.amount_autoessense" t-options='{"widget": "float", "precision": 2}'/> บาท
+                            </p>
                         </td>
                         <td width="20%">
                             <p class="text-right pr-3"><strong>จำนวนรวมทั้งสิ้น</strong></p>
