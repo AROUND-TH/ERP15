@@ -75,6 +75,15 @@ class AccountAsset(models.Model):
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"
     )
 
+    transfer_company_header = fields.Many2one(
+        'x_company_header',
+        string='หัวบริษัท',
+        # domain=lambda self: ['|', ('id', '=', self.env.ref('base.main_company').partner_id.id), ('parent_id', '=', self.env.ref('base.main_company').partner_id.id)]
+    )
+    transfer_reason = fields.Char(
+        string='เหตุผลการโอนย้าย',
+    )
+
     # Transfer Log Line
     transfer_log_ids = fields.One2many('asset.transfer.log', 'asset_id',
         string='Transfer Log',
@@ -400,7 +409,14 @@ class AccountAsset(models.Model):
     def button_transfer_print(self):
         self.ensure_one()
 
-        value = self.read(['transfer_date', 'account_analytic_id', 'transfer_account_analytic_id', 'transfer_analytic_tag_ids'])[0]
+        value = self.read([
+                    'transfer_date',
+                    'account_analytic_id',
+                    'transfer_account_analytic_id',
+                    'transfer_analytic_tag_ids',
+                    'transfer_company_header',
+                    'transfer_reason',
+                ])[0]
         # Check mandatory field of Transfer Data >> transfer_date, transfer_account_analytic_id
         if (not value.get("transfer_date") or not value.get("transfer_account_analytic_id")):
             raise ValidationError(_("Please Input Transfer Data."))
@@ -415,6 +431,8 @@ class AccountAsset(models.Model):
         vals["transfer_date"] = False
         vals["transfer_account_analytic_id"] = False
         vals["transfer_analytic_tag_ids"] = False
+        vals["transfer_company_header"] = False
+        vals["transfer_reason"] = False
 
         transfer_log_ids = []
         transfer_log_ids.append(
@@ -426,6 +444,7 @@ class AccountAsset(models.Model):
                     'account_analytic_id': self.account_analytic_id.id,
                     'transfer_account_analytic_id': self.transfer_account_analytic_id.id,
                     'transfer_date': self.transfer_date,
+                    'transfer_reason': self.transfer_reason,
                     'employee_id': employee_id.id,
                 }
             )
@@ -447,13 +466,15 @@ class AccountAsset(models.Model):
             'document_number': document_number,
             'employee_name': employee_id.name,
             'quantity': 1,
+            # 'transfer_date': self.transfer_date,
+            # 'transfer_account_analytic_id': self.transfer_account_analytic_id,
+            # 'transfer_analytic_tag_ids': self.transfer_analytic_tag_ids,
             'transfer_date': value.get("transfer_date"),
             'account_analytic_id': value.get("account_analytic_id"),
             'transfer_account_analytic_id': value.get("transfer_account_analytic_id"),
             'transfer_analytic_tag_ids': value.get("transfer_analytic_tag_ids"),
-            # 'transfer_date': self.transfer_date,
-            # 'transfer_account_analytic_id': self.transfer_account_analytic_id,
-            # 'transfer_analytic_tag_ids': self.transfer_analytic_tag_ids,
+            'transfer_company_header': value.get("transfer_company_header"),
+            'transfer_reason': value.get("transfer_reason"),
         }
 
         # return self.env.ref('custom_account.report_account_asset_transfer').report_action(self.id)
@@ -520,6 +541,10 @@ class AssetTransferLog(models.Model):
     transfer_date = fields.Date(
         string='Transfer Date',
         readonly=True,
+    )
+
+    transfer_reason = fields.Char(
+        string='เหตุผลการโอนย้าย',
     )
 
 
