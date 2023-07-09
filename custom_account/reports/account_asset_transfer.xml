@@ -7,8 +7,8 @@
             <field name="default" eval="True"/>
             <field name="format">A4</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">20</field>
-            <field name="margin_bottom">10</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">25</field>
             <field name="margin_left">5</field>
             <field name="margin_right">5</field>
             <field name="header_line" eval="False"/>
@@ -44,14 +44,17 @@
                 </div>
             </div>
 
-            <!-- This div ensures that the address is not cropped by the header. -->
-            <div class="pt-5">
-                <t t-call="web.address_layout"/>
+            <div t-attf-class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-5">
+                    <!-- This div ensures that the address is not cropped by the header. -->
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
             </div>
-            <t t-out="0"/>
         </template>
         <!-- This custom_layout_asset_transfer use for account_asset_transfer report. -->
         <template id="custom_layout_asset_transfer">
+            <t t-if="not o" t-set="o" t-value="doc"/>
             <t t-if="not company_header" t-set="company_header" t-value="transfer.get('transfer_company_header')"/>
             <t t-call="custom_account.custom_layout_standard_asset_transfer"><t t-out="0"/></t>
         </template>
