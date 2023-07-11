@@ -32,12 +32,14 @@
             <table class="w-100">
                 <tbody>
                     <tr>
-                        <td width="10%"><p>รุ่นรถ</p></td>
+                        <td width="8%"><p>รุ่นรถ</p></td>
                         <td width="25%"><p t-field="vehicle_id.model_id.name" class="border-bottom-black text-center"/></td>
                         <td width="3%"><p class="text-center">สี</p></td>
-                        <td width="25%"><p t-field="vehicle_id.color" class="border-bottom-black text-center"/></td>
-                        <td width="10%"><p class="text-center">เลขตัวถัง</p></td>
-                        <td width="27%"><p t-field="vehicle_id.vin_sn" class="border-bottom-black text-center"/></td>
+                        <td width="10%"><p t-field="vehicle_id.color" class="border-bottom-black text-center"/></td>
+                        <td width="9%"><p class="text-center">เลขตัวถัง</p></td>
+                        <td width="22%"><p t-field="vehicle_id.vin_sn" class="border-bottom-black text-center"/></td>
+                        <td width="9%"><p class="text-center">BAH No.</p></td>
+                        <td width="14%"><p t-field="doc.product_id.default_code" class="border-bottom-black text-center"/></td>
                     </tr>
                 </tbody>
             </table>
