@@ -192,7 +192,7 @@ class ReportVehiclePipeline2(models.Model):
     @api.model
     def init(self):
         # Manipulate existing view
-        tools.drop_view_if_exists(self.env.cr, self._table)
+        # tools.drop_view_if_exists(self.env.cr, self._table)
 
         # Logical Table Query
         query = """
