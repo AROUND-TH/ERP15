@@ -342,6 +342,12 @@ class CarOrder(models.Model):
                 'product_id': line.product_id.id,
                 'price_unit': line.price
             }))
+
+        for freebie_id in self.freebie_line:
+            order_line.append((0, 0, {
+                'product_id': freebie_id.product_id.id,
+                'price_unit': 0.0
+            }))
         sale_id = self.env['sale.order'].create({
             "car_order_id": self.id,
             "partner_id": self.partner_id.id,
