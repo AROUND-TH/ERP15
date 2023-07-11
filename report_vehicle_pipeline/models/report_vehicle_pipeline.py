@@ -47,6 +47,10 @@ class ReportVehiclePipeline2(models.Model):
 
     x_studio_estimate_arrived_for_sale = fields.Date(string='Estimated Arrival for Sales')
 
+    fixed_price = fields.Float(
+        string='Current Sales Price',
+        digits='Product Price',
+    )
     list_price = fields.Float(
         string='Sales Price',
         digits='Product Price',
@@ -142,6 +146,34 @@ class ReportVehiclePipeline2(models.Model):
     x_studio_bill_of_landing_no = fields.Char('Bill of Landing No.')
     x_studio_bl_surrendered_date = fields.Date(string='B/L Surrendered Date')
 
+    po_state = fields.Selection([
+            ('draft', 'RFQ'),
+            ('sent', 'RFQ Sent'),
+            ('to approve', 'To Approve'),
+            ('purchase', 'Purchase Order'),
+            ('done', 'Locked'),
+            ('cancel', 'Cancelled')
+        ],
+        string='Purchase Order Status',
+    )
+    co_state = fields.Selection([
+            ('draft', 'ใบเสนอราคา / ใบจอง'),
+            ('confirm', 'รายละเอียดการขายรถยนตร์'),
+            ('done', 'ยืนยันแล้ว'),
+            ('cancel', 'ยกเลิก'),
+        ],
+        string='Car Order Status',
+    )
+    so_state = fields.Selection([
+            ('draft', 'Quotation'),
+            ('sent', 'Quotation Sent'),
+            ('sale', 'Sales Order'),
+            ('done', 'Locked'),
+            ('cancel', 'Cancelled'),
+        ],
+        string='Sales Order Status',
+    )
+
 
     @api.depends("invoice_id")
     def _compute_currency_rate(self):
@@ -160,22 +192,51 @@ class ReportVehiclePipeline2(models.Model):
     @api.model
     def init(self):
         # Manipulate existing view
-        # tools.drop_view_if_exists(self.env.cr, self._table)
+        tools.drop_view_if_exists(self.env.cr, self._table)
 
         # Logical Table Query
         query = """
             create or replace view {view_name} as (
                 select pol.id as id, po.id as purchase_id, po.date_approve, pol.id as purchase_line_id, pol.product_id,
                 po.partner_ref, pt.x_studio_model_vehicle, pt.x_studio_model_tags, pt.x_studio_exterior_color_, pt.x_studio_interior_color_,
-                pt.x_studio_etd, pt.x_studio_eta, po.x_studio_estimate_arrived_for_sale, pt.list_price, po.currency_id,
+                pt.x_studio_etd, pt.x_studio_eta, po.x_studio_estimate_arrived_for_sale, ppi.fixed_price, pt.list_price, po.currency_id,
                 pol.x_studio_exchange_rate_est, ampor.invoice_id, pol.price_unit, pol.price_unit * pol.x_studio_exchange_rate_est as total_rate_exchange,
-                am.amount_total, polsum.deposit_price, pol.date_planned, co.id as car_order_id, so.id as sale_order_id, co.partner_id, so.user_id,
+                am.amount_total, polsum.deposit_price, polsum.date_planned, co.id as car_order_id, so.id as sale_order_id, co.partner_id, so.user_id,
                 co.sale_price, co.reserve_price, fv.id as vehicle_id, fv.x_studio_picture, fv.x_studio_inspection_sheet,
-                pt.x_studio_received_bl_date, pt.x_studio_insurance_pay, pt.x_studio_bill_of_landing_no, pt.x_studio_bl_surrendered_date
+                pt.x_studio_received_bl_date, pt.x_studio_insurance_pay, pt.x_studio_bill_of_landing_no, pt.x_studio_bl_surrendered_date,
+                po.state as po_state, co.state as co_state, so.state as so_state
                 from purchase_order po 
                 inner join purchase_order_line pol on pol.order_id = po.id
-                inner join product_product pp on pp.id = pol.product_id
+                inner join product_product pp on pp.id = pol.product_id and pp.active = true
                 inner join product_template pt on pt.id = pp.product_tmpl_id and pt.custom_fleet_ok = true
+                left join (
+                    select ppi.product_tmpl_id, max(ppi.fixed_price) as fixed_price
+                    from product_pricelist_item ppi 
+                    inner join (
+                        select product_tmpl_id, max(date_start) as start_date, max(date_end) as end_date
+                        from product_pricelist_item ppi_group
+                        where active = true 
+                        and product_tmpl_id is not null
+                        group by product_tmpl_id 
+                        having max(date_start) is null
+                        or max(date_end) is null
+                    ) as ppi_group on ppi_group.product_tmpl_id = ppi.product_tmpl_id 
+                        and ppi.active = true 
+                    group by ppi.product_tmpl_id 
+                    union 
+                    select ppi.product_tmpl_id, max(ppi.fixed_price) as fixed_price
+                    from product_pricelist_item ppi 
+                    inner join (
+                        select product_tmpl_id, max(date_start) as start_date, max(date_end) as end_date
+                        from product_pricelist_item ppi_group
+                        where active = true 
+                        group by product_tmpl_id 
+                    ) as ppi_group on ppi_group.product_tmpl_id = ppi.product_tmpl_id 
+                        and ppi.active = true 
+                        and ppi.date_start = ppi_group.start_date 
+                        and ppi.date_end = ppi_group.end_date
+                    group by ppi.product_tmpl_id 
+                ) as ppi on ppi.product_tmpl_id = pt.id
                 left join (
                     select ampor.purchase_order_id as purchase_id,
                     max(ampor.account_move_id) as invoice_id
@@ -186,7 +247,8 @@ class ReportVehiclePipeline2(models.Model):
                 ) as ampor on ampor.purchase_id = po.id
                 left join account_move am on am.id = ampor.invoice_id
                 left join (
-                    select pol.order_id, sum(pol.price_unit) as deposit_price from purchase_order_line pol 
+                    select pol.order_id, sum(pol.price_unit) as deposit_price, max(pol.date_planned) as date_planned
+                    from purchase_order_line pol 
                     inner join product_product pp on pp.id = pol.product_id 
                     inner join product_template pt on pt.id = pp.product_tmpl_id and pt.custom_fleet_ok = false
                     where pol.product_qty = 0

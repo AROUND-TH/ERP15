@@ -17,6 +17,7 @@
                 <field name="x_studio_etd"/>
                 <field name="x_studio_eta"/>
                 <field name="x_studio_estimate_arrived_for_sale"/>
+                <field name="fixed_price"/>
                 <field name="list_price"/>
                 <field name="currency_id"/>
                 <field name="x_studio_exchange_rate_est" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
@@ -35,6 +36,9 @@
                 <field name="x_studio_insurance_pay"/>
                 <field name="x_studio_bill_of_landing_no"/>
                 <field name="x_studio_bl_surrendered_date"/>
+                <field name="po_state" optional="hide"/>
+                <field name="co_state" optional="hide"/>
+                <field name="so_state" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -56,6 +60,7 @@
                         <field name="x_studio_etd"/>
                         <field name="x_studio_eta"/>
                         <field name="x_studio_estimate_arrived_for_sale"/>
+                        <field name="fixed_price"/>
                         <field name="list_price"/>
                         <field name="currency_id"/>
                         <field name="x_studio_exchange_rate_est" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
@@ -74,6 +79,9 @@
                         <field name="x_studio_insurance_pay"/>
                         <field name="x_studio_bill_of_landing_no"/>
                         <field name="x_studio_bl_surrendered_date"/>
+                        <field name="po_state"/>
+                        <field name="co_state"/>
+                        <field name="so_state"/>
                     </group>
                 </sheet>
             </form>
@@ -86,6 +94,7 @@
         <field name="arch" type="xml">
             <pivot string="Report Vehicle in Pipeline 2" sample="1">
                 <field name="product_id" type="row"/>
+                <field name="fixed_price" type="measure"/>
                 <field name="list_price" type="measure"/>
             </pivot>
         </field>
