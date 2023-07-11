@@ -7,12 +7,12 @@
             <field name="default" eval="True"/>
             <field name="format">A4</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">20</field>
-            <field name="margin_bottom">10</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">25</field>
             <field name="margin_left">5</field>
             <field name="margin_right">5</field>
             <field name="header_line" eval="False"/>
-            <field name="header_spacing">105</field>
+            <field name="header_spacing">25</field>
             <field name="dpi">90</field>
         </record>
 
@@ -29,23 +29,42 @@
             <field name="paperformat_id" ref="paperformat_account_asset_transfer"/>
         </record>
 
-        <!-- <report
-                id="report_account_asset_transfer"
-                model="account.asset"
-                string="Report Account Asset Transfer"
-                report_type="qweb-pdf"
-                name="custom_account.account_asset_transfer"
-                file="custom_account.account_asset_transfer"
-                attachment_use="False"
-                paperformat="custom_account.paperformat_account_asset_transfer"
-                menu="False"
-        /> -->
+        <!-- This custom_layout_standard_asset_transfer use for account_asset_transfer report. -->
+        <template id="custom_layout_standard_asset_transfer">
+            <div t-attf-class="header" t-att-style="report_header_style">
+                <div class="row">
+                    <div class="col-1 mb4" align="center">
+                        <img t-if="company_header and company_header.x_avatar_image" t-att-src="image_data_uri(company_header.x_avatar_image)" style="max-height: 65px;" alt="Logo"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6" name="company_name" style="margin-top:5px;">
+                        <span t-if="company_header and company_header.x_name" t-field="company_header.x_name"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div t-attf-class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-5">
+                    <!-- This div ensures that the address is not cropped by the header. -->
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
+            </div>
+        </template>
+        <!-- This custom_layout_asset_transfer use for account_asset_transfer report. -->
+        <template id="custom_layout_asset_transfer">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company_header" t-set="company_header" t-value="transfer.get('transfer_company_header')"/>
+            <t t-call="custom_account.custom_layout_standard_asset_transfer"><t t-out="0"/></t>
+        </template>
 
         <template id="account_asset_transfer_document">
-            <t t-call="web.basic_layout">
+            <!-- <t t-call="web.basic_layout"> -->
+            <t t-call="custom_account.custom_layout_asset_transfer">
                 <div class="page" style="font-size: 80%;">
                     <div class="row">
-                        <div class="col h2 text-center" style="margin-top:80px; margin-bottom:40px;">
+                        <div class="col h2 text-center" style="margin-top:10px; margin-bottom:40px;">
                             <span><strong>ใบโอนย้ายทรัพย์สิน</strong></span>
                         </div>
                     </div>
@@ -70,7 +89,7 @@
                         </div>
                         <div class="col-4">
                             <span style="margin-right:10px;">ว/ด/ป</span>
-                            <span t-esc="transfer.get('transfer_date', '')"/>
+                            <span t-esc="transfer.get('transfer_date')"/>
                         </div>
                     </div>
                     <div class="row">
@@ -114,6 +133,9 @@
                                 <th>
                                     <span>หมายเหตุ</span>
                                 </th>
+                                <th>
+                                    <span>เหตุผลการโอนย้าย</span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,26 +147,29 @@
                                     <span t-field="doc.name"/>
                                 </td>
                                 <td>
-                                    <span t-esc="transfer.get('quantity', 0)"/>
+                                    <span t-esc="transfer.get('quantity')"/>
                                 </td>
                                 <td>
-                                    <span t-esc="transfer.get('account_analytic_id', '')"/>
+                                    <span t-esc="transfer.get('account_analytic_id')"/>
                                 </td>
                                 <td>
-                                    <span t-esc="transfer.get('transfer_account_analytic_id', '')"/>
+                                    <span t-esc="transfer.get('transfer_account_analytic_id')"/>
                                 </td>
                                 <td>
-                                    <span t-esc="transfer.get('transfer_date', '')"/>
+                                    <span t-esc="transfer.get('transfer_date')"/>
                                 </td>
                                 <td>
                                     <span></span>
+                                </td>
+                                <td>
+                                    <span t-esc="transfer.get('transfer_reason')"/>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="row" style="margin-top:160px; margin-bottom:0px;">
                         <div class="col-6">
-                            <span style="margin-left:20px;">ลงชื่อ................................................หัวหน้าแผนก/ผู้จัดการ</span>
+                            <span style="margin-left:20px;">ลงชื่อ................................................พนักงาน/ผู้จัดการ</span>
                         </div>
                         <div class="col-6">
                             <span style="margin-left:10px;">ลงชื่อ................................................หัวหน้าแผนก/ผู้จัดการ</span>

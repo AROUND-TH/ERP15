@@ -62,23 +62,37 @@
                 <xpath expr="//notebook/page[@name='related_items']" position="after">
                     <page string="Asset Transfer" name="asset_transfer" attrs="{'invisible': [('state', 'in', ['draft','model'])]}">
                         <group id="asset_transfer_group">
-                            <table class="table oe_edit_only">
-                                <thead>
+                            <table class="oe_edit_only" style="width: 100%;">
+                                <tbody>
                                     <tr>
-                                        <th scope="col">
+                                        <td scope="col">
+                                            <label for="transfer_company_header" style="font-weight: bold"/>
+                                        </td>
+                                        <td scope="col">
+                                            <field name="transfer_company_header"/>
+                                        </td>
+                                        <td scope="col" align="center">
+                                            <label for="transfer_reason" style="font-weight: bold"/>
+                                        </td>
+                                        <td scope="col" colspan="2">
+                                            <field name="transfer_reason"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">
                                             <label for="transfer_date" style="font-weight: bold"/>
                                             <!-- <span class="o_form_label oe_inline" style="display: inline-block; font-weight: bold;">Transfer Date</span> -->
-                                        </th>
-                                        <th scope="col">
+                                        </td>
+                                        <td scope="col">
                                             <field name="transfer_date"/>
-                                        </th>
-                                        <th scope="col">
+                                        </td>
+                                        <td scope="col">
                                             <field name="transfer_account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
-                                        </th>
-                                        <th scope="col">
+                                        </td>
+                                        <td scope="col">
                                             <field name="transfer_analytic_tag_ids" widget="many2many_tags"/>
-                                        </th>
-                                        <th scope="col">
+                                        </td>
+                                        <td scope="col">
                                             <div name="button_print">
                                                 <button name="button_transfer_print" 
                                                         string="Confirm and Print"
@@ -88,9 +102,9 @@
                                                         attrs="{'invisible': [('state', '=', 'draft')]}">
                                                 </button>
                                             </div>
-                                        </th>
+                                        </td>
                                     </tr>
-                                </thead>
+                                </tbody>
                             </table>
                         </group>
                         <field name="transfer_log_ids">
@@ -102,6 +116,7 @@
                                 <field name="account_analytic_id"/>
                                 <field name="transfer_account_analytic_id"/>
                                 <field name="transfer_date"/>
+                                <field name="transfer_reason"/>
                                 <field name="employee_id"/>
                             </tree>
                         </field>
@@ -126,23 +141,37 @@
                         <page string="Asset Transfer" name="asset_transfer_show" attrs="{'invisible': [('state', 'in', ['draft','model'])]}">
                             <group id="asset_transfer_show_group">
                                 <!-- <table class="table"> -->
-                                <table class="table oe_edit_only">
-                                    <thead>
+                                <table class="oe_edit_only" style="width: 100%;">
+                                    <tbody>
                                         <tr>
-                                            <th scope="col">
+                                            <td scope="col">
+                                                <label for="transfer_company_header" style="font-weight: bold"/>
+                                            </td>
+                                            <td scope="col">
+                                                <field name="transfer_company_header"/>
+                                            </td>
+                                            <td scope="col" align="center">
+                                                <label for="transfer_reason" style="font-weight: bold"/>
+                                            </td>
+                                            <td scope="col" colspan="2">
+                                                <field name="transfer_reason"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col">
                                                 <label for="transfer_date" style="font-weight: bold"/>
                                                 <!-- <span class="o_form_label oe_inline" style="display: inline-block; font-weight: bold;">Transfer Date</span> -->
-                                            </th>
-                                            <th scope="col">
+                                            </td>
+                                            <td scope="col">
                                                 <field name="transfer_date"/>
-                                            </th>
-                                            <th scope="col">
+                                            </td>
+                                            <td scope="col">
                                                 <field name="transfer_account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
-                                            </th>
-                                            <th scope="col">
+                                            </td>
+                                            <td scope="col">
                                                 <field name="transfer_analytic_tag_ids" widget="many2many_tags"/>
-                                            </th>
-                                            <th scope="col">
+                                            </td>
+                                            <td scope="col">
                                                 <div name="button_print">
                                                     <button name="button_transfer_print" 
                                                             string="Confirm and Print"
@@ -152,9 +181,9 @@
                                                             attrs="{'invisible': [('state', '=', 'draft')]}">
                                                     </button>
                                                 </div>
-                                            </th>
+                                            </td>
                                         </tr>
-                                    </thead>
+                                    </tbody>
                                 </table>
                             </group>
                             <field name="transfer_log_ids">
@@ -166,6 +195,7 @@
                                     <field name="account_analytic_id"/>
                                     <field name="transfer_account_analytic_id"/>
                                     <field name="transfer_date"/>
+                                    <field name="transfer_reason"/>
                                     <field name="employee_id"/>
                                 </tree>
                             </field>

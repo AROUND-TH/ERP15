@@ -46,17 +46,31 @@ class ReportAccountAssetTransfer(models.AbstractModel):
             else:
                 transfer_account_analytic_id = ""
 
+            if data.get("transfer_company_header"):
+                transfer_company_header = self.env['x_company_header'].browse(data.get("transfer_company_header")[0])
+            else:
+                transfer_company_header = None
+
+            if data.get("transfer_reason"):
+                transfer_reason = data.get("transfer_reason")
+            else:
+                transfer_reason = ""
+
             return {
                 'quantity': data.get("quantity") or 1,
                 'transfer_date': transfer_date,
                 'account_analytic_id': account_analytic_id,
                 'transfer_account_analytic_id': transfer_account_analytic_id,
+                'transfer_company_header': transfer_company_header,
+                'transfer_reason': transfer_reason,
             }
         else:
             return {
                 'quantity': 0,
                 'transfer_date': "",
-                'account_analytic_id': None,
-                'transfer_account_analytic_id': None,
+                'account_analytic_id': "",
+                'transfer_account_analytic_id': "",
+                'transfer_company_header': None,
+                'transfer_reason': "",
             }
 
