@@ -268,8 +268,8 @@ class ReportVehiclePipeline2(models.Model):
         )
 
     @api.model
-    def fields_get(self, fields=None):
-        res = super(ReportVehiclePipeline2, self).fields_get()
+    def fields_get(self, fields=None, attributes=None):
+        res = super(ReportVehiclePipeline2, self).fields_get(fields, attributes=attributes)
 
         if not self.user_has_groups('report_vehicle_pipeline.group_report_vehicle_pipeline_full'):
             hide = [
