@@ -42,7 +42,7 @@ class AccountStockCard(models.Model):
     partner_id = fields.Many2one('res.partner', related='car_order_id.partner_id', string='ลูกค้า', copy=False, index=True)
     
     product_id = fields.Many2one('product.product', string="รถ", related='car_order_id.product_id', copy=False, index=True)
-    car_model = fields.Char(string='รุ่นรถ', related='product_id.x_studio_model_vehicle', copy=False, index=True)
+    car_model = fields.Char(string='รุ่นรถ', copy=False, index=True)
     chassis_number = fields.Char(string='หมายเลขตัวถัง', related='product_id.x_studio_chassis_no', copy=False, index=True)
     date_order = fields.Datetime(string='วันที่ขาย', default=fields.datetime.now(), required=True, index=True, copy=False)
     
