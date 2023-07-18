@@ -25,5 +25,6 @@
         "views/res_config_settings_view.xml",
         "views/product_template.xml",
         "views/car_order.xml",
+        'views/account_stock_card_view.xml',
     ]
 }

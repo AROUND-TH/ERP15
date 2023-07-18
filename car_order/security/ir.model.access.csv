@@ -11,3 +11,9 @@ access_car_order_commission_sale_manager,car.order.commission,model_car_order_co
 access_car_order_freebie,car.order.freebie,model_car_order_freebie,base.group_user,1,0,0,0
 access_car_order_freebie_manager,car.order.freebie,model_car_order_freebie,base.group_system,1,1,1,1
 access_car_order_freebie_sale_manager,car.order.freebie,model_car_order_freebie,sales_team.group_sale_salesman,1,1,1,1
+account_stock_card,account.stock.card,model_account_stock_card,account.group_account_user,1,1,1,1
+account_stock_card_manager,account.stock.card.manager,model_account_stock_card,account.group_account_user,1,1,1,1
+account_stock_card_cost,account.stock.card,model_account_stock_card_cost,account.group_account_user,1,1,1,1
+account_stock_card_cost_manager,account.stock.card.manager,model_account_stock_card_cost,account.group_account_user,1,1,1,1
+account_stock_card_expenses_selling,account.stock.card,model_account_stock_card_expenses_selling,account.group_account_user,1,1,1,1
+account_stock_card_expenses_selling_manager,account.stock.card.manager,model_account_stock_card_expenses_selling,account.group_account_user,1,1,1,1
