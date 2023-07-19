@@ -66,7 +66,7 @@
                         <group colspan="2"/>
                         <group class="oe_subtotal_footer oe_right" colspan="4" >
                             <field name="total_actual_cost" />
-                            <field name="actual_selling_price" />
+                            <field name="actual_selling_price" readonly="0"/>
                             <field name="real_profit" />
                         </group>
                         <div class="oe_clear"/>

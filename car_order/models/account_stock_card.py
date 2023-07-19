@@ -56,7 +56,7 @@ class AccountStockCard(models.Model):
     total_car_cost = fields.Float(compute='_compute_total_car_cost', string="รวมราคาต้นทุนซื้อรถ", store=True)
     total_before_selling = fields.Float(compute='_compute_total_before_selling', string="รวมค่าใช้จ่ายก่อนการขายรถ", store=True)
     total_actual_cost = fields.Float(compute='_compute_calculate_cost', string="รวมต้นทุนจริง", store=True)
-    actual_selling_price = fields.Float(related='car_order_id.sale_price', string="ราคาตั้ง / ราคาขายจริง", store=True)
+    actual_selling_price = fields.Float(string="ราคาตั้ง / ราคาขายจริง", store=True)
     real_profit = fields.Float(compute='_compute_calculate_cost', string="กำไร(ขาดทุน)จริง", store=True)
 
     @api.depends('cost_line_ids.amount', 'car_order_id')
@@ -95,7 +95,7 @@ class AccountStockCard(models.Model):
 
             order.total_before_selling = total
 
-    @api.depends('total_car_cost', 'total_before_selling')
+    @api.depends('total_car_cost', 'total_before_selling', 'actual_selling_price')
     def _compute_calculate_cost(self):
         for order in self:
             total_actual_cost = order.total_car_cost + order.total_before_selling
@@ -107,11 +107,7 @@ class AccountStockCard(models.Model):
     @api.onchange('car_order_id')
     def onchange_car_order(self):
         if self.car_order_id:
-            if self.cost_line_ids:
-                for line in self.cost_line_ids:
-                    if line.cost_item == 'real_sale_price':
-                        line.amount = self.car_order_id.sale_price
-
+            self.actual_selling_price = self.car_order_id.sale_price
             if self.expenses_selling_ids:
                 for selling in self.expenses_selling_ids:
                     if selling.cost_item == 'commission':
