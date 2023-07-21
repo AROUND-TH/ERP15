@@ -49,11 +49,11 @@ class ReportVehiclePipeline2(models.Model):
 
     fixed_price = fields.Float(
         string='Current Sales Price',
-        digits='Product Price',
+        digits=(12, 2),
     )
     list_price = fields.Float(
         string='Sales Price',
-        digits='Product Price',
+        digits=(12, 2),
     )
     currency_id = fields.Many2one('res.currency',
         string='Currency',
@@ -61,7 +61,7 @@ class ReportVehiclePipeline2(models.Model):
     )
     x_studio_exchange_rate_est = fields.Float(
         string='Rate (จ่ายประมาณการณ์)',
-        digits='Product Price',
+        digits=(12, 2),
     )
 
     # invisible
@@ -74,32 +74,25 @@ class ReportVehiclePipeline2(models.Model):
         string='Rate (จ่ายเงินจริง)',
         compute='_compute_currency_rate',
         # store=True,
-        # digits='Product Price',
+        # digits=(12, 2),
     )
 
     # invisible
     price_unit = fields.Float(
         string='Unit Price',
-        digits='Product Price',
+        digits=(12, 2),
     )
     total_rate_exchange = fields.Float(
         string='Total (สกุลเงิน บาท อ้างอิง Rate ประมาณการณ์)',
-        digits='Product Price',
+        digits=(12, 2),
     )
-    # invisible
-    amount_total = fields.Float(
-        string='Total',
-        digits='Product Price',
-    )
-    # not store only
     total_rate_real = fields.Float(
         string='Total (สกุลเงิน บาท อ้างอิง Rate จ่ายเงินจริง)',
-        digits='Product Price',
-        compute='_compute_total_rate_real'
+        digits=(12, 2),
     )
     deposit_price = fields.Float(
         string='Deposit ที่จ่าย Supplier',
-        digits='Product Price',
+        digits=(12, 2),
     )
     date_planned = fields.Datetime(
         string='วันที่จ่าย Deposit กับ Suppier',
@@ -119,7 +112,7 @@ class ReportVehiclePipeline2(models.Model):
         string='ชื่อลูกค้า',
         default=False,
     )
-    user_id = fields.Many2one('res.users',
+    salesman_id = fields.Many2one('hr.employee',
         string='Sale ที่ขาย',
         default=False,
     )
@@ -183,16 +176,11 @@ class ReportVehiclePipeline2(models.Model):
             else:
                 rec.currency_rate = 0.0
 
-    @api.depends('currency_rate', 'amount_total')
-    def _compute_total_rate_real(self):
-        for rec in self:
-            rec.total_rate_real = rec.amount_total * rec.currency_rate
-
 
     @api.model
     def init(self):
         # Manipulate existing view
-        # tools.drop_view_if_exists(self.env.cr, self._table)
+        tools.drop_view_if_exists(self.env.cr, self._table)
 
         # Logical Table Query
         query = """
@@ -201,7 +189,7 @@ class ReportVehiclePipeline2(models.Model):
                 po.partner_ref, pt.x_studio_model_vehicle, pt.x_studio_model_tags, pt.x_studio_exterior_color_, pt.x_studio_interior_color_,
                 pt.x_studio_etd, pt.x_studio_eta, po.x_studio_estimate_arrived_for_sale, ppi.fixed_price, pt.list_price, po.currency_id,
                 pol.x_studio_exchange_rate_est, ampor.invoice_id, pol.price_unit, pol.price_unit * pol.x_studio_exchange_rate_est as total_rate_exchange,
-                am.amount_total, polsum.deposit_price, polsum.date_planned, co.id as car_order_id, so.id as sale_order_id, co.partner_id, so.user_id,
+                ampor.amount_total_signed * (-1) as total_rate_real, polsum.deposit_price, polsum.date_planned, co.id as car_order_id, so.id as sale_order_id, co.partner_id, co.salesman_id,
                 co.sale_price, co.reserve_price, fv.id as vehicle_id, fv.x_studio_picture, fv.x_studio_inspection_sheet,
                 pt.x_studio_received_bl_date, pt.x_studio_insurance_pay, pt.x_studio_bill_of_landing_no, pt.x_studio_bl_surrendered_date,
                 po.state as po_state, co.state as co_state, so.state as so_state
@@ -239,7 +227,8 @@ class ReportVehiclePipeline2(models.Model):
                 ) as ppi on ppi.product_tmpl_id = pt.id
                 left join (
                     select ampor.purchase_order_id as purchase_id,
-                    max(ampor.account_move_id) as invoice_id
+                    max(ampor.account_move_id) as invoice_id,
+                    sum(am.amount_total_signed) as amount_total_signed
                     from account_move_purchase_order_rel ampor
                     inner join account_move am on am.id = ampor.account_move_id
                     where am.state = 'posted'

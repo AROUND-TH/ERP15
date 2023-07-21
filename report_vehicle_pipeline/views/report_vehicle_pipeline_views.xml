@@ -27,7 +27,7 @@
                 <field name="deposit_price" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
                 <field name="date_planned" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
                 <field name="partner_id"/>
-                <field name="user_id"/>
+                <field name="salesman_id"/>
                 <field name="sale_price"/>
                 <field name="reserve_price"/>
                 <field name="x_studio_picture"/>
@@ -36,6 +36,8 @@
                 <field name="x_studio_insurance_pay"/>
                 <field name="x_studio_bill_of_landing_no"/>
                 <field name="x_studio_bl_surrendered_date"/>
+                <field name="purchase_id" optional="hide"/>
+                <field name="vehicle_id" optional="hide"/>
                 <field name="po_state" optional="hide"/>
                 <field name="co_state" optional="hide"/>
                 <field name="so_state" optional="hide"/>
@@ -70,7 +72,7 @@
                         <field name="deposit_price" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
                         <field name="date_planned" groups="report_vehicle_pipeline.group_report_vehicle_pipeline_full"/>
                         <field name="partner_id"/>
-                        <field name="user_id"/>
+                        <field name="salesman_id"/>
                         <field name="sale_price"/>
                         <field name="reserve_price"/>
                         <field name="x_studio_picture"/>
@@ -79,6 +81,8 @@
                         <field name="x_studio_insurance_pay"/>
                         <field name="x_studio_bill_of_landing_no"/>
                         <field name="x_studio_bl_surrendered_date"/>
+                        <field name="purchase_id"/>
+                        <field name="vehicle_id"/>
                         <field name="po_state"/>
                         <field name="co_state"/>
                         <field name="so_state"/>
@@ -113,7 +117,7 @@
                 <group expand="0" string="Group By">
                     <filter string="Product" name="by_product_id" domain="[]" context="{'group_by': 'product_id'}"/>
                     <filter string="Model" name="by_model" domain="[]"  context="{'group_by': 'x_studio_model_vehicle'}"/>
-                    <filter string="Sale" name="by_sale" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Sale" name="by_sale" domain="[]" context="{'group_by': 'salesman_id'}"/>
                 </group>
             </search>
         </field>
