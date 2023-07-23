@@ -86,8 +86,7 @@ class CarOrder(models.Model):
                                states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     sale_price = fields.Float(required=True, readonly=True, string="ราคาขาย",
                               states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
-    discount_price = fields.Float(required=True, readonly=True, string="ส่วนลด",
-                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+    discount_price = fields.Float(required=True, readonly=True, string="ส่วนลด", compute="_compute_discount_price")
     reserve_price = fields.Float(required=True, readonly=True, string="เงินจอง",
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     company_header_1 = fields.Many2one('x_company_header', string='สั่งจ่ายในนามบริษัทที่ 1', readonly=True,
@@ -144,8 +143,8 @@ class CarOrder(models.Model):
                                    states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     freebie_amount_total = fields.Monetary(string='รวมค่าของแถม', store=True, compute='_freebie_amount')
     state = fields.Selection([
-        ('draft', 'ใบเสนอราคา / ใบจอง'),
-        ('confirm', 'รายละเอียดการขายรถยนตร์'),
+        ('draft', 'ใบเสนอราคา'),
+        ('confirm', 'ใบจอง/รายละเอียดการขาย'),
         ('done', 'ยืนยันแล้ว'),
         ('cancel', 'ยกเลิก'),
     ], string='Status', readonly=True, default='draft')
@@ -240,6 +239,12 @@ class CarOrder(models.Model):
                 if item:
                     price = item.fixed_price
             rec.pricelist_price = price
+
+    @api.depends('pricelist_price', 'sale_price')
+    def _compute_discount_price(self):
+        for rec in self:
+            if rec.pricelist_price and rec.sale_price:
+                rec.discount_price = rec.pricelist_price - rec.sale_price
 
     @api.depends('order_line.price_company_header_1', 'order_line.price_company_header_2')
     def _amount_all(self):

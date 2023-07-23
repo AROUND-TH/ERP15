@@ -29,7 +29,7 @@
                         <span t-field="vehicle_id.model_id.name"/>
                     </p>
                     <p>ราคา:
-                        <span t-field="doc.sale_price" t-options='{"widget": "float", "precision": 2}'/>
+                        <span t-field="doc.pricelist_price" t-options='{"widget": "float", "precision": 2}'/>
                         <span>&#160;บาท</span>
                         - ส่วนลดพิเศษ
                         <span t-field="doc.discount_price" t-options='{"widget": "float", "precision": 2}'/>
@@ -45,7 +45,7 @@
                         <span t-esc="doc.product_id.x_studio_interior_color_ or '-'"/>
                     </p>
                     <p>ราคาสุทธิ:
-                        <t t-esc="doc.sale_price - doc.discount_price" t-options='{"widget": "float", "precision": 2}'/>
+                        <span t-field="doc.sale_price" t-options='{"widget": "float", "precision": 2}'/>
                         <span>&#160;บาท</span>
                     </p>
                 </div>
