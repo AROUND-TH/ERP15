@@ -24,7 +24,7 @@
                 <span t-field="doc.partner_id.name"/>
             </p>
             <div class="row">
-                <div class="col-6 offset-1">
+                <div class="col-7 offset-1">
                     <p>รุ่นรถ:
                         <span t-field="vehicle_id.model_id.name"/>
                     </p>
@@ -39,7 +39,7 @@
                         <span t-field="doc.x_studio_estimated_delivery_date"/>
                     </p>
                 </div>
-                <div class="col-5">
+                <div class="col-4">
                     <p>สี/เบาะ:
                         <span t-esc="doc.product_id.x_studio_exterior_color_ or '-'"/>/
                         <span t-esc="doc.product_id.x_studio_interior_color_ or '-'"/>
