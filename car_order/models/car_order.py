@@ -243,8 +243,10 @@ class CarOrder(models.Model):
     @api.depends('pricelist_price', 'sale_price')
     def _compute_discount_price(self):
         for rec in self:
+            discount_price = 0.0
             if rec.pricelist_price and rec.sale_price:
-                rec.discount_price = rec.pricelist_price - rec.sale_price
+                discount_price = rec.pricelist_price - rec.sale_price
+            rec.discount_price = discount_price
 
     @api.depends('order_line.price_company_header_1', 'order_line.price_company_header_2')
     def _amount_all(self):
