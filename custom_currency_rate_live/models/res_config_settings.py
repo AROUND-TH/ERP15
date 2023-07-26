@@ -23,7 +23,7 @@ class ResCompany(models.Model):
         default='ecb', string='Service Provider')
 
     client_id = fields.Char(string='Client ID')
-    
+
     def _parse_bot_data(self, available_currencies):
 
         if not self.client_id:
@@ -38,20 +38,7 @@ class ResCompany(models.Model):
         rates_dict = {}
 
         for currency_code in available_currency_names:
-
-            if currency_code not in ['THB', 'USD']:
-                result = self.get_daily_avg_exg_rate(today, today, currency_code)
-                mid_rate, last_updated = self._get_latest_rate(result)
-
-                if mid_rate:
-                    rates_dict[currency_code] = (float(mid_rate), fields.Date.today())
-                else:
-                    result = self.get_daily_avg_exg_rate(last_updated, last_updated, currency_code)
-                    mid_rate, last_updated = self._get_latest_rate(result)
-
-                    rates_dict[currency_code] = (float(mid_rate), last_updated)
-
-            elif currency_code == 'USD':
+            if currency_code != self.currency_id.name:
                 result = self.get_daily_avg_exg_rate(today, today, currency_code)
                 mid_rate, last_updated = self._get_latest_rate(result)
 
@@ -62,6 +49,18 @@ class ResCompany(models.Model):
                     mid_rate, last_updated = self._get_latest_rate(result)
 
                     rates_dict[currency_code] = ((1/float(mid_rate)), last_updated)
+
+            # elif currency_code == 'USD':
+            #     result = self.get_daily_avg_exg_rate(today, today, currency_code)
+            #     mid_rate, last_updated = self._get_latest_rate(result)
+
+            #     if mid_rate:
+            #         rates_dict[currency_code] = ((1/float(mid_rate)), fields.Date.today())
+            #     else:
+            #         result = self.get_daily_avg_exg_rate(last_updated, last_updated, currency_code)
+            #         mid_rate, last_updated = self._get_latest_rate(result)
+
+            #         rates_dict[currency_code] = ((1/float(mid_rate)), last_updated)
                     
             else:
                 rates_dict[currency_code] = (1.0, fields.Date.today())
