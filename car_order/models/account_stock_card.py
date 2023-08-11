@@ -22,12 +22,12 @@ class AccountStockCard(models.Model):
         expenses_selling.append((0, 0, { 'cost_item': 'storage_costs' }))
         expenses_selling.append((0, 0, { 'cost_item': 'commission' }))
         expenses_selling.append((0, 0, { 'cost_item': 'before_delivering' }))
-        expenses_selling.append((0, 0, { 'cost_item': 'ref_cost' }))
-        expenses_selling.append((0, 0, { 'cost_item': 'pillow' }))
-        expenses_selling.append((0, 0, { 'cost_item': 'premium' }))
-        expenses_selling.append((0, 0, { 'cost_item': 'health_care' }))
-        expenses_selling.append((0, 0, { 'cost_item': 'audio_equipment' }))
-        expenses_selling.append((0, 0, { 'cost_item': 'forklift_fee' }))
+        # expenses_selling.append((0, 0, { 'cost_item': 'ref_cost' }))
+        # expenses_selling.append((0, 0, { 'cost_item': 'premium' }))
+        # expenses_selling.append((0, 0, { 'cost_item': 'health_care' }))
+        # expenses_selling.append((0, 0, { 'cost_item': 'audio_equipment' }))
+        # expenses_selling.append((0, 0, { 'cost_item': 'forklift_fee' }))
+        # expenses_selling.append((0, 0, { 'cost_item': 'other' }))
 
         res.update({
             'cost_line_ids': cost_line,
@@ -42,7 +42,7 @@ class AccountStockCard(models.Model):
     partner_id = fields.Many2one('res.partner', related='car_order_id.partner_id', string='ลูกค้า', copy=False, index=True)
     
     product_id = fields.Many2one('product.product', string="รถ", related='car_order_id.product_id', copy=False, index=True)
-    car_model = fields.Char(string='รุ่นรถ', copy=False, index=True)
+    car_model = fields.Char(compute='_compute_car_model', string='รุ่นรถ', copy=False, index=True)
     chassis_number = fields.Char(string='หมายเลขตัวถัง', related='product_id.x_studio_chassis_no', copy=False, index=True)
     date_order = fields.Datetime(string='วันที่ขาย', default=fields.datetime.now(), required=True, index=True, copy=False)
     
@@ -59,6 +59,16 @@ class AccountStockCard(models.Model):
     actual_selling_price = fields.Float(string="ราคาตั้ง / ราคาขายจริง", store=True)
     real_profit = fields.Float(compute='_compute_calculate_cost', string="กำไร(ขาดทุน)จริง", store=True)
 
+    @api.depends('car_order_id')
+    def _compute_car_model(self):
+        for order in self:
+            car_model = ''
+            if order.product_id:
+                product_id = order.product_id
+                car_model = '[' + product_id.default_code + '] ' + product_id.name
+
+            order.car_model = car_model
+
     @api.depends('cost_line_ids.amount', 'car_order_id')
     def _compute_total_car_cost(self):
         for order in self:
@@ -74,6 +84,7 @@ class AccountStockCard(models.Model):
             real_sale_price = 0
             import_duty = 0
             real_shipping = 0
+
             for line in order.cost_line_ids:
                 if line.cost_item == 'real_sale_price':
                     real_sale_price += line.amount
@@ -113,6 +124,29 @@ class AccountStockCard(models.Model):
                     if selling.cost_item == 'commission':
                         selling.amount = self.car_order_id.commission_amount_total
 
+            if self.cost_line_ids:
+                vehicle_ids = self.env['report.vehicle.pipeline2'].search([('product_id', '=', self.product_id.id)])
+                adjustment_ids = self.env['stock.valuation.adjustment.lines'].search([('product_id', '=', self.product_id.id)])
+
+                real_sale_price = vehicle_ids[0].price_unit if vehicle_ids else 0
+                import_duty = 0
+                real_shipping = 0
+
+                for adjust in adjustment_ids:
+                    if adjust.cost_line_id.name in ['ค่าอากร', 'ค่าภาษี']:
+                        import_duty += adjust.additional_landed_cost
+
+                    if adjust.cost_line_id.name in ['ค่าใช้จ่ายในการนำเข้า']:
+                        real_shipping += adjust.additional_landed_cost
+
+                for cost_line in self.cost_line_ids:
+                    if cost_line.cost_item == 'real_sale_price':
+                        cost_line.amount = real_sale_price
+                    if cost_line.cost_item == 'import_duty':
+                        cost_line.amount = import_duty
+                    if cost_line.cost_item == 'real_shipping':
+                        cost_line.amount = real_shipping
+
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New') and vals.get('car_order_id'):
@@ -150,10 +184,11 @@ class AccountStockCardExpensesSelling(models.Model):
         ('commission', 'ค่า Commission'),
         ('before_delivering', 'ค่าใช้จ่ายในการเตรียมความพร้อมก่อนส่งมอบรถ'),
         ('ref_cost', 'ค่าแนะนำ'),
-        ('pillow', 'หมอน B Autohaus'),
         ('premium', 'ค่าเบี้ยประกันภัย'),
         ('health_care', 'ค่า B Health Care Program'),
         ('audio_equipment', 'ค่าเครื่องเสียง'),
         ('forklift_fee', 'ค่ารถยก'),
+        ('other', 'อื่นๆ'),
     ], string='รายการค่าใช้จ่ายก่อนการขายรถ', change_default=True)
+    other = fields.Char('อื่นๆ')
     amount = fields.Float(string="Amount", required=True)

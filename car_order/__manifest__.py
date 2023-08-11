@@ -14,6 +14,8 @@
         'sale',
         'hr',
         'fleet_product_link',
+        'stock',
+        'report_vehicle_pipeline',
     ],
     "data": [
         "data/ir_sequence_data.xml",

@@ -49,8 +49,9 @@
                     
                     <group name="expenses_selling" string="ค่าใช้จ่ายก่อนการขายรถ"></group>
                     <field name="expenses_selling_ids" nolabel='1'>
-                        <tree create="0" delete="0" editable="bottom">
-                            <field name="cost_item" readonly="1" force_save="1"/>
+                        <tree create="1" delete="1" editable="bottom">
+                            <field name="cost_item" readonly="0" force_save="1"/>
+                            <field name="other" attrs="{'readonly': [('cost_item', '!=', 'other')]}"/>
                             <field name="amount"/>
                         </tree>
                     </field>
