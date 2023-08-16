@@ -38,7 +38,7 @@ class AccountStockCard(models.Model):
 
     name = fields.Char('Reference', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
     car_order_id = fields.Many2one('car.order', string='ใบจอง', copy=False, required=True)
-    date_receiving = fields.Char(string='วันที่รับรถเข้าสต๊อก', related='car_order_id.x_studio_estimated_delivery_date', copy=False)
+    date_receiving = fields.Char(string='วันที่รับรถเข้าสต๊อก', copy=False)
     partner_id = fields.Many2one('res.partner', related='car_order_id.partner_id', string='ลูกค้า', copy=False, index=True)
     
     product_id = fields.Many2one('product.product', string="รถ", related='car_order_id.product_id', copy=False, index=True)
@@ -119,6 +119,8 @@ class AccountStockCard(models.Model):
     def onchange_car_order(self):
         if self.car_order_id:
             self.actual_selling_price = self.car_order_id.sale_price
+            self.date_receiving = self.car_order_id.x_studio_estimated_delivery_date
+
             if self.expenses_selling_ids:
                 for selling in self.expenses_selling_ids:
                     if selling.cost_item == 'commission':
