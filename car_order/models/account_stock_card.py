@@ -130,7 +130,7 @@ class AccountStockCard(models.Model):
                 vehicle_ids = self.env['report.vehicle.pipeline2'].search([('product_id', '=', self.product_id.id)])
                 adjustment_ids = self.env['stock.valuation.adjustment.lines'].search([('product_id', '=', self.product_id.id)])
 
-                real_sale_price = vehicle_ids[0].price_unit if vehicle_ids else 0
+                real_sale_price = vehicle_ids[0].total_rate_real if vehicle_ids else 0
                 import_duty = 0
                 real_shipping = 0
 
