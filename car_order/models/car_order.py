@@ -399,7 +399,8 @@ class CarOrder(models.Model):
 
     # report
     def _get_warranty_info(self):
-        return f'ประกัน {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
+        #return f'ประกัน {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
+        return f'วารันตี {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
 
     def _get_acc_film_other_info(self):
         return self.acc_film_other or '-'
