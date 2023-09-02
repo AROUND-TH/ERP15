@@ -17,12 +17,27 @@
                                 </div>
                             </div>
                             <div class="content-group">
-                                    <div class="mt16">
-                                        <field name="car_order_commission_product_category_id" required="1"
-                                            class="o_light_label"/>
-                                    </div>
+                                <div class="mt16">
+                                    <field name="car_order_commission_product_category_id" required="1"
+                                           class="o_light_label"/>
                                 </div>
-<!--                            <field name="car_order_commission_product_category_id" class="oe_inline"/>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="car_order_vendor_group_car" class="o_form_label"/>
+                            <div class="row">
+                                <div class="text-muted col-lg-8">
+                                    สำหรับกำหนด Vendor Group ที่ใช้สำหรับ การขายรถ
+                                </div>
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="car_order_vendor_group_car" required="1"
+                                           class="o_light_label"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

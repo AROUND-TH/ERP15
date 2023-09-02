@@ -8,3 +8,7 @@ class ResConfigSettings(models.TransientModel):
                                                                string="Product Category for Commission",
                                                                required=True,
                                                                config_parameter="car_order_commission_product_category")
+    car_order_vendor_group_car = fields.Many2one('vendor.group',
+                                                 string="Vendor Group",
+                                                 required=True,
+                                                 config_parameter="car_order_vendor_group_car")
