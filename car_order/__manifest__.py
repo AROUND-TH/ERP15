@@ -1,7 +1,7 @@
 {
     'name': "Car Order",
     'summary': """
-        Car OrderModule 
+        Car OrderModule...
     """,
     'description': """""",
     'author': "Around Enterprise Consulting Co., Ltd.",
