@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="custom_account_payment_register_form_view" model="ir.ui.view">
+            <field name="name">account.payment.register.form</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_bank_id']" position="after">
+                    <field name="bank_account_id"/>
+                </xpath>
+                <xpath expr="//field[@name='communication']" position="after">
+                    <field name="is_checks" invisible='1'/>
+                    <field name="check_detail" attrs="{'invisible': [('is_checks', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_create_payments']" position="replace">
+                    <button string="Post Payment" name="action_create_payments" type="object" class="oe_highlight"/>
+                    <button string="Create Payment" name="action_create_payments_no_post" type="object" class="oe_highlight"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

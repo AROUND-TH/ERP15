@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_production_cost_report" model="ir.actions.client">
+            <field name="name">Production Cost Report</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'production.cost.report'}" />
+        </record>
+
+        <menuitem id="menu_production_cost_report" name="งบต้นทุนผลิต"
+            parent="account.account_reports_legal_statements_menu"
+            sequence="100" groups="account.group_account_readonly"
+            action="custom_account_reports.action_production_cost_report"/>
+
+        <record id="action_cost_of_sales_report" model="ir.actions.client">
+            <field name="name">Cost Of Sales Report</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'cost.sales.report'}" />
+        </record>
+
+        <menuitem id="menu_cost_of_sales_report" name="งบต้นทุนขาย"
+            parent="account.account_reports_legal_statements_menu"
+            sequence="100" groups="account.group_account_readonly"
+            action="custom_account_reports.action_cost_of_sales_report"/>
+
+        <record id="action_inventory_account_report" model="ir.actions.client">
+            <field name="name">Stock Valuation</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'inventory.account.report'}" />
+        </record>
+
+        <menuitem id="menu_inventory_account_report" name="รายงานสินค้าคงเหลือ"
+            parent="account.account_reports_legal_statements_menu"
+            sequence="100" groups="account.group_account_readonly"
+            action="custom_account_reports.action_inventory_account_report"/>
+
+        <menuitem id="menu_configuration_account_report" name="Setting Group Accounting Report"
+            parent="account.menu_finance_configuration"
+            sequence="100" groups="account.group_account_readonly"/>
+
+    </data>
+</odoo>

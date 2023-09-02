@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+setting_production_cost_access,setting.production.cost.access,model_setting_production_cost,account.group_account_user,1,1,1,1
+setting_cost_sales_access,setting.cost.sales.access,model_setting_cost_sales,account.group_account_user,1,1,1,1

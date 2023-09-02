@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="account_billing_vendor_form_view">
+            <field name="name">account.billing.vendor.form</field>
+            <field name="model">account.billing.vendor</field>
+            <field name="arch" type="xml">
+                <form string="Bill Acceptance Form">
+                    <header>
+                        <button name="action_done" string="Done" class="oe_highlight"
+                                type="object" groups="account.group_account_user"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="button_cancel" string="Cancel" type="object" groups="account.group_account_user"
+                                attrs="{'invisible' : ['|', ('id', '=', False), ('state', '=', 'cancel')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <!-- Invisible fields -->
+                        <field name="payment_state" invisible="1" force_save="1"/>
+
+                        <!-- Payment status for Bill Acceptance -->
+                        <widget name="web_ribbon" title="Paid"
+                                attrs="{'invisible': [('payment_state', '!=', 'paid')]}"/>
+                        <widget name="web_ribbon" title="Partial"
+                                attrs="{'invisible': [('payment_state', '!=', 'partial')]}"/>
+
+                        <div class="oe_title">
+                            <!-- <span class="o_form_label">Number</span> -->
+                            <!-- Billing draft header -->
+                            <h1>
+                                <span attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft</span>
+                            </h1>
+                            <!-- Number -->
+                            <span class="text-warning" attrs="{'invisible': [('show_name_warning', '=', False)]}">The current highest number is <field name="highest_name"/>. You might want to put a higher number here.</span>
+                            <h1 class="mt0" attrs="{'invisible':[('name', '=', '/')]}">
+                                <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}" placeholder="ST/2021/02/0001"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="show_name_warning" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="date" invisible="1"/>
+
+                                <field name="partner_id"
+                                    options="{'always_reload': True, 'no_create': True}"
+                                    widget="res_partner_many2one"
+                                    context="{'show_address': 1, 'default_is_company': True, 'show_vat': True}"
+                                />
+                                <!-- <field name="partner_address"/> -->
+                            </group>
+                            <group>
+                                <field name="document_date"/>
+                                <field name="document_date_due"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="List of Invoice">
+                                <group id="line_tab_entry_group" attrs="{'invisible': [('state', '!=', 'draft')]}">
+                                    <group>
+                                        <div name="button_line">
+                                            <button name="button_select_invoice" 
+                                                    string="Search Invoice"
+                                                    class="oe_highlight"
+                                                    icon="fa-bars"
+                                                    type="object" groups="account.group_account_user"
+                                                    attrs="{'invisible': [('state', '!=', 'draft')]}">
+                                            </button>
+                                        </div>
+                                    </group>
+                                </group>
+                                <field name="line_ids" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}">
+                                    <tree string="Bill Lines" create="false">
+                                        <field name="invoice_id"/>
+                                        <field name="invoice_date"/>
+                                        <field name="invoice_date_due"/>
+
+                                        <!-- === Amount fields === -->
+                                        <field name="amount_untaxed"/>
+                                        <field name="amount_tax"/>
+                                        <field name="amount_total"/>
+
+                                        <field name="note"/>
+                                    </tree>
+                                </field>
+
+                                <style>
+                                .right-bar {
+                                  border-right: 1px solid #dddddd;
+                                }
+                                </style>
+                                <group>
+                                    <table class="table" style="text-align: center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="right-bar">
+                                                    จำนวน 
+                                                    <field name="line_count"/>
+                                                    ฉบับ
+                                                </th>
+                                                <th scope="col" class="right-bar">
+                                                    <field name="amount_total"/>
+                                                </th>
+                                                <th scope="col">
+                                                    (
+                                                    <field name="amount_total_text"/>
+                                                    )
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </group>
+                            </page>
+                            <page id="other_tab_entry" string="Other Info" name="other_info">
+                                <group id="other_tab_entry_group">
+                                    <group>
+                                        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                        <field name="company_currency_id" options="{'no_create': True}"/>
+                                    </group>
+                                    <group>
+                                        <field name="amount_residual" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                        <group col="4">
+                            <group colspan="3">
+                                <field name="narration" class="oe_inline"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_billing_vendor_search_view">
+            <field name="name">account.billing.vendor.search</field>
+            <field name="model">account.billing.vendor</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="document_date"/>
+                    <field name="document_date_due"/>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                    <field name="line_ids" filter_domain="[('line_ids.name','ilike',self)]" string="Invoice No."/>
+                    <filter name="my_account_billing_vendor"
+                            string="My Bill Acceptance"
+                            domain="[('user_id', '=', uid)]"/>
+                    <filter name="done_status"
+                            string="Done Status"
+                            domain="[('state', '=', 'done')]"/>
+                    <filter name="draft_status"
+                            string="Draft Status"
+                            domain="[('state', '=', 'draft')]"/>
+                    <group string="Group By">
+                        <filter name="by_customer"
+                                string="Customer"
+                                context="{'group_by': 'partner_id'}"/>
+                        <filter name="by_user"
+                                string="User"
+                                context="{'group_by': 'user_id'}"/>
+                        <filter name="by_status"
+                                string="Status"
+                                context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_billing_vendor_tree_view">
+            <field name="name">account.billing.vendor.tree</field>
+            <field name="model">account.billing.vendor</field>
+            <field name="arch" type="xml">
+                <tree string="Bill Acceptance Tree">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="document_date"/>
+                    <field name="document_date_due"/>
+                    <field name="user_id"/>
+                    <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'"/>
+                    <field name="payment_state"
+                           widget="badge"
+                           decoration-danger="payment_state == 'not_paid'"
+                           decoration-warning="payment_state == 'partial'"
+                           decoration-success="payment_state == 'paid'"
+                           optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="account_billing_vendor_line_form_view">
+            <field name="name">account.billing.vendor.line.form</field>
+            <field name="model">account.billing.vendor.line</field>
+            <field name="arch" type="xml">
+                <form string="Bill Acceptance Line Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <!-- <span class="o_form_label">Label</span> -->
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <field name="bill_id" invisible="1"/>
+                                <field name="bill_partner_domain" invisible="1"/>
+
+                                <field name="invoice_id"
+                                    readonly="1" force_save="1"
+                                    options="{'no_create': True}"/>
+                                <field name="invoice_date"/>
+                                <field name="invoice_date_due"/>
+                            </group>
+                            <group>
+                                <field name="amount_untaxed"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total"/>
+                                <field name="amount_residual"/>
+                            </group>
+                        </group>
+                        <div class="oe_title">
+                            <label for="note"/>
+                            <field name="note"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_billing_vendor_line_tree_view">
+            <field name="name">account.billing.vendor.line.tree</field>
+            <field name="model">account.billing.vendor.line</field>
+            <field name="arch" type="xml">
+                <tree string="Bill Acceptance Line Tree">
+                    <field name="invoice_id"/>
+                    <field name="bill_id"/>
+                    <field name="invoice_date"/>
+                    <field name="invoice_date_due"/>
+
+                    <!-- === Amount fields === -->
+                    <field name="amount_untaxed"/>
+                    <field name="amount_tax"/>
+                    <field name="amount_total"/>
+                    <field name="amount_residual"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="account_billing_vendor_list_action">
+            <field name="name">Bill Acceptance</field>
+            <field name="res_model">account.billing.vendor</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context" eval="{'search_default_my_account_billing_vendor': False}"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create first Bill Acceptance</p>
+            </field>
+        </record>
+
+        <menuitem
+            id="account_billing_vendor_menu"
+            name="Bill Acceptance"
+            parent="account.menu_finance_payables"
+            action="account_billing_vendor_list_action"
+            sequence="190"
+        />
+
+    </data>
+</odoo>
