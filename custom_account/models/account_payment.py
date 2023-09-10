@@ -31,6 +31,16 @@ class AccountPayment(models.Model):
     )
     note = fields.Text(string='Notes')
 
+    def convert_currency_rate(self):
+        amount = self.amount * self.currency_rate
+
+        return amount
+    
+    def amount_to_text_thai_baht(self):
+        amount = self.amount * self.currency_rate
+        amount_text = self.company_id.currency_id.with_context(lang='th_TH').amount_to_text(amount, 'th_TH', 'th')
+        return amount_text
+
     def format_monetary_without_currency(self, value):
         locale.setlocale(locale.LC_ALL, '')  # Set the locale to the user's default
 

@@ -224,8 +224,8 @@
                     <div class="row">
                         <div class="col-12 payment_vendor_sign">
                             <div class="col-12 text-left box_sign text-margin">
-                                จ่ายสุทธิจำนวนเงิน <span t-esc="'{:,.2f} บาท'.format(o.amount)"/>
-                                ( <span t-esc="o.currency_id.with_context(lang='th_TH').amount_to_text(o.amount, 'th_TH', 'th')"/> )
+                                จ่ายสุทธิจำนวนเงิน <span t-esc="'{:,.2f} บาท'.format(o.convert_currency_rate())"/>
+                                ( <span t-esc="o.amount_to_text_thai_baht()"/> )
                             </div>
                         </div>
                     </div>
