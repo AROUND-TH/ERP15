@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+        <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1, 'filter_group_sale_salesman': True}</field>
+    </record>
+
+    <record id="base.action_partner_form" model="ir.actions.act_window">
+        <field name="context">{'res_partner_search_mode': 'customer', 'filter_group_sale_salesman': True}</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+        <field name="context">{'default_type': 'opportunity', 'search_default_assigned_to_me': 1, 'filter_group_sale_salesman': True}</field>
+    </record>
+
+    <record id="crm_lead_view_form" model="ir.ui.view">
+        <field name="name">crm.lead.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='lead_partner']/field[@name='partner_id']" position="attributes">
+                <attribute name="context">{
+                    'default_name': contact_name,
+                    'default_title': title,
+                    'default_street': street,
+                    'default_street2': street2,
+                    'default_city': city,
+                    'default_state_id': state_id,
+                    'default_zip': zip,
+                    'default_country_id': country_id,
+                    'default_function': function,
+                    'default_phone': phone,
+                    'default_mobile': mobile,
+                    'default_email': email_from,
+                    'default_user_id': user_id,
+                    'default_team_id': team_id,
+                    'default_website': website,
+                    'show_vat': True,
+                    'filter_group_sale_salesman': 1
+                }</attribute>
+            </xpath>
+            <xpath expr="//group[@name='opportunity_partner']/field[@name='partner_id']" position="attributes">
+                <attribute name="context">{
+                    'res_partner_search_mode': type == 'opportunity' and 'customer' or False,
+                    'default_name': contact_name or partner_name,
+                    'default_street': street,
+                    'default_is_company': type == 'opportunity' and contact_name == False,
+                    'default_company_name': type == 'opportunity' and partner_name,
+                    'default_street2': street2,
+                    'default_city': city,
+                    'default_title': title,
+                    'default_state_id': state_id,
+                    'default_zip': zip,
+                    'default_country_id': country_id,
+                    'default_function': function,
+                    'default_phone': phone,
+                    'default_mobile': mobile,
+                    'default_email': email_from,
+                    'default_user_id': user_id,
+                    'default_team_id': team_id,
+                    'default_website': website,
+                    'show_vat': True,
+                    'filter_group_sale_salesman': 1
+                }</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

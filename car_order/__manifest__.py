@@ -1,7 +1,7 @@
 {
     'name': "Car Order",
     'summary': """
-        Car OrderModule 
+        Car OrderModule...
     """,
     'description': """""",
     'author': "Around Enterprise Consulting Co., Ltd.",
@@ -12,10 +12,15 @@
         'product',
         'account',
         'sale',
+        'crm',
+        'sales_team',
         'hr',
         'fleet_product_link',
         'stock',
         'report_vehicle_pipeline',
+        'purchase',
+        'purchase_requisition',
+        'custom_partner',
     ],
     "data": [
         "data/ir_sequence_data.xml",
@@ -28,5 +33,10 @@
         "views/product_template.xml",
         "views/car_order.xml",
         'views/account_stock_card_view.xml',
+        'views/purchase_requisition.xml',
+        'views/purchase_order.xml',
+        "views/res_users.xml",
+        "views/sale_order.xml",
+        "views/crm_lead.xml"
     ]
 }

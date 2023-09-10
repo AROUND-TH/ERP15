@@ -43,8 +43,8 @@ class CarOrderFreebie(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         if self.product_id:
-            standard_price = self.product_id.standard_price
-            self.cost = standard_price
+            x_studio_sales_cost = self.product_id.x_studio_sales_cost
+            self.cost = x_studio_sales_cost
             self.sale_price = self.product_id.list_price
 
 
@@ -304,10 +304,10 @@ class CarOrder(models.Model):
         if not self.product_id:
             return purchase_price
         # car
-        purchase_price = self._convert_purchase_price(self.product_id.standard_price, self.product_id.uom_id)
+        purchase_price = self._convert_purchase_price(self.product_id.x_studio_sales_cost, self.product_id.uom_id)
         # premium
         for line in self.order_line:
-            purchase_price += self._convert_purchase_price(line.product_id.standard_price, line.product_id.uom_id)
+            purchase_price += self._convert_purchase_price(line.product_id.x_studio_sales_cost, line.product_id.uom_id)
         return purchase_price
 
     @api.depends('pricelist_id', 'product_id', 'sale_price', 'discount_price', 'freebie_amount_total')
@@ -315,7 +315,7 @@ class CarOrder(models.Model):
         for rec in self:
             margin, margin_percent = 0, 0
             if rec.pricelist_id and rec.pricelist_price:
-                cost = rec.product_id.standard_price
+                cost = rec.product_id.x_studio_sales_cost
                 sale_price = rec.pricelist_price - rec.discount_price
                 sale_price_after_freebie = sale_price - rec.freebie_amount_total
                 margin = sale_price_after_freebie - cost
@@ -399,7 +399,8 @@ class CarOrder(models.Model):
 
     # report
     def _get_warranty_info(self):
-        return f'ประกัน {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
+        #return f'ประกัน {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
+        return f'วารันตี {self.number_of_years_warranty} ปี,   {self.number_of_distance_warranty} กม.'
 
     def _get_acc_film_other_info(self):
         return self.acc_film_other or '-'
@@ -437,4 +438,4 @@ class CarOrder(models.Model):
         for rec in self:
             for freebie_id in rec.freebie_line:
                 if freebie_id.product_id:
-                    freebie_id.cost = freebie_id.product_id.standard_price
+                    freebie_id.cost = freebie_id.product_id.x_studio_sales_cost
