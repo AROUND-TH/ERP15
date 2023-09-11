@@ -55,6 +55,7 @@
                                 string="Journal Entry"
                                 attrs="{'invisible': [('payment_id', '!=', False)]}"
                                 options="{'no_create': True}"
+                                context="{'filter_group_purchase': 1}"
                             />
                         </group>
                         <group>
@@ -73,7 +74,9 @@
                             <field name="company_taxid" string="Tax ID" />
                         </group>
                         <group>
-                            <field name="supplier_partner_id" options="{'no_create': True}"/>
+                            <field name="supplier_partner_id"
+                                   options="{'no_create': True}"
+                                   context="{'filter_group_purchase': 1}"/>
                             <field name="supplier_taxid" string="Tax ID" />
                         </group>
                     </group>
@@ -164,6 +167,7 @@
     <record id="action_withholding_tax_cert_menu" model="ir.actions.act_window">
         <field name="name">WT Certificates</field>
         <field name="res_model">withholding.tax.cert</field>
+        <field name="context">{'filter_group_purchase': 1}</field>
         <field name="view_id" ref="view_withholding_tax_cert_tree" />
     </record>
     <menuitem

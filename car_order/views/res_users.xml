@@ -6,8 +6,10 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='sel_groups_21_22_23']" position="after">
-                <field name="crm_team_id"/>
+            <xpath expr="//page[@name='access_rights']/group[1]" position="before">
+                <group>
+                  <field name="crm_team_id"/>
+                </group>
             </xpath>
         </field>
     </record>

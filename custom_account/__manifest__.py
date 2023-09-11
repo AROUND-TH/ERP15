@@ -21,7 +21,7 @@
     'website': "https://www.around.co.th",
     'category': 'Accounting',
     "version": "15.0.6.0.0",
-    'depends': ['account', 'account_accountant', 'account_asset', 'custom_partner'],
+    'depends': ['account', 'account_accountant', 'account_asset', 'custom_partner', 'car_order'],
     'data': [
         'security/ir.model.access.csv',
         'data/sequence.xml',

@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
-        <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1, 'filter_group_sale_salesman': True}</field>
-    </record>
-
-    <record id="base.action_partner_form" model="ir.actions.act_window">
-        <field name="context">{'res_partner_search_mode': 'customer', 'filter_group_sale_salesman': True}</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
-        <field name="context">{'default_type': 'opportunity', 'search_default_assigned_to_me': 1, 'filter_group_sale_salesman': True}</field>
-    </record>
-
     <record id="crm_lead_view_form" model="ir.ui.view">
         <field name="name">crm.lead.form</field>
         <field name="model">crm.lead</field>

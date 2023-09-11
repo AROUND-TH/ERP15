@@ -1,5 +1,6 @@
 from . import res_config_settings
 from . import res_users
+from . import group_purchase
 from . import res_partner
 from . import product
 from . import sale_order
@@ -8,3 +9,6 @@ from . import account_stock_card
 from . import purchase_order
 from . import purchase_requisition
 from . import crm_lead
+from . import account_move
+from . import account_payment
+from . import account_batch_payment

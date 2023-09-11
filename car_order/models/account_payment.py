@@ -2,18 +2,13 @@ from odoo import api, models, fields
 from .group_purchase import FilterGroupPurchase
 
 
-class PurchaseOrder(models.Model, FilterGroupPurchase):
-    _inherit = "purchase.order"
+class AccountPayment(models.Model, FilterGroupPurchase):
+    _inherit = "account.payment"
 
     def get_domain_partner(self):
-        ir_config = self.env['ir.config_parameter'].sudo()
-        vendor_group_id = ir_config.get_param('car_order_vendor_group_car')
-        domain = ['|', ('company_id', '=', False), ('company_id', '=', self.env.user.company_id.id)]
-        if self._context.get('filter_vendor_group'):
-            domain.append(('vendor_group_id', '=', int(vendor_group_id)))
-        elif self._context.get('filter_group_purchase'):
+        domain = ['|', ('parent_id', '=', False), ('is_company', '=', True)]
+        if self._context.get('filter_group_purchase'):
             domain = self._get_domain_filter_group_purchase(domain, 'vendor_group_id')
-        domain.append(('vendor_group_id', '!=', int(vendor_group_id)))
         return domain
 
     partner_id = fields.Many2one('res.partner', domain=get_domain_partner)
@@ -29,3 +24,4 @@ class PurchaseOrder(models.Model, FilterGroupPurchase):
         if self._context.get('filter_group_purchase'):
             domain = self._get_domain_filter_group_purchase(domain, 'partner_id.vendor_group_id')
         return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
+

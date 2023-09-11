@@ -10,11 +10,16 @@ import re
 
 class AccountBillingVendor(models.Model):
     _name = 'account.billing.vendor'
-    _inherit = ['sequence.mixin']
+    _inherit = ['sequence.mixin', 'filter.vendor_group.abstract']
     _description = "Bill Acceptance"
     _order = 'date desc, name desc, id desc'
     _check_company_auto = True
 
+    def get_domain_partner(self):
+        domain = [('is_vendor', '=', True)]
+        if self._context.get('filter_group_purchase'):
+            domain = self._get_domain_filter_group_purchase(domain, 'vendor_group_id')
+        return domain
 
     state = fields.Selection(
         selection=[
@@ -87,7 +92,7 @@ class AccountBillingVendor(models.Model):
         string='Vendor', 
         required=True,
         readonly=False, 
-        domain="[('is_vendor','=',True)]",
+        domain=get_domain_partner,
         states=READONLY_STATES,
         check_company=True,
     )
@@ -155,6 +160,18 @@ class AccountBillingVendor(models.Model):
     )
 
     narration = fields.Html(string='Terms and Conditions')
+
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):
+        if self._context.get('filter_group_purchase'):
+            domain = self._get_domain_filter_group_purchase(domain, 'partner_id.vendor_group_id')
+        return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        if self._context.get('filter_group_purchase'):
+            domain = self._get_domain_filter_group_purchase(domain, 'partner_id.vendor_group_id')
+        return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
 
 
     @api.onchange('document_date', 'highest_name', 'company_id')

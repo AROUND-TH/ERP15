@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+    <record id="purchase_general" model="res.groups">
+        <field name="name">General Purchase</field>
+        <field name="category_id" ref="base.module_category_technical"/>
+    </record>
+
+    <record id="purchase_car" model="res.groups">
+        <field name="name">Purchase for Car Only</field>
+        <field name="category_id" ref="base.module_category_technical"/>
+    </record>
+
+</data>
+</odoo>

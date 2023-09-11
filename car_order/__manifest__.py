@@ -20,16 +20,19 @@
         'report_vehicle_pipeline',
         'purchase',
         'purchase_requisition',
+        'account_batch_payment',
         'custom_partner',
     ],
     "data": [
         "data/ir_sequence_data.xml",
         "data/paper_format.xml",
+        "security/security.xml",
         "report/car_order_report.xml",
         "report/car_order_template.xml",
         "report/quotation_template.xml",
         "security/ir.model.access.csv",
         "views/res_config_settings_view.xml",
+        "views/actions.xml",
         "views/product_template.xml",
         "views/car_order.xml",
         'views/account_stock_card_view.xml',
@@ -37,6 +40,8 @@
         'views/purchase_order.xml',
         "views/res_users.xml",
         "views/sale_order.xml",
-        "views/crm_lead.xml"
+        "views/crm_lead.xml",
+        "views/account_move.xml",
+        "views/account_batch_payment.xml",
     ]
 }

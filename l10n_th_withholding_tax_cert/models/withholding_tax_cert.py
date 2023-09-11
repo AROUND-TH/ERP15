@@ -69,7 +69,7 @@ TAX_PAYER = [("withholding", "Withholding"), ("paid_one_time", "Paid One Time")]
 
 class WithholdingTaxCert(models.Model):
     _name = "withholding.tax.cert"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", 'filter.vendor_group.abstract']
     _description = "Withholding Tax Certificate"
 
     name = fields.Char(
@@ -232,6 +232,17 @@ class WithholdingTaxCert(models.Model):
     #     else:
     #         return {'domain': {'move_id': [('journal_id.type', 'in', ('general','bank')),('wt_cert_cancel', '=', True), ('state', '=', 'posted')]}}
 
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):
+        if self._context.get('filter_group_purchase'):
+            domain = self._get_domain_filter_group_purchase(domain, 'supplier_partner_id.vendor_group_id')
+        return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        if self._context.get('filter_group_purchase'):
+            domain = self._get_domain_filter_group_purchase(domain, 'supplier_partner_id.vendor_group_id')
+        return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
 
     @api.depends('state')
     def _compute_journal_id_domain(self):
