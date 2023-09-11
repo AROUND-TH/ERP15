@@ -32,10 +32,3 @@ class AccountMove(models.Model, FilterGroupPurchase):
         if self._context.get('filter_group_purchase'):
             domain = self._get_domain_filter_group_purchase(domain, 'partner_id.vendor_group_id')
         return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
-
-    def name_get(self):
-        result = []
-        for rec in self:
-            name = '%s - %s' % (rec.name, rec.vendor_group_id.name)
-            result.append((rec.id, name))
-        return result

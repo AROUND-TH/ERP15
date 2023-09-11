@@ -13,7 +13,6 @@ class PurchaseOrder(models.Model, FilterGroupPurchase):
             domain.append(('vendor_group_id', '=', int(vendor_group_id)))
         elif self._context.get('filter_group_purchase'):
             domain = self._get_domain_filter_group_purchase(domain, 'vendor_group_id')
-        domain.append(('vendor_group_id', '!=', int(vendor_group_id)))
         return domain
 
     partner_id = fields.Many2one('res.partner', domain=get_domain_partner)
