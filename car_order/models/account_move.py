@@ -5,14 +5,7 @@ from .group_purchase import FilterGroupPurchase
 class AccountMove(models.Model, FilterGroupPurchase):
     _inherit = "account.move"
 
-    def get_domain_partner(self):
-        domain = [('type', '!=', 'private'), ('company_id', 'in', (False, self.env.user.company_id.id))]
-        if self._context.get('filter_group_purchase'):
-            domain = self._get_domain_filter_group_purchase(domain, 'vendor_group_id')
-        return domain
-
     vendor_group_id = fields.Many2one(related="partner_id.vendor_group_id")
-    partner_id = fields.Many2one('res.partner', domain=get_domain_partner)
 
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
