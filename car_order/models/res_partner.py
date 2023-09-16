@@ -29,7 +29,7 @@ class Partner(models.Model):
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):
         if self._context.get('filter_group_purchase'):
-            args = self._get_domain_filter_group_purchase(domain)
+            domain = self._get_domain_filter_group_purchase(domain)
         if self._context.get('filter_group_sale_salesman'):
             crm_team_id = self.env.user.crm_team_id
             if self.env.user.group_sale_salesman() and crm_team_id:

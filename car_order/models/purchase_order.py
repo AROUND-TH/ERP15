@@ -9,9 +9,13 @@ class PurchaseOrder(models.Model, FilterGroupPurchase):
         ir_config = self.env['ir.config_parameter'].sudo()
         vendor_group_id = ir_config.get_param('car_order_vendor_group_car')
         domain = ['|', ('company_id', '=', False), ('company_id', '=', self.env.user.company_id.id)]
-        if self._context.get('filter_vendor_group'):
-            domain.append(('vendor_group_id', '=', int(vendor_group_id)))
-        elif self._context.get('filter_group_purchase'):
+        filter_vendor_group = self._context.get('filter_vendor_group')
+        filter_group_purchase = self._context.get('filter_group_purchase')
+        if not filter_vendor_group and not filter_group_purchase:
+            domain.insert(0, ('vendor_group_id', '!=', int(vendor_group_id)))
+        elif filter_vendor_group:
+            domain.insert(0, ('vendor_group_id', '=', int(vendor_group_id)))
+        elif filter_group_purchase:
             domain = self._get_domain_filter_group_purchase(domain, 'vendor_group_id')
         return domain
 
