@@ -245,7 +245,7 @@ class ReportVehiclePipeline2(models.Model):
                 ) as polsum on polsum.order_id = po.id
                 left join car_order co on co.product_id = pol.product_id and co.state != 'cancel'
                 left join sale_order so on so.id = co.sale_id and so.state != 'cancel'
-                inner join fleet_vehicle fv on fv.id = pt.custom_vehicle_id
+                inner join fleet_vehicle fv on fv.custom_product_id = pt.id and fv.active = true
                 where po.state != 'cancel'
                 order by date_approve desc
             )
