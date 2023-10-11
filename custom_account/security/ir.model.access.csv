@@ -1,0 +1,22 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+account_bank_account_access,account.bank.account.access,model_account_bank_account,account.group_account_user,1,0,0,0
+account_bank_account_manager,account.bank.account.manager,model_account_bank_account,account.group_account_manager,1,1,1,1
+select_journal_config_manager,select.journal.config.manager,model_select_journal_config,account.group_account_manager,1,1,1,1
+
+account_billing_customer_manager,account.billing.customer.manager,model_account_billing_customer,account.group_account_user,1,1,1,1
+account_billing_customer_line_manager,account.billing.customer.line.manager,model_account_billing_customer_line,account.group_account_user,1,1,1,1
+account_billing_vendor_manager,account.billing.vendor.manager,model_account_billing_vendor,account.group_account_user,1,1,1,1
+account_billing_vendor_line_manager,account.billing.vendor.line.manager,model_account_billing_vendor_line,account.group_account_user,1,1,1,1
+account_select_invoice_wizard,select invoice wizard,model_wizard_select_invoice,account.group_account_user,1,1,1,1
+invoice_item_wizard,invoice item wizard,model_wizard_invoice_item,account.group_account_user,1,1,1,1
+
+receipt_billing_customer_manager,receipt.billing.customer.manager,model_receipt_billing_customer,account.group_account_user,1,1,1,1
+receipt_billing_customer_line_manager,receipt.billing.customer.line.manager,model_receipt_billing_customer_line,account.group_account_user,1,1,1,1
+receipt_billing_customer_deduct_manager,receipt.billing.customer.deduct.manager,model_receipt_billing_customer_deduct,account.group_account_user,1,1,1,1
+pay_billing_vendor_manager,pay.billing.vendor.manager,model_pay_billing_vendor,account.group_account_user,1,1,1,1
+pay_billing_vendor_line_manager,pay.billing.vendor.line.manager,model_pay_billing_vendor_line,account.group_account_user,1,1,1,1
+pay_billing_vendor_deduct_manager,pay.billing.vendor.deduct.manager,model_pay_billing_vendor_deduct,account.group_account_user,1,1,1,1
+
+asset_transfer_log,asset.transfer.log,model_asset_transfer_log,account.group_account_user,1,1,1,1
+asset_maintenance_access,asset.maintenance.access,model_asset_maintenance,account.group_account_user,1,1,1,1
+asset_maintenance_manager,asset.maintenance.manager,model_asset_maintenance,account.group_account_manager,1,1,1,1

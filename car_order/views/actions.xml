@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+        <field name="context">{'search_default_customer': 1, 'res_partner_search_mode': 'customer',
+                               'default_is_company': True, 'default_customer_rank': 1,
+                               'filter_group_sale_salesman': True}</field>
+    </record>
+
+    <record id="base.action_partner_form" model="ir.actions.act_window">
+        <field name="context">{'res_partner_search_mode': 'customer', 'filter_group_sale_salesman': True}</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+        <field name="context">{'default_type': 'opportunity', 'search_default_assigned_to_me': 1,
+                               'filter_group_sale_salesman': True}</field>
+    </record>
+
+    <record id="account.action_move_in_invoice_type" model="ir.actions.act_window">
+        <field name="context">{'default_move_type': 'in_invoice', 'filter_group_purchase': 1}</field>
+    </record>
+
+    <record id="account.action_move_in_refund_type" model="ir.actions.act_window">
+        <field name="context">{'default_move_type': 'in_refund', 'filter_group_purchase': 1}</field>
+    </record>
+
+    <record id="account.action_account_payments_payable" model="ir.actions.act_window">
+        <field name="context">{
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+            'search_default_outbound_filter': 1,
+            'default_move_journal_types': ('bank', 'cash'),
+            'filter_group_purchase': 1
+        }</field>
+    </record>
+
+    <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+        <field name="context">{'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1, 'filter_group_purchase': 1}</field>
+    </record>
+
+    <record id="account_batch_payment.action_batch_payment_out" model="ir.actions.act_window">
+        <field name="context">{'search_default_open': 1, 'default_batch_type': 'outbound', 'filter_group_purchase': 1}</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Invoicing"
+        id="account.menu_finance"
+        groups="account.group_account_readonly,account.group_account_invoice"
+        web_icon="account,static/description/icon.png"
+        sequence="55">
+        <menuitem id="menu_configuration_report" name="Setting Accounting Report" groups="analytic.group_analytic_accounting,analytic.group_analytic_tags" sequence="7">
+            <!-- <menuitem id="account_analytic_def_account" action="analytic.action_account_analytic_account_form" groups="analytic.group_analytic_accounting" sequence="1"/>
+            <menuitem id="account_analytic_group_menu" name="Analytic Account Groups" action="analytic.account_analytic_group_action" groups="analytic.group_analytic_accounting" sequence="2"/>
+            <menuitem id="account_analytic_tag_menu" name="Analytic Tags" action="analytic.account_analytic_tag_action" groups="analytic.group_analytic_tags"/> -->
+        </menuitem>
+    </menuitem>
+</odoo>

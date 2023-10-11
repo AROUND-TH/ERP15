@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_account_stock_card_report" name="Stock"
+        parent="account.menu_finance_reports"
+        sequence="100" groups="account.group_account_readonly"/>
+
+    <record model="ir.ui.view" id="account_stock_card_tree_form_view">
+        <field name="name">account.stock.card.form</field>
+        <field name="model">account.stock.card</field>
+        <field name="arch" type="xml">
+            <form string="Stock Card">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="car_order_id" options='{"always_reload": True, "no_quick_create": True}'/>
+                            <field name="product_id"/>
+                            <field name="car_model"/>
+                            <field name="chassis_number"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" options='{"always_reload": True, "no_quick_create": True}'/>
+                            <field name="date_receiving"/>
+                            <field name="date_order"/>
+                            <field name="real_sale_price" invisible="1"/>
+                            <field name="import_duty" invisible="1"/>
+                            <field name="real_shipping" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <group name="real_cost" string="ต้นทุนจริง"></group>
+                    <field name="cost_line_ids" nolabel='1'>
+                        <tree create="0" delete="0" editable="bottom">
+                            <field name="cost_item" readonly="1" force_save="1"/>
+                            <field name="amount"/>
+                        </tree>
+                    </field>
+                    <group col="6" class="mt-2 mt-md-0">
+                        <group colspan="2"/>
+                        <group class="oe_subtotal_footer oe_right" colspan="4" >
+                            <field name="total_car_cost" />
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    
+                    <group name="expenses_selling" string="ค่าใช้จ่ายก่อนการขายรถ"></group>
+                    <field name="expenses_selling_ids" nolabel='1'>
+                        <tree create="1" delete="1" editable="bottom">
+                            <field name="cost_item" readonly="0" force_save="1"/>
+                            <field name="other" attrs="{'readonly': [('cost_item', '!=', 'other')]}"/>
+                            <field name="amount"/>
+                        </tree>
+                    </field>
+                    <group col="6" class="mt-2 mt-md-0">
+                        <group colspan="2"/>
+                        <group class="oe_subtotal_footer oe_right" colspan="4" >
+                            <field name="total_before_selling" />
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    
+                    <group col="6" class="mt-2 mt-md-0">
+                        <group colspan="2"/>
+                        <group class="oe_subtotal_footer oe_right" colspan="4" >
+                            <field name="total_actual_cost" />
+                            <field name="actual_selling_price" readonly="0"/>
+                            <field name="real_profit" />
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="account_stock_card_tree_view">
+        <field name="name">account.stock.card.tree</field>
+        <field name="model">account.stock.card</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Card">
+                <field name="name"/>
+                <field name="date_receiving"/>
+                <field name="car_model"/>
+                <field name="chassis_number"/>
+                <field name="partner_id"/>
+                <field name="date_order"/>
+                <field name="real_sale_price"/>
+                <field name="import_duty"/>
+                <field name="real_shipping"/>
+                <field name="total_before_selling"/>
+                <field name="total_actual_cost"/>
+                <field name="actual_selling_price"/>
+                <field name="real_profit"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="account_stock_card_action">
+        <field name="name">Stock Card</field>
+        <field name="res_model">account.stock.card</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create first Stock Card</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_account_stock_card_action"
+        action="account_stock_card_action" name="Stock Card"
+        parent="car_order.menu_account_stock_card_report" sequence="2"/>
+</odoo>

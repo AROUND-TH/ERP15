@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="paperformat_pay_billing_vendor" model="report.paperformat">
+            <field name="name">Paper Format Pay Vendor Bill</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_pay_billing_vendor" model="ir.actions.report">
+            <field name="name">Report Pay Vendor Bill</field>
+            <field name="model">pay.billing.vendor</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_account.pay_billing_vendor</field>
+            <field name="report_file">custom_account.pay_billing_vendor</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_model_id" ref="model_pay_billing_vendor"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Pay Vendor Bill - %s' %(object.name)</field>
+            <field name="paperformat_id" ref="paperformat_pay_billing_vendor"/>
+        </record>
+
+        <!-- <report
+                id="report_pay_billing_vendor"
+                model="pay.billing.vendor"
+                string="Report Pay Vendor Bill"
+                report_type="qweb-pdf"
+                name="custom_account.pay_billing_vendor"
+                file="custom_account.pay_billing_vendor"
+                attachment_use="False"
+                paperformat="custom_account.paperformat_pay_billing_vendor"
+                menu="False"
+        /> -->
+
+        <template id="pay_billing_vendor_document">
+            <t t-call="web.basic_layout">
+                <div class="page" style="font-size: 80%;">
+                    <style>
+                    .table-border {
+                        border-collapse: collapse;
+                    }
+                    .table-border th, .table-border td {
+                        border: 1px solid #dddddd;
+                    }
+                    .rem-border-td td {
+                        border: 0px;
+                    }
+                    </style>
+                    <table class="table table-border" style="border: 1px solid #dddddd;">
+                        <tbody>
+                            <tr style="text-align:center;">
+                                <th width="30%">
+                                    <strong>
+                                    <span t-field="doc.company_id.name"/>
+                                    </strong>
+                                </th>
+                                <th width="40%">
+                                    <strong>
+                                        <h2>ใบสำคัญจ่าย</h2>
+                                    </strong>
+                                </th>
+                                <th width="30%">
+                                    <strong>
+                                    <span>เลขที่เอกสาร</span>
+                                    <span t-field="doc.name"/>
+                                    </strong>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="3" align="center">
+                                    <table class="rem-border-td" style="width:98%; margin-top:20px; margin-bottom:20px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="70%">
+                                                    <span>จ่ายให้</span>
+                                                    <span t-field="doc.partner_id"/>
+                                                </td>
+                                                <td width="30%">
+                                                    <span>วันที่</span>
+                                                    <!-- <span t-field="doc.document_date"/> -->
+                                                    <span t-field="doc.move_id.date"/>
+                                                    <span style="margin-right:100px;"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="70%">
+                                                    <t t-if="doc.partner_id.bank_ids">
+                                                        <span t-esc="doc.partner_id.bank_ids[0].bank_id.name"/> - <span t-esc="doc.partner_id.bank_ids[0].acc_number"/>
+                                                    </t>
+                                                </td>
+                                                <td width="30%">
+                                                    อ้างอิง <span t-esc="doc._get_bill_ref(doc.line_ids)"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="70%">
+                                                    หมายเหตุ <span t-field="doc.narration"/>
+                                                </td>
+                                                <td width="30%">
+                                                    Check No. <span t-field="doc.check_no"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-border o_report_block_table" style="font-size: 85%; margin-top: -16px;">
+                        <thead style="font-size: 105%;">
+                            <tr style="text-align:center;">
+                                <th>
+                                    <span>เลขที่บัญชี/ชื่อบัญชี</span>
+                                </th>
+                                <th>
+                                    <span>เดบิต</span>
+                                </th>
+                                <th>
+                                    <span>เครดิต</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-set="sum_debit" t-value="0.0"/>
+                        <t t-set="sum_credit" t-value="0.0"/>
+                        <tbody>
+                            <tr t-foreach="doc.move_id.line_ids" t-as="move_line">
+                                <td>
+                                    <span t-field="move_line.account_id"/>
+                                </td>
+                                <td align="right">
+                                    <t t-if="move_line.debit != 0">
+                                        <t t-esc="doc.format_monetary_without_currency(move_line.debit)"/>
+                                        <t t-set="sum_debit" t-value="sum_debit + move_line.debit"/>
+                                    </t>
+                                </td>
+                                <td align="right">
+                                    <t t-if="move_line.credit != 0">
+                                        <t t-esc="doc.format_monetary_without_currency(move_line.credit)"/>
+                                        <t t-set="sum_credit" t-value="sum_credit + move_line.credit"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 105%;">
+                                <td>
+                                </td>
+                                <td align="right">
+                                    <strong>
+                                        <t t-esc="doc.format_monetary_without_currency(sum_debit)"/>
+                                    </strong>
+                                </td>
+                                <td align="right">
+                                    <strong>
+                                        <t t-esc="doc.format_monetary_without_currency(sum_credit)"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr style="font-size: 105%;">
+                                <td align="center">
+                                    <strong>
+                                    <span>จ่ายสุทธิจำนวนเงิน</span>
+                                    <span style="margin-right:5px;" t-esc="'{:,.2f} บาท'.format(doc.amount_total)"/>
+                                    (
+                                    <span t-esc="doc.company_currency_id.amount_to_text(sum_debit, 'th_TH', 'th')"/>
+                                    )
+                                    
+                                    </strong>
+                                </td>
+                                <td colspan="2" style="border-right:0px; border-bottom:0px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-border" style="width:98%; font-size: 85%; position: fixed; bottom: -280mm;">
+                        <tbody>
+                            <tr style="text-align:center;">
+                                <td>
+                                    <span>
+                                        ผู้จัดทำ.................................................................
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        ผู้ตรวจสอบ..............................................................
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        ผู้อนุมัติ.................................................................
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr style="text-align:center;">
+                                <td>
+                                    <span>
+                                        ผู้ตรวจสอบ................................................................
+                                    </span>
+                                </td>
+                                <td colspan='2'>
+                                    <span>
+                                        ผู้รับเงิน.................................................................
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="pay_billing_vendor">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="custom_account.pay_billing_vendor_document"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

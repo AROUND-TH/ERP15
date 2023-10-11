@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_account.report_receipt_bill_customer">
+        <t t-set="o" t-value="o.with_context(lang=lang)"/>
+        <div class="page page_payment_receipt_customer">
+            <div class="row">
+                <div class="col-12 payment_customer_header">
+                    <div class="col-8 text-left company-name header_name_left text-margin receipt_border_top">
+                        <span t-field="o.company_id.name"/>
+                    </div>
+                    <div class="col-4 receipt-text text-center text-margin header_name_left receipt_border_top header_name_right">
+                        ใบเสร็จรับเงิน
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 payment_customer_header">
+                    <div class="col-8 text-left header_name_left text-margin">
+                        สำนักงาน : <span t-field="o.company_id.street"/>
+                    </div>
+                    <div class="col-4 receipt-text text-center text-margin header_name_left header_name_right">
+                        RECEIPT
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 payment_customer_header">
+                    <div class="col-8 text-left header_name_left text-margin">
+                        โทรศัพท์ : <span t-field="o.company_id.phone"/>
+                    </div>
+                    <div class="col-4 text-margin header_name_left header_name_right"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 payment_customer_header">
+                    <div class="col-8 text-left header_name_left text-margin">
+                        เลขประจำตัวผู้เสียภาษี : <span t-field="o.company_id.vat"/>
+                    </div>
+                    <div class="col-4 text-right text-margin header_name_left header_name_right">
+                        เลขที่ : <span t-field="o.name"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 header_receipt_top">
+                    <div class="col-8 text-left receipt_border_top text-margin header_name_left">
+                        ได้รับเงินจาก : <span t-field="o.partner_id.name"/>
+                    </div>
+                    <div class="col-4 text-left receipt_border_top text-margin header_name_left header_name_right">
+                        วันที่ : <span t-field="o.document_date"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 header_receipt_bottom">
+                    <div class="col-8 text-left receipt_border_bottom text-margin header_name_left">
+                        ที่อยู่ : <span t-field="o.partner_id.street"/>
+                    </div>
+                    <div class="col-4 text-left receipt_border_bottom text-margin header_name_left header_name_right"></div>
+                </div>
+            </div>
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="text-center text-margin">อ้างถึง</th>
+                        <th class="text-center text-margin">รายการ</th>
+                        <th class="text-center text-margin">จำนวนเงิน</th>
+                    </tr>
+                </thead>
+                <t t-set="sum_total" t-value="0"/>
+                <tr t-foreach="o.line_ids" t-as="line">
+                    <td class="text-center text-margin"></td>
+                    <td class="text-left text-margin"><t t-esc="line.bill_id.name"/></td>
+                    <td class="text-right text-margin"><t t-esc="line.balance" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                    <t t-set="sum_total" t-value="sum_total + line.balance"/>
+                </tr>
+                <tfoot>
+                    <tr>
+                        <td class="text-center text-margin">จำนวนเงิน</td>
+                        <td class="text-center text-margin"><span t-esc="o.currency_id.amount_to_text(sum_total, 'th_TH', 'th')"/></td>
+                        <td class="text-right text-margin"><t t-esc="sum_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+                <div class="col-12 footer_receipt header_padding">
+                    <div class="col-2 text-center text-margin">
+                        ชำระเป็น
+                    </div>
+                    <div class="col-2 text-left text-margin">
+                        ( ) เงินสด
+                    </div>
+                    <div class="col-4 text-left text-margin"></div>
+                    <div class="col-4 text-left text-margin"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 footer_receipt">
+                    <div class="col-2 text-center text-margin"></div>
+                    <div class="col-2 text-left text-margin">
+                        ( ) เช็ค/ดร๊าฟ
+                    </div>
+                    <div class="col-4 text-left text-margin">
+                        ธนาคาร <span t-esc="o.bank_account_id.bank_name"/> - <span t-esc="o.bank_account_id.bank_account"/>
+                    </div>
+                    <div class="col-4 text-left text-margin">
+                        สาขา ...............................................
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 footer_receipt">
+                    <div class="col-2 text-center text-margin"></div>
+                    <div class="col-2 text-left text-margin"></div>
+                    <div class="col-4 text-left text-margin">
+                        เลขที่เช็ค .......................................
+                    </div>
+                    <div class="col-4 text-left text-margin">
+                        ลงวันที่ .......................................
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 footer_receipt">
+                    <div class="col-6 text-left receipt_border_top receipt_border_bottom text-margin header_name_left">ผู้รับมอบอำนาจ</div>
+                    <div class="col-6 text-left receipt_border_top receipt_border_bottom text-margin header_name_left header_name_right">ผู้รับเงิน</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 footer_receipt">
+                    <div class="col-12 text-center receipt_border_bottom text-margin header_name_left header_name_right">
+                        ใบเสร็จรับเงินนี้จะสมบูรณ์ต่อเมื่อ มีลายชื่อผู้รับมอบอำนาจ และผู้รับเงินแล้วเท่านั้น หากชำระเป็นเช็ค ใบเสร็จรับเงินจะสมบูรณ์ ก็ต่อเมื่อเช็คนี้ ได้เรียกเก็บเงินจากธนาคารเรียบร้อยแล้ว
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_receipt_bill">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang or o.company_id.partner_id.lang"/>
+                <t t-call="custom_account.report_receipt_bill_customer" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

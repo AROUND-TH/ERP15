@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="select_journal_config_form_view" model="ir.ui.view">
+            <field name="name">select.journal.config.form</field>
+            <field name="model">select.journal.config</field>
+            <field name="arch" type="xml">
+                <form string="Select Journal Config">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="form_select"/>
+                                <field name="journal_id" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="set_default" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="select_journal_config_search_view" model="ir.ui.view">
+            <field name="name">select.journal.config.search</field>
+            <field name="model">select.journal.config</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="form_select"/>
+                    <field name="journal_id"/>
+                    <filter name="set_default_flag"
+                            string="Default"
+                            domain="[('set_default', '=', True)]"/>
+                    <group string="Group By">
+                        <filter name="by_form_select"
+                                string="Form"
+                                context="{'group_by': 'form_select'}"/>
+                        <filter name="by_journal"
+                                string="Journal"
+                                context="{'group_by': 'journal_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="select_journal_config_tree_view" model="ir.ui.view">
+            <field name="name">select.journal.config.tree</field>
+            <field name="model">select.journal.config</field>
+            <field name="arch" type="xml">
+                <!-- <tree string="Select Journal Config" editable="top" multi_edit="1" sample="1"> -->
+                <tree string="Select Journal Config" editable="bottom" create="1" delete="1">
+                    <field name="form_select"/>
+                    <field name="journal_id"/>
+                    <field name="set_default" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="select_journal_config_action" model="ir.actions.act_window">
+            <field name="name">Select Journal Config</field>
+            <field name="res_model">select.journal.config</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="select_journal_config_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No Select Journal Config found. Let's create one!
+                </p>
+                <p>
+                    'Select Journal Config' allow you config select journal with form.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_select_journal_config"
+            action="select_journal_config_action" name="Select Journal Config"
+            parent="account.account_account_menu" sequence="90"/>
+    </data>
+</odoo>

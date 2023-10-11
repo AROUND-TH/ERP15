@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="account_bank_account_form_view">
+            <field name="name">account.bank.account.form</field>
+            <field name="model">account.bank.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet string="Bank Account">
+                        <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="active" invisible="1"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Name..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="bank_name"/>
+                                <field name="bank_account"/>
+                                <field name="account_code"/>
+                                <field name="suspense_account_code"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter" name="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_bank_account_search_view">
+            <field name="name">account.bank.account.search</field>
+            <field name="model">account.bank.account</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="bank_name"/>
+                    <field name="bank_account"/>
+                    <filter name="inactive_flag"
+                            string="Archived"
+                            domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_bank_account_tree_view">
+            <field name="name">account.bank.account.tree</field>
+            <field name="model">account.bank.account</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="account_bank_account_list_action">
+            <field name="name">Bank Account</field>
+            <field name="res_model">account.bank.account</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create first Bank Account</p>
+            </field>
+        </record>
+
+        <menuitem
+            id="account_bank_account_menu"
+            name="Bank Account"
+            parent="account.account_banks_menu"
+            action="account_bank_account_list_action"
+            sequence="1"
+        />
+
+    </data>
+</odoo>
