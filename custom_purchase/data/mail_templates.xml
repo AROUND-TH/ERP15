@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="message_origin_link">
+            <p>
+                This <t t-esc="self.env['ir.model']._get(self._name).name.lower()"/> has been created from: <t
+                    t-esc="origin.display_name"/>
+            </p>
+        </template>
+    </data>
+</odoo>
