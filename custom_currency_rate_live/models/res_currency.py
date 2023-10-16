@@ -15,3 +15,4 @@ class Currency(models.Model):
             res = res/100
 
         return res
+    
