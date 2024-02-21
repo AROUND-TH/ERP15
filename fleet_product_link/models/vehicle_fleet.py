@@ -11,7 +11,6 @@ class FleetVehicle(models.Model):
         string='Product',
         copy=False
     )
-    
     #@api.multi
     def _qty_count(self):
         for product in self:
@@ -62,12 +61,30 @@ class FleetVehicle(models.Model):
                 'default_name':self.model_id.name
             }
         return action
-    
     #@api.multi
     def action_view_product(self):
         self.ensure_one()
         action = self.env.ref('fleet_product_link.action_product_link_all_fleet').read()[0]
         action['domain'] = str([('custom_vehicle_id', 'in', self.ids)])
         return action
-        
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+
+    # @Override odoo core method create
+    @api.model
+    def create(self, vals):
+        vehicle = super(FleetVehicle, self).create(vals)
+        vehicle.action_sync_products()
+        return vehicle
+
+    # @Override odoo core method write
+    def write(self, vals):
+        result = super(FleetVehicle, self).write(vals)
+        if vals.get('custom_product_id'):
+            self.action_sync_products()
+        return result
+
+    def action_sync_products(self):
+        for record in self:
+            if record.custom_product_id:
+                record.custom_product_id.custom_vehicle_id = record.id
+

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="custom_account_asset_form_view" model="ir.ui.view">
+            <field name="name">account.asset.form</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//widget[@name='web_ribbon']" position="after"> -->
+                <xpath expr="//sheet/div[@name='model_box']" position="after">
+                    <field name="image_1920" widget='image' class="oe_avatar" options='{"zoom": true, "preview_image":"image_128"}'/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]" position="before">
+                    <group string="Asset Values" col="4" colspan="4" attrs="{'invisible': [('state', '!=', 'model')]}">
+                        <field name="running_prefix" force_save="1"/>
+                        <field name="asset_number" invisible="1" force_save="1"/>
+                        <field name="running_digit" force_save="1" attrs="{'invisible': ['|',('running_prefix','=',False),('running_prefix','=','')]}"/>
+                    </group>
+                </xpath>
+
+                <xpath expr="//field[@name='acquisition_date']" position="after">
+                    <field name="running_prefix" force_save="1"/>
+                    <field name="asset_number" readonly="1" force_save="1"/>
+                </xpath>
+                <field name="method_progress_factor" position="replace">
+                    <field name="method_progress_factor" attrs="{'invisible':[('method','in',('365','linear'))], 'required':[('method','in',('degressive', 'degressive_then_linear'))]}"/>
+                </field>
+                <xpath expr="//field[@name='first_depreciation_date']" position="after">
+                    <field name="purchase_order_id" options="{'no_create': True}" attrs="{'readonly': [('state','!=','draft')]}"/>
+                    <field name="document_number" attrs="{'readonly': [('state','!=','draft')]}"/>
+                </xpath>
+                <!-- <xpath expr="//notebook/page/field[@name='depreciation_move_ids']/tree/field[@name='date']" position="after">
+                    <field name="company_id" invisible="1"/>
+                    <field name="account_analytic_id" options="{'no_create': True}"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags"/>
+                    <field name="purchase_order_id" options="{'no_create': True}"/>
+                    <field name="document_number"/>
+                </xpath> -->
+                <xpath expr="//notebook/page[@name='depreciation_board']/field[@name='depreciation_move_ids']" position="replace">
+                    <field name="depreciation_move_ids" options="{'reload_whole_on_button': true}">
+                        <tree string="Depreciation Lines" decoration-info="state == 'draft'" create="0"  default_order="date asc, id asc">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="ref" invisible=""/>
+                            <field name="reversal_move_id" widget="deprec_lines_reversed"/>
+                            <field name="date" string="Depreciation Date"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="account_analytic_id" options="{'no_create': True}"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags"/>
+                            <field name="purchase_order_id" options="{'no_create': True}"/>
+                            <field name="document_number"/>
+                            <field name="amount_total" widget="monetary" string="Depreciation" options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="asset_depreciated_value" readonly="1" force_save="1" options="{'currency_field': 'currency_id'}"/>
+                            <field name="asset_remaining_value" readonly="1" widget="monetary" force_save="1" options="{'currency_field': 'currency_id'}"/>
+                            <field name="name" readonly="1" string="Journal Entry"/>
+                            <field name="state" invisible="1"/>
+                            <field name="asset_manually_modified" invisible="1"/>
+                        </tree>
+                    </field>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='related_items']" position="after">
+                    <page string="Asset Transfer" name="asset_transfer" attrs="{'invisible': [('state', 'in', ['draft','model'])]}">
+                        <group id="asset_transfer_group">
+                            <table class="oe_edit_only" style="width: 100%;">
+                                <tbody>
+                                    <tr>
+                                        <td scope="col">
+                                            <label for="transfer_company_header" style="font-weight: bold"/>
+                                        </td>
+                                        <td scope="col">
+                                            <field name="transfer_company_header"/>
+                                        </td>
+                                        <td scope="col" align="center">
+                                            <label for="transfer_reason" style="font-weight: bold"/>
+                                        </td>
+                                        <td scope="col" colspan="2">
+                                            <field name="transfer_reason"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">
+                                            <label for="transfer_date" style="font-weight: bold"/>
+                                            <!-- <span class="o_form_label oe_inline" style="display: inline-block; font-weight: bold;">Transfer Date</span> -->
+                                        </td>
+                                        <td scope="col">
+                                            <field name="transfer_date"/>
+                                        </td>
+                                        <td scope="col">
+                                            <field name="transfer_account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td scope="col">
+                                            <field name="transfer_analytic_tag_ids" widget="many2many_tags"/>
+                                        </td>
+                                        <td scope="col">
+                                            <div name="button_print">
+                                                <button name="button_transfer_print" 
+                                                        string="Confirm and Print"
+                                                        class="oe_highlight oe_edit_only"
+                                                        style="float: right"
+                                                        type="object"
+                                                        attrs="{'invisible': [('state', '=', 'draft')]}">
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </group>
+                        <field name="transfer_log_ids">
+                            <tree string="Transfer Log">
+                                <field name="document_number"/>
+                                <field name="asset_number"/>
+                                <field name="asset_name"/>
+                                <field name="quantity"/>
+                                <field name="account_analytic_id"/>
+                                <field name="transfer_account_analytic_id"/>
+                                <field name="transfer_date"/>
+                                <field name="transfer_reason"/>
+                                <field name="employee_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Asset Maintenance" name="asset_maintenance" attrs="{'invisible': [('state', 'in', ['draft','model'])]}">
+                        <field name="maintenance_ids">
+                            <tree string="Maintenance">
+                                <field name="ordinal_number" attrs="{'invisible': [('ordinal_number', '=', 0)]}"/>
+                                <field name="maintenance_date"/>
+                                <field name="detail"/>
+                                <field name="amount"/>
+                                <field name="maintenance_company"/>
+                                <field name="responsible_person"/>
+                                <field name="remark"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+                <xpath expr="//form/sheet" position="inside">
+                    <notebook colspan="4" attrs="{'invisible': ['|', ('total_depreciation_entries_count', '!=', 0), ('original_move_line_ids', '!=', [])]}">
+                        <page string="Asset Transfer" name="asset_transfer_show" attrs="{'invisible': [('state', 'in', ['draft','model'])]}">
+                            <group id="asset_transfer_show_group">
+                                <!-- <table class="table"> -->
+                                <table class="oe_edit_only" style="width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td scope="col">
+                                                <label for="transfer_company_header" style="font-weight: bold"/>
+                                            </td>
+                                            <td scope="col">
+                                                <field name="transfer_company_header"/>
+                                            </td>
+                                            <td scope="col" align="center">
+                                                <label for="transfer_reason" style="font-weight: bold"/>
+                                            </td>
+                                            <td scope="col" colspan="2">
+                                                <field name="transfer_reason"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col">
+                                                <label for="transfer_date" style="font-weight: bold"/>
+                                                <!-- <span class="o_form_label oe_inline" style="display: inline-block; font-weight: bold;">Transfer Date</span> -->
+                                            </td>
+                                            <td scope="col">
+                                                <field name="transfer_date"/>
+                                            </td>
+                                            <td scope="col">
+                                                <field name="transfer_account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td scope="col">
+                                                <field name="transfer_analytic_tag_ids" widget="many2many_tags"/>
+                                            </td>
+                                            <td scope="col">
+                                                <div name="button_print">
+                                                    <button name="button_transfer_print" 
+                                                            string="Confirm and Print"
+                                                            class="oe_highlight oe_edit_only"
+                                                            style="float: right"
+                                                            type="object"
+                                                            attrs="{'invisible': [('state', '=', 'draft')]}">
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </group>
+                            <field name="transfer_log_ids">
+                                <tree string="Transfer Log">
+                                    <field name="document_number"/>
+                                    <field name="asset_number"/>
+                                    <field name="asset_name"/>
+                                    <field name="quantity"/>
+                                    <field name="account_analytic_id"/>
+                                    <field name="transfer_account_analytic_id"/>
+                                    <field name="transfer_date"/>
+                                    <field name="transfer_reason"/>
+                                    <field name="employee_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Asset Maintenance" name="asset_maintenance_show" attrs="{'invisible': [('state', 'in', ['draft','model'])]}">
+                            <field name="maintenance_ids">
+                                <tree string="Maintenance">
+                                    <field name="ordinal_number" attrs="{'invisible': [('ordinal_number', '=', 0)]}"/>
+                                    <field name="maintenance_date"/>
+                                    <field name="detail"/>
+                                    <field name="amount"/>
+                                    <field name="maintenance_company"/>
+                                    <field name="responsible_person"/>
+                                    <field name="remark"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="asset_maintenance_form_view">
+            <field name="name">asset.maintenance.form</field>
+            <field name="model">asset.maintenance</field>
+            <field name="arch" type="xml">
+                <form string="Asset Maintenance Form">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="maintenance_date"/>
+                                <field name="maintenance_company"/>
+                                <field name="responsible_person"/>
+                            </group>
+                            <group>
+                                <field name="detail"/>
+                                <field name="amount"/>
+                            </group>
+                        </group>
+                        <div class="oe_title">
+                            <label for="remark"/>
+                            <field name="remark"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Fixed bug on CONFIRM Button process on account_asset.view_account_asset_expense_form -->
+        <record id="custom_account_asset_expense_form_view" model="ir.ui.view">
+            <field name="name">account.asset.expense.form</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_expense_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='validate']" position="attributes">
+                    <attribute name="context">{'asset_type': 'expense'}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

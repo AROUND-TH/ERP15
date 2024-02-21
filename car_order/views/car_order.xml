@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_car_order_tree" model="ir.ui.view">
+        <field name="name">car.order.tree</field>
+        <field name="model">car.order</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="Car Orders">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="sale_price"/>
+                <field name="company_header_1"/>
+                <field name="company_header_2"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_car_order_form" model="ir.ui.view">
+        <field name="name">car.order.form</field>
+        <field name="model">car.order</field>
+        <field name="arch" type="xml">
+            <form string="Car Order" duplicate="1">
+                <field name="sale_id" invisible="1"/>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_done" type="object" string="Done" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('state', 'in', ['draft', 'cancel'])]}"/>
+                    <button name="action_print_report" type="object" string="รายละเอียดการขาย" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
+                    <button name="action_print_quotation_report" type="object" string="ใบเสนอราคา" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-shopping-cart"
+                            attrs="{'invisible': [('sale_id', '=', False)]}">
+                            <field name="sale_id" />
+                        </button>
+                        <button name="action_view_invoice"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="sale_header">
+                        <group name="partner_details">
+                            <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'filter_group_sale_salesman': True}" options='{"always_reload": True}'/>
+                            <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
+                            <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+                            <field name="salesman_id"/>
+                            <field name="team_id"/>
+                        </group>
+                        <group name="order_details">
+                            <field name="date_order"/>
+                            <field name="payment_term_id"/>
+                            <field name="pricelist_id"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount_autoessense" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                        </group>
+                    </group>
+                    <group name="company_header" >
+                        <group string="ราคา">
+                            <field name="product_id"/>
+                            <field name="pricelist_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="start_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="sale_price"  widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="discount_price"  widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                            <field name="reserve_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                        </group>
+                        <group string="เงื่อนไขการรับประกัน">
+                            <field name="number_of_years_warranty"/>
+                            <field name="number_of_distance_warranty"/>
+                            <field name="value_of_warranty" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                        </group>
+                    </group>
+                    <group name="company_header" string="บริษัทสั่งจ่าย">
+                        <group>
+                            <field name="company_header_1"/>
+                        </group>
+                        <group>
+                            <field name="company_header_2"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="รายละเอียด">
+                            <field name="order_line">
+                                <tree
+                                    string="Order Lines"
+                                    editable="bottom"
+                                >
+                                    <field name="product_id"/>
+                                    <field name="price_company_header_1"/>
+                                    <field name="price_company_header_2"/>
+                                </tree>
+                            </field>
+                            <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4"/>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="amount_total" />
+                                    <label for="margin" groups="base.group_user"/>
+                                    <div class="text-nowrap" groups="base.group_user">
+                                        <field name="margin" class="oe_inline"/>
+                                        <span class="oe_inline">
+                                            (<field name="margin_percent" nolabel="1" class="oe_inline"/>)
+                                        </span>
+                                    </div>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                        <page string="ไฟแนนซ์">
+                            <group>
+                                <group>
+                                    <field name="finance_id"/>
+                                    <field name="finance_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <label for="finance_interest" />
+                                    <div>
+                                        <field name="finance_interest" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="finance_installment" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                    <field name="finance_number_of_installment"/>
+                                    <field name="finance_commission" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                </group>
+                            </group>
+
+                        </page>
+                        <page string="อุปกรณ์">
+                            <group>
+                                <group string="ฟิล์ม">
+                                    <field name="acc_film_brand"/>
+                                    <label for="acc_film_front"/>
+                                    <div >
+                                        <field name="acc_film_front" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                    <label for="acc_film_around"/>
+                                    <div >
+                                        <field name="acc_film_around" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                    <label for="acc_film_roof"/>
+                                    <div >
+                                        <field name="acc_film_roof" class="oe_inline" style="vertical-align:baseline" modifiers="{}"/> %
+                                    </div>
+                                    <field name="acc_film_other"/>
+                                </group>
+                                <group string="เครื่องเสียง">
+                                    <field name="acc_sound_detail"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="คอมมิชชั่น">
+                            <field name="commission_product_categ" invisible="1"/>
+                            <field name="commission_line">
+                                <tree editable="bottom">
+                                    <field name="product_id" domain="[('categ_id', '=', parent.commission_product_categ)]" options="{'no_create_edit': True,'no_open': True}"/>
+                                    <field name="price"/>
+                                </tree>
+                            </field>
+                            <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4"/>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="commission_amount_total" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                         <page string="ของแถม">
+                            <field name="freebie_line">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="cost" force_save="1"/>
+                                    <field name="sale_price"/>
+                                </tree>
+                            </field>
+                             <button name="action_update_cost" type="object" string="Update Cost" states="draft,confirm"/>
+                             <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4"/>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="freebie_amount_total" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                         </page>
+                        <page string="ใบเสนอราคา">
+                            <group>
+                                <field name="quotation_date" colspan="2"/>
+                                <field name="quotation_document"/>
+                                <field name="quotation_remark"/>
+                            </group>
+                            <group>
+                                <field name="x_studio_finance_down_list" string="รายละเอียดการดาวน์รถ">
+                                  <tree editable="bottom">
+                                    <field name="x_studio_sequence" widget="handle"/>
+                                    <field optional="show" name="x_studio_down_amount" string="เงินดาวน์"/>
+                                    <field optional="show" name="x_studio_finance_amount" string="ยอดจัด"/>
+                                    <field name="x_name" string="ระยะเวลา"/>
+                                    <field optional="show" name="x_studio_down_payment" string="ค่างวด"/>
+                                    <field optional="show" name="x_studio_interest" string="ดอกเบี้ย"/>
+                                  </tree>
+                                </field>
+                                <field name="x_studio_free_list" string="ของแถม"/>
+                                <field name="x_studio_many2one_field_PLrSg" options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_car_order" model="ir.actions.act_window">
+        <field name="name">ใบจอง / รายละเอียดการขาย</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">car.order</field>
+        <field name="view_mode">form,tree</field>
+    </record>
+
+    <record id="sale_order_action_view_order_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="car_order.view_car_order_tree"/>
+        <field name="act_window_id" ref="action_car_order"/>
+    </record>
+
+    <record id="sale_order_action_view_order_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="car_order.view_car_order_form"/>
+        <field name="act_window_id" ref="action_car_order"/>
+    </record>
+
+    <menuitem id="menu_car_order"
+        name="ใบจอง / รายละเอียดการขาย"
+        action="action_car_order"
+        parent="sale.sale_order_menu"
+        sequence="2" groups="sales_team.group_sale_salesman"/>
+</odoo>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- supplier -->
+    <template id="custom_account.report_payment_receipt_custom">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+
+            <!-- customer -->
+            <t t-if="o.partner_type == 'customer'">
+                <div class="page page_payment_receipt_customer">
+                    <div class="row">
+                        <div class="col-12 payment_customer_header">
+                            <div class="col-8 text-left company-name header_name_left text-margin receipt_border_top">
+                                <span t-field="o.company_id.name"/>
+                            </div>
+                            <div class="col-4 receipt-text text-center text-margin header_name_left receipt_border_top header_name_right">
+                                ใบเสร็จรับเงิน
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payment_customer_header">
+                            <div class="col-8 text-left header_name_left text-margin">
+                                สำนักงาน : <span t-field="o.company_id.street"/>
+                            </div>
+                            <div class="col-4 receipt-text text-center text-margin header_name_left header_name_right">
+                                RECEIPT
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payment_customer_header">
+                            <div class="col-8 text-left header_name_left text-margin">
+                                โทรศัพท์ : <span t-field="o.company_id.phone"/>
+                            </div>
+                            <div class="col-4 text-margin header_name_left header_name_right"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payment_customer_header">
+                            <div class="col-8 text-left header_name_left text-margin">
+                                เลขประจำตัวผู้เสียภาษี : <span t-field="o.company_id.vat"/>
+                            </div>
+                            <div class="col-4 text-right text-margin header_name_left header_name_right">
+                                เลขที่ : <span t-field="o.name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 header_receipt_top">
+                            <div class="col-8 text-left receipt_border_top text-margin header_name_left">
+                                ได้รับเงินจาก : <span t-field="o.partner_id.name"/>
+                            </div>
+                            <div class="col-4 text-left receipt_border_top text-margin header_name_left header_name_right">
+                                วันที่ : <span t-field="o.create_date"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 header_receipt_bottom">
+                            <div class="col-8 text-left receipt_border_bottom text-margin header_name_left">
+                                ที่อยู่ : <span t-field="o.partner_id.street"/>
+                            </div>
+                            <div class="col-4 text-left receipt_border_bottom text-margin header_name_left header_name_right"></div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-margin">อ้างถึง</th>
+                                <th class="text-center text-margin">รายการ</th>
+                                <th class="text-center text-margin">จำนวนเงิน</th>
+                            </tr>
+                        </thead>
+                        <t t-set="sum_total" t-value="0"/>
+                        <tr>
+                            <td class="text-center text-margin"></td>
+                            <td class="text-left text-margin"><t t-esc="o.ref"/></td>
+                            <td class="text-right text-margin"><t t-esc="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            <t t-set="sum_total" t-value="sum_total + o.amount"/>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center text-margin">จำนวนเงิน</td>
+                                <td class="text-center text-margin"><span t-esc="o.currency_id.amount_to_text(sum_total, 'th_TH', 'th')"/></td>
+                                <td class="text-right text-margin"><t t-esc="sum_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="row">
+                        <div class="col-12 footer_receipt header_padding">
+                            <div class="col-2 text-center text-margin">
+                                ชำระเป็น
+                            </div>
+                            <div class="col-2 text-left text-margin">
+                                ( ) เงินสด
+                            </div>
+                            <div class="col-4 text-left text-margin"></div>
+                            <div class="col-4 text-left text-margin"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 footer_receipt">
+                            <div class="col-2 text-center text-margin"></div>
+                            <div class="col-2 text-left text-margin">
+                                ( ) เช็ค/ดร๊าฟ
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                ธนาคาร <span t-esc="o.partner_bank_id.bank_id.name"/> - <span t-esc="o.partner_bank_id.acc_number"/>
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                สาขา .........................................................
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 footer_receipt">
+                            <div class="col-2 text-center text-margin"></div>
+                            <div class="col-2 text-left text-margin"></div>
+                            <div class="col-4 text-left text-margin">
+                                เลขที่เช็ค ...............................................
+                            </div>
+                            <div class="col-4 text-left text-margin">
+                                ลงวันที่ ...............................................
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 footer_receipt">
+                            <div class="col-6 text-left receipt_border_top receipt_border_bottom text-margin header_name_left">ผู้รับมอบอำนาจ</div>
+                            <div class="col-6 text-left receipt_border_top receipt_border_bottom text-margin header_name_left header_name_right">ผู้รับเงิน</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 footer_receipt">
+                            <div class="col-12 text-center receipt_border_bottom text-margin header_name_left header_name_right">
+                                ใบเสร็จรับเงินนี้จะสมบูรณ์ต่อเมื่อ มีลายชื่อผู้รับมอบอำนาจ และผู้รับเงินแล้วเท่านั้น หากชำระเป็นเช็ค ใบเสร็จรับเงินจะสมบูรณ์ ก็ต่อเมื่อเช็คนี้ ได้เรียกเก็บเงินจากธนาคารเรียบร้อยแล้ว
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <!-- supplier -->
+            <t t-if="o.partner_type == 'supplier'">
+                <div class="page page_payment_receipt_vendor">
+                    <div class="row">
+                        <div class="col-12 payment_vendor_header">
+                            <div class="col-4 text-center box_sign text-margin"><span t-field="o.company_id.name"/></div>
+                            <div class="col-4 text-center box_sign text-margin">
+                                <h2>ใบสำคัญจ่าย</h2>
+                            </div>
+                            <div class="col-4 text-center box_sign text-margin">เลขที่เอกสาร <span t-field="o.name"/></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payment_vendor_sign">
+                            <div class="col-8 text-left box_left">จ่ายให้ <span t-field="o.partner_id.name"/></div>
+                            <div class="col-4 text-left box_right">วันที่ <span t-field="o.date"/></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payment_vendor_sign">
+                            <div class="col-8 text-left box_left">
+                                <t t-if="o.partner_id.bank_ids">
+                                    <span t-esc="o.partner_id.bank_ids[0].bank_id.name"/> - <span t-esc="o.partner_id.bank_ids[0].acc_number"/>
+                                </t>
+                            </div>
+                            <div class="col-4 text-left box_right">
+                                เลขที่ <span t-esc="o.ref"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payment_vendor_sign">
+                            <div class="col-8 text-left box_left">
+                                หมายเหตุ <span t-esc="o.note"/>
+                            </div>
+                            <div class="col-4 text-left box_right">
+                                <t t-if='o.check_detail'>
+                                    เช็ค  <span t-esc="o.check_detail"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-margin">เลขที่บัญชี/ชื่อบัญชี</th>
+                                <th class="text-center text-margin">เดบิต</th>
+                                <th class="text-center text-margin">เครดิต</th>
+                            </tr>
+                        </thead>
+                        <t t-set="sum_debit" t-value="0"/>
+                        <t t-set="sum_credit" t-value="0"/>
+                        <tr t-foreach="o.move_id.line_ids" t-as="line">
+                            <td class="text-left text-margin"><t t-esc="line.account_id.code"/> <t t-esc="line.account_id.name"/></td>
+                            <td class="text-right text-margin">
+                                <t t-if="line.debit != 0">
+                                    <t t-esc="o.format_monetary_without_currency(line.debit)"/>
+                                </t>
+                            </td>
+                            <td class="text-right text-margin">
+                                <t t-if="line.credit != 0">
+                                    <t t-esc="o.format_monetary_without_currency(line.credit)"/>
+                                </t>
+                            </td>
+                            <t t-set="sum_debit" t-value="sum_debit + line.debit"/>
+                            <t t-set="sum_credit" t-value="sum_credit + line.credit"/>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td class="text-right text-margin">
+                                    <t t-esc="o.format_monetary_without_currency(sum_debit)"/>
+                                </td>
+                                <td class="text-right text-margin">
+                                    <t t-esc="o.format_monetary_without_currency(sum_credit)"/>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="row">
+                        <div class="col-12 payment_vendor_sign">
+                            <div class="col-12 text-left box_sign text-margin">
+                                จ่ายสุทธิจำนวนเงิน <span t-esc="'{:,.2f} บาท'.format(o.convert_currency_rate())"/>
+                                ( <span t-esc="o.amount_to_text_thai_baht()"/> )
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="position: fixed; bottom: -260mm; width: 98%;">
+                            <div class="col-12 payment_vendor_sign">
+                                <div class="col-4 text-center box_sign text-footer-margin">
+                                    ผู้จัดทำ.................................
+                                </div>
+                                <div class="col-4 text-center box_sign text-footer-margin">
+                                    ผู้ตรวจสอบ.................................
+                                </div>
+                                <div class="col-4 text-center box_sign text-footer-margin">
+                                    ผู้ตรวจสอบ.................................
+                                </div>
+                            </div>
+                            <div class="col-12 payment_vendor_sign">
+                                <div class="col-6 text-center box_sign text-footer-margin">
+                                    ผู้อนุมัติ.................................................................
+                                </div>
+                                <div class="col-6 text-center box_sign text-footer-margin">
+                                    ผู้รับเงิน.................................................................
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+        </t>
+    </template>
+
+    <template id="custom_account.report_payment_receipt">
+        <t t-foreach="docs" t-as="o">
+            <t t-set="lang" t-value="o.partner_id.lang or o.company_id.partner_id.lang"/>
+            <t t-call="custom_account.report_payment_receipt_custom" t-lang="lang"/>
+        </t>
+    </template>
+</odoo>

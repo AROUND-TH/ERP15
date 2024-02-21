@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="car_order_report_template">
+        <style>
+            .border-bottom-black {
+                border-bottom: 1px solid;
+            }
+            .inline-block {
+                display: inline-block;
+            }
+        </style>
+        <div class="page">
+            <t t-set="partner_id" t-value="doc.partner_id"/>
+            <t t-set="vehicle_id" t-value="doc.product_id.product_tmpl_id.custom_vehicle_id"/>
+            <h4 class="text-center" style="padding-bottom: 10px">
+                <strong>รายละเอียดการขายรถยนต์</strong>
+            </h4>
+            <div class="d-inline-flex">
+                <p style="width: 74px;">ชื่อผู้ซื้อ</p>
+                <p style="width: 280px;" class="border-bottom-black" t-field="partner_id.name"/>
+                <p style="width: 80px;" class="text-center">วันที่จอง</p>
+                <p style="width: 230px;" class="border-bottom-black pl-1" t-esc="doc._get_date_thai_format(doc.x_studio_reservation_date)"/>
+                <p style="width: 100px;" class="text-center">วันที่ส่งมอบ</p>
+                <p style="width: 100px;" class="border-bottom-black" t-esc="doc.x_studio_estimated_delivery_date or '-'"/>
+            </div>
+            <div class="d-inline-flex">
+                <p style="width: 74px;">ที่อยู่</p>
+                <p style="width: 530px;" class="border-bottom-black" t-esc="partner_id._display_address(without_company=True)"/>
+                <p style="width: 80px;" class="text-center">โทรศัพท์</p>
+                <p style="width: 180px;" class="border-bottom-black" t-esc="partner_id.phone or '-'"/>
+            </div>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td width="8%"><p>รุ่นรถ</p></td>
+                        <td width="25%"><p t-field="vehicle_id.model_id.name" class="border-bottom-black text-center"/></td>
+                        <td width="3%"><p class="text-center">สี</p></td>
+                        <td width="10%"><p t-field="vehicle_id.color" class="border-bottom-black text-center"/></td>
+                        <td width="9%"><p class="text-center">เลขตัวถัง</p></td>
+                        <td width="22%"><p t-field="vehicle_id.vin_sn" class="border-bottom-black text-center"/></td>
+                        <td width="9%"><p class="text-center">BAH No.</p></td>
+                        <td width="14%"><p t-field="doc.product_id.default_code" class="border-bottom-black text-center"/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-inline-flex">
+                <p style="width: 144px;">รายละเอียดชุดแต่ง</p>
+                <p style="width: 90px;" class="text-center">[&#160;&#160;]&#160;Rowen</p>
+                <p style="width: 270px;" class="border-bottom-black"><span/></p>
+                <p style="width: 90px;" class="text-center">[&#160;&#160;]&#160;Techart</p>
+                <p style="width: 270px;" class="border-bottom-black"><span/></p>
+            </div>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td width="15%"><p>ราคา Price List</p></td>
+                        <td width="18%">
+                            <p class="border-bottom-black text-center" t-field="doc.pricelist_price"/>
+                        </td>
+                        <td width="8%"><p class="text-center pl-2">บาท</p></td>
+                        <td width="28%"><p class="text-right pr-2">ราคาเปิดใบเสร็จ</p></td>
+                        <td width="18%">
+                            <p class="border-bottom-black text-center" t-field="doc.start_price"
+                               t-options='{"widget": "float", "precision": 2}'/>
+                        </td>
+                        <td width="8%"><p class="text-center">บาท</p></td>
+                    </tr>
+                    <tr>
+                        <td width="15%"><p>ราคาขาย</p></td>
+                        <td width="18%">
+                            <p class="border-bottom-black text-center" t-field="doc.sale_price"
+                               t-options='{"widget": "float", "precision": 2}'/>
+                        </td>
+                        <td width="8%"><p class="text-center pl-2">บาท</p></td>
+                        <td width="28%"><p class="text-right pr-2">เงินจอง</p></td>
+                        <td width="18%">
+                            <p class="border-bottom-black text-center" t-field="doc.reserve_price"
+                               t-options='{"widget": "float", "precision": 2}'/>
+                        </td>
+                        <td width="8%"><p class="text-center">บาท</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-inline-flex w-100 py-1">
+                <p style="width: 20%;" class="text-center font-weight-bold">รายการ</p>
+                <p style="width: 6%;" class="font-italic border-bottom-black">สั่งจ่าย</p>
+                <p style="width: 34%;" class="pl-2" t-field="doc.company_header_1.x_name"/>
+                <t t-if="doc.company_header_2">
+                    <p style="width: 6%;" class="font-italic border-bottom-black">สั่งจ่าย</p>
+                    <p style="width: 34%;" class="pl-2" t-field="doc.company_header_2.x_name"/>
+                </t>
+            </div>
+            <table class="w-100">
+                <t t-set="sum_header_1" t-value="sum(doc.order_line.mapped('price_company_header_1'))"/>
+                <t t-set="sum_header_2" t-value="sum(doc.order_line.mapped('price_company_header_2'))"/>
+                <tbody>
+                    <t t-foreach="doc.order_line" t-as="line_id">
+                        <tr>
+                            <td width="34%">
+                                <p t-field="line_id.product_id.name"/>
+                            </td>
+                            <td width="25%">
+                                <p class="border-bottom-black text-right pr-1" t-field="line_id.price_company_header_1" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="8%"><p class="text-center">บาท</p></td>
+                            <td width="25%">
+                                <p class="border-bottom-black text-right pr-1" t-field="line_id.price_company_header_2" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="8%"><p class="text-center">บาท</p></td>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td width="34%">
+                            <p class="text-right pr-3"><strong>รวม</strong></p>
+                        </td>
+                        <td width="25%">
+                            <p class="border-bottom-black text-right pr-1" t-out="sum_header_1" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                        </td>
+                        <td width="8%"><p class="text-center">บาท</p></td>
+                        <td width="25%">
+                            <p class="border-bottom-black text-right pr-1" t-out="sum_header_2" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                        </td>
+                        <td width="8%"><p class="text-center">บาท</p></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p class="text-right">
+                              ค่าใช้จ่าย บ.ออโต้ เอส
+                              <br/>
+                              <span t-esc="doc.amount_autoessense" t-options='{"widget": "float", "precision": 2}'/> บาท
+                            </p>
+                        </td>
+                        <td width="20%">
+                            <p class="text-right pr-3"><strong>จำนวนรวมทั้งสิ้น</strong></p>
+                        </td>
+                        <td width="25%">
+                            <p class="border-bottom-black text-right pr-1" t-out="sum_header_1 + sum_header_2" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                        </td>
+                        <td width="8%"><p class="text-center">บาท</p></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <div class="d-inline-flex text-center">
+                                <p style="width: 100px;" class="font-italic font-weight-bold text-left small">
+                                    ชื่อบริษัทไฟแนนซ์</p>
+                                <p style="width: 240px;" class="border-bottom-black text-center small ml-1" t-esc="doc.finance_id.x_name or '-'"/>
+                                <p style="width: 60px;" class="small">ยอดจัด</p>
+                                <p style="width: 90px;" class="border-bottom-black text-center small" t-field="doc.finance_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                <p style="width: 80px;" class="small">บาท&#160;ดอกเบี้ย</p>
+                                <p style="width: 60px;" class="border-bottom-black text-center small" t-field="doc.finance_interest" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                <p style="width: 20px;" class="small">&#160;%&#160;</p>
+                                <p style="width: 30px;" class="border-bottom-black text-center small" t-field="doc.finance_number_of_installment"/>
+                                <p style="width: 50px;" class="small">งวด&#160;ๆ&#160;ละ</p>
+                                <p style="width: 90px;" class="border-bottom-black text-center small" t-field="doc.finance_installment" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                <p class="small">บาท</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">
+                            <p class="font-weight-bold font-italic small">เงื่อนไขการรับประกัน :</p>
+                        </td>
+                        <td width="80%">
+                            <p class="pl-2 text-center mr-1 border-bottom-black" t-out="doc._get_warranty_info()"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="text-right mr-1 pr-1">
+                                <em class="pr-1">รายการของแถมมาตรฐาน:</em>&#160;กรอบป้ายทะเบียน,&#160;หมอน,&#160;ยางปูพื้นลายกระดุม,&#160;ฟิล์มตามที่บริษัทกำหนด
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">
+                            <p class="font-italic font-weight-bold">การติดฟิล์ม ยี่ห้อ</p>
+                        </td>
+                        <td width="80%">
+                            <div class="d-inline-flex">
+                                <p style="width: 160px;" class="border-bottom-black text-center"
+                                   t-field="doc.acc_film_brand"/>
+                                <p style="width: 70px;">(&#160;บานหน้า</p>
+                                <p style="width: 25px;" class="border-bottom-black text-center"
+                                   t-field="doc.acc_film_front"/>
+                                <p style="width: 70px;">%&#160;รอบคัน</p>
+                                <p style="width: 25px;" class="border-bottom-black text-center"
+                                   t-field="doc.acc_film_around"/>
+                                <p style="width: 70px;">%&#160;หลังคา</p>
+                                <p style="width: 25px;" class="border-bottom-black text-center"
+                                   t-field="doc.acc_film_roof"/>
+                                <p style="width: 50px;">%&#160;อื่นๆ</p>
+                                <p style="width: 120px;" class="border-bottom-black text-center"
+                                   t-out="doc._get_acc_film_other_info()"/>
+                                <p>&#160;)</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">
+                            <p class="font-italic font-weight-bold">ติดตั้งเครื่องเสียง:</p>
+                        </td>
+                        <td width="80%">
+                            <p class="border-bottom-black pl-1 text-center mr-1" t-esc="doc.acc_sound_detail or '-'"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-inline-flex ml-4">
+                <div>
+                    <p class="border-bottom-black ml-2"><strong>รายการของแถม :</strong></p>
+                </div>
+                <table style="width: 500px;" class="ml-3">
+                    <t t-foreach="doc.freebie_line" t-as="freebie_id">
+                        <tr>
+                            <td width="140px;">
+                                <p t-field="freebie_id.product_id.name"/>
+                            </td>
+                            <td width="60px;">
+                                <p class="border-bottom-black text-right pr-1" t-field="freebie_id.sale_price" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="30px"><p class="pl-4">บาท</p></td>
+                        </tr>
+                    </t>
+                    <t t-if="doc.freebie_line">
+                        <tr>
+                            <td width="140px;">
+                                <p class="text-center"><strong>รวมของแถม</strong></p>
+                            </td>
+                            <td width="60px;">
+                                <p class="border-bottom-black text-right pr-1" t-field="doc.freebie_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="30px"><p class="pl-4">บาท</p></td>
+                        </tr>
+                        <tr>
+                            <td width="140px;">
+                                <p class="text-center"><strong>ราคาขาย (Net) หักของแถมม</strong></p>
+                            </td>
+                            <td width="60px;">
+                                <p class="border-bottom-black text-right pr-1" t-esc="doc.sale_price - doc.freebie_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="30px"><p class="pl-4">บาท</p></td>
+                        </tr>
+                    </t>
+                    <t t-foreach="doc.commission_line" t-as="line_id">
+                        <tr>
+                            <td width="140px;">
+                                <p t-field="line_id.product_id.name"/>
+                            </td>
+                            <td width="60px;">
+                                <p class="border-bottom-black text-right pr-1" t-field="line_id.price" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="30px"><p class="pl-4">บาท</p></td>
+                        </tr>
+                    </t>
+                    <t t-if="doc.commission_line">
+                        <tr>
+                            <td width="140px;">
+                                <p class="text-center"><strong>รวมค่า Commission</strong></p>
+                            </td>
+                            <td width="60px;">
+                                <p class="border-bottom-black text-right pr-1" t-field="doc.commission_amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                            </td>
+                            <td width="30px"><p class="pl-4">บาท</p></td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+            <div class="d-inline-flex w-100 pt-3">
+                <p style="width: 12%;">ผู้ขาย(จัดทำ)</p>
+                <p style="width: 18%;" class="border-bottom-black"/>
+                <p style="width: 22%;" class="text-center">ผู้ตรวจสอบ(ฝ่ายขาย)</p>
+                <p style="width: 18%;" class="border-bottom-black"/>
+                <p style="width: 12%;" class="text-center">ผู้ตรวจสอบ</p>
+                <p style="width: 18%;" class="border-bottom-black"/>
+            </div>
+        </div>
+    </template>
+    <template id="report_car_order">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="car_order.car_order_report_template" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

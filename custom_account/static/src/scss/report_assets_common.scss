@@ -1,0 +1,198 @@
+.page_payment_receipt_vendor {
+    page-break-after: always;
+
+    .payment_vendor_header {
+        display: flex;
+        width: 100%;
+    }
+
+    .payment_vendor_sign {
+        width: 100%;
+        display: flex;
+    }
+
+    .payment_vendor_detail {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .box_sign {
+        border: 1px solid #dee2e6;
+    }
+
+    .box_left {
+        padding: 10px 20px;
+        border-left: 1px solid #dee2e6;
+    }
+
+    .box_right {
+        padding: 10px 20px;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .text-margin {
+        padding: 5px 10px;
+    }
+
+    .text-footer-margin {
+        padding: 15px 10px;
+    }
+
+    .text-detail {
+        padding: 10px 20px;
+        border-left: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+    }
+}
+
+.page_credit_notes {
+    page-break-after: always;
+
+    .credit_notes_header {
+        display: flex;
+        width: 100%;
+    }
+
+    .text-padding {
+        padding: 0px;
+    }
+
+    .box-top {
+        border-top: 1px solid #dee2e6;
+    }
+
+    .box-left {
+        border-left: 1px solid #dee2e6;
+    }
+
+    .box-right {
+        border-right: 1px solid #dee2e6;
+    }
+
+    .box-bottom {
+        border-bottom: 1px solid #dee2e6;
+    }
+}
+
+.page_invoice_with_payment {
+    page-break-after: always;
+
+    .invoice_container {
+        display: flex;
+        width: 100%;
+    }
+
+    .box_width_20 {
+        width: 20%;
+    }
+
+    .text-padding {
+        padding: 0px;
+    }
+
+    .box-top {
+        border-top: 1px solid #dee2e6;
+    }
+
+    .box-left {
+        border-left: 1px solid #dee2e6;
+    }
+
+    .box-right {
+        border-right: 1px solid #dee2e6;
+    }
+
+    .box-bottom {
+        border-bottom: 1px solid #dee2e6;
+    }
+}
+
+.page_payment_receipt_customer {
+    page-break-after: always;
+    margin-top: 20px;
+    border: 1px solid #dee2e6;
+
+    .text-margin {
+        padding: 10px 10px;
+    }
+
+    .company-name {
+        font-size: 24px;
+    }
+
+    .receipt-text {
+        font-size: 24px;
+    }
+
+    .payment_customer_header {
+        display: flex;
+        width: 100%;
+    }
+
+    .header_name_right {
+        border-right: 1px solid #dee2e6;
+    }
+
+    .header_name_left {
+        border-left: 1px solid #dee2e6;
+    }
+
+    .header_padding {
+        padding-top: 180px;
+    }
+
+    .header_receipt_top {
+        display: flex;
+        width: 100%;
+    }
+
+    .receipt_border_top {
+        border-top: 1px solid #dee2e6;
+    }
+
+    .header_receipt_bottom {
+        display: flex;
+        width: 100%;
+    }
+
+    .receipt_border_bottom {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .header_receipt_left {
+        border-right: 1px solid #dee2e6;
+    }
+
+    .footer_receipt {
+        display: flex;
+        width: 100%;
+    }
+}
+
+.page_general_journal_report {
+    page-break-after: always;
+    margin-top: 20px;
+    max-height: 273mm;
+    height: 273mm;
+    width: 100%;
+
+    .header-report {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .text-margin {
+        padding: 10px 10px;
+    }
+
+    .text-size {
+        font-size: 12px;
+    }
+
+    .footer_container {
+        position: fixed;
+        bottom: -260mm;
+        width: 100%;
+    }
+}
