@@ -11,6 +11,7 @@ class FleetVehicle(models.Model):
         string='Product',
         copy=False
     )
+
     #@api.multi
     def _qty_count(self):
         for product in self:
@@ -61,6 +62,7 @@ class FleetVehicle(models.Model):
                 'default_name':self.model_id.name
             }
         return action
+
     #@api.multi
     def action_view_product(self):
         self.ensure_one()
