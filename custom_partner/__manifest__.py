@@ -8,7 +8,9 @@
     'website': "https://www.around.co.th",
     "version": "15.0.1.0.0",
     "depends": [
-        'base', 'mail'
+        'base',
+        'mail',
+        'custom_company',
     ],
     "data": [
         'security/ir.model.access.csv',

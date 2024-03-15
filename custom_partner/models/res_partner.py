@@ -42,7 +42,7 @@ class ResPartner(models.Model):
         partners = super(ResPartner, self).create(vals_list)
         for partner in partners:
             if partner.vendor_group_id and not partner.internal_code:
-                sequence = partner.vendor_group_id._get_sequence_next()
+                sequence = self.env.company.short_name + partner.vendor_group_id._get_sequence_next()
                 if sequence:
                     partner.update(
                         {
@@ -62,7 +62,7 @@ class ResPartner(models.Model):
 
         result = super(ResPartner, self).write(vals)
         if change_sequence:
-            sequence = self.vendor_group_id._get_sequence_next()
+            sequence = self.env.company.short_name + self.vendor_group_id._get_sequence_next()
             if sequence:
                 self.update(
                     {
@@ -72,7 +72,7 @@ class ResPartner(models.Model):
                 )
         elif not self.internal_code and self.vendor_group_id:
             if not self.generate_number:
-                sequence = self.vendor_group_id._get_sequence_next()
+                sequence = self.env.company.short_name + self.vendor_group_id._get_sequence_next()
                 if sequence:
                     self.update(
                         {
