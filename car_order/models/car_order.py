@@ -8,13 +8,15 @@ from odoo.exceptions import ValidationError
 class CarOrderLine(models.Model):
     _name = "car.order.line"
     _description = "Car Order Line"
+    _check_company_auto = True
 
-    product_id = fields.Many2one('product.product', string="สินค้า", required=True,
-                                 domain="[('detailed_type', '=', 'service')]")
     price_company_header_1 = fields.Float(string="สั่งจ่ายในนามบริษัทที่ 1", default=0)
     price_company_header_2 = fields.Float(string="สั่งจ่ายในนามบริษัทที่ 2", default=0)
     price = fields.Float(compute="_compute_price")
     order_id = fields.Many2one('car.order')
+    company_id = fields.Many2one(related='order_id.company_id', string='Company', store=True, index=True)
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True,
+                                 domain="[('detailed_type', '=', 'service'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     @api.depends('price_company_header_1', 'price_company_header_2')
     def _compute_price(self):
@@ -25,20 +27,25 @@ class CarOrderLine(models.Model):
 class CarOrderCommission(models.Model):
     _name = "car.order.commission"
     _description = "Commission in Car Order"
+    _check_company_auto = True
 
-    product_id = fields.Many2one('product.product', string="สินค้า", required=True)
-    price = fields.Float("ราคา", required=True)
     order_id = fields.Many2one('car.order')
+    company_id = fields.Many2one(related='order_id.company_id', string='Company', store=True, index=True)
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    price = fields.Float("ราคา", required=True)
 
 
 class CarOrderFreebie(models.Model):
     _name = "car.order.freebie"
     _description = "Freebie in Car Order"
+    _check_company_auto = True
 
-    product_id = fields.Many2one('product.product', string="สินค้า", required=True)
+    order_id = fields.Many2one('car.order')
+    company_id = fields.Many2one(related='order_id.company_id', string='Company', store=True, index=True)
+    product_id = fields.Many2one('product.product', string="สินค้า", required=True,
+                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     cost = fields.Float("Sales Cost", required=True, readonly=True)
     sale_price = fields.Float("Sale Price", required=True)
-    order_id = fields.Many2one('car.order')
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
@@ -52,14 +59,17 @@ class CarOrder(models.Model):
     _name = "car.order"
     _description = "Car Order"
     _order = 'date_order desc, id desc'
+    _check_company_auto = True
 
+    company_id = fields.Many2one('res.company', 'Company', required=True, index=True,
+                                 default=lambda self: self.env.company)
     name = fields.Char(string='Number', required=True, copy=False, readonly=True,
                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, index=True,
                        default=lambda self: _('New'))
     partner_id = fields.Many2one('res.partner', string='ลูกค้า', readonly=True,
                                  states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                  required=True, change_default=True,
-                                 index=True, domain="[('type', '!=', 'private')]")
+                                 index=True, domain="[('type', '!=', 'private'), ('company_id', 'in', (False, company_id))]")
     partner_invoice_id = fields.Many2one('res.partner', string='ที่อยู่ใบแจ้งหนี้', readonly=True, required=True,
                                          states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                          domain="[('type', '!=', 'private')]")
@@ -67,17 +77,18 @@ class CarOrder(models.Model):
                                           states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                           domain="[('type', '!=', 'private')]")
     salesman_id = fields.Many2one('hr.employee', string="พนักงานขาย")
-    team_id = fields.Many2one('crm.team', string="Sales Team")
+    team_id = fields.Many2one('crm.team', string="Sales Team", domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     date_order = fields.Datetime(string='วันที่ทำเอกสาร', default=fields.datetime.now(), required=True, readonly=True,
                                  index=True, states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]},
                                  copy=False)
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', required=True, readonly=True,
-                                   states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
+                                   states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     pricelist_price = fields.Float('ราคา Pricelist', compute="_compute_pricelist_price", store=True)
     currency_id = fields.Many2one(related='pricelist_id.currency_id', depends=["pricelist_id"], store=True,
                                   ondelete="restrict")
     payment_term_id = fields.Many2one('account.payment.term', string='เงื่อนไขการชำระเงิน', readonly=True,
                                       required=True,
+                                      domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
                                       states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
     product_id = fields.Many2one('product.product', string="รถ", domain="[('custom_fleet_ok', '=', True)]",
                                  required=True, readonly=True, index=True,
@@ -185,7 +196,7 @@ class CarOrder(models.Model):
             (0, 0, {'x_name': "Voucher ส่วนลด1,000 บาท"}),
             (0, 0, {'x_name': "Gift Set Premium วันส่งมอบรถ"}),
         ]
-        employee_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+        employee_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid), ('company_id', '=', self.env.company.id)])
         if employee_id:
             result['salesman_id'] = employee_id
         return result

@@ -23,6 +23,7 @@
         <field name="model">car.order</field>
         <field name="arch" type="xml">
             <form string="Car Order" duplicate="1">
+                <field name="company_id" invisible="1"/>
                 <field name="sale_id" invisible="1"/>
                 <header>
                     <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
@@ -100,6 +101,7 @@
                                     string="Order Lines"
                                     editable="bottom"
                                 >
+                                    <field name="company_id" invisible="1"/>
                                     <field name="product_id"/>
                                     <field name="price_company_header_1"/>
                                     <field name="price_company_header_2"/>
@@ -165,6 +167,7 @@
                             <field name="commission_product_categ" invisible="1"/>
                             <field name="commission_line">
                                 <tree editable="bottom">
+                                    <field name="company_id" invisible="1"/>
                                     <field name="product_id" domain="[('categ_id', '=', parent.commission_product_categ)]" options="{'no_create_edit': True,'no_open': True}"/>
                                     <field name="price"/>
                                 </tree>
@@ -180,6 +183,7 @@
                          <page string="ของแถม">
                             <field name="freebie_line">
                                 <tree editable="bottom">
+                                    <field name="company_id" invisible="1"/>
                                     <field name="product_id"/>
                                     <field name="cost" force_save="1"/>
                                     <field name="sale_price"/>

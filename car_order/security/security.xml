@@ -11,5 +11,31 @@
         <field name="category_id" ref="base.module_category_technical"/>
     </record>
 
+    <!-- Multi - Company Rules -->
+    <record model="ir.rule" id="car_order_comp_rule">
+        <field name="name">Car Order multi-company</field>
+        <field name="model_id" ref="model_car_order"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="car_order_line_comp_rule">
+        <field name="name">Car Order Line multi-company</field>
+        <field name="model_id" ref="model_car_order_line"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="car_order_commission_comp_rule">
+        <field name="name">Car Order Commission multi-company</field>
+        <field name="model_id" ref="model_car_order_commission"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="car_order_freebie_comp_rule">
+        <field name="name">Car Order Freebie multi-company</field>
+        <field name="model_id" ref="model_car_order_freebie"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
 </data>
 </odoo>
+
