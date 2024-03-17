@@ -10,9 +10,12 @@ class ReportVehiclePipeline2(models.Model):
     _auto = False
     _rec_name = 'product_id'
     _order = 'date_approve desc'
+    _check_company_auto = True
 
     # id = fields.Id()
     id = fields.Integer('ID')
+    company_id = fields.Many2one('res.company', 'Company', required=True, index=True,
+                      default=lambda self: self.env.company)
 
     # invisible
     purchase_id = fields.Many2one('purchase.order',
@@ -192,8 +195,8 @@ class ReportVehiclePipeline2(models.Model):
                 ampor.amount_total_signed * (-1) as total_rate_real, polsum.deposit_price, polsum.date_planned, co.id as car_order_id, so.id as sale_order_id, co.partner_id, co.salesman_id,
                 co.sale_price, co.reserve_price, fv.id as vehicle_id, fv.x_studio_picture, fv.x_studio_inspection_sheet,
                 pt.x_studio_received_bl_date, pt.x_studio_insurance_pay, pt.x_studio_bill_of_landing_no, pt.x_studio_bl_surrendered_date,
-                po.state as po_state, co.state as co_state, so.state as so_state
-                from purchase_order po 
+                po.state as po_state, co.state as co_state, so.state as so_state, po.company_id as company_id
+                from purchase_order po
                 inner join purchase_order_line pol on pol.order_id = po.id
                 inner join product_product pp on pp.id = pol.product_id and pp.active = true
                 inner join product_template pt on pt.id = pp.product_tmpl_id and pt.custom_fleet_ok = true
@@ -252,8 +255,9 @@ class ReportVehiclePipeline2(models.Model):
         """
 
         # Excute by Odoo Cursor Environment
+        qs_string = query.format(view_name=self._table)
         self.env.cr.execute(
-            query.format(view_name = self._table)
+            qs_string
         )
 
     @api.model
