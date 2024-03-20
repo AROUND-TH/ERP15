@@ -7,6 +7,7 @@
         <field name="priority">25</field>
         <field name="arch" type="xml">
             <tree string="Report Vehicle in Pipeline 2" create="0" edit="0" delete="0">
+                <field name="company_id"/>
                 <field name="date_approve"/>
                 <field name="product_id"/>
                 <field name="partner_ref"/>
@@ -52,6 +53,7 @@
             <form string="Report Vehicle in Pipeline 2" create="0" edit="0" delete="0">
                 <sheet>
                     <group col="4" colspan="4">
+                        <field name="company_id"/>
                         <field name="date_approve"/>
                         <field name="product_id"/>
                         <field name="partner_ref"/>

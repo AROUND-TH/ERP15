@@ -179,6 +179,10 @@ class ReportVehiclePipeline2(models.Model):
             else:
                 rec.currency_rate = 0.0
 
+    def read(self, fields, load='_classic_read'):
+        self = self.sudo()
+        return super().read(fields, load)
+
 
     @api.model
     def init(self):
