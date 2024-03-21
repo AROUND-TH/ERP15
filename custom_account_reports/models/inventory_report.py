@@ -1,13 +1,17 @@
 # coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _ 
 from datetime import datetime, timedelta, timezone
+
+import logging
+_logger = logging.getLogger(__name__)
 
 class InventoryAccountReport(models.AbstractModel):
     _name = "inventory.account.report"
     _inherit = "account.report"
     _description = "Inventory Account Report"
+    _logger = logging.getLogger(__name__)
 
     filter_date = {'mode': 'range', 'filter': 'this_year'}
 
@@ -65,6 +69,7 @@ class InventoryAccountReport(models.AbstractModel):
             quantity_calculate = 0.0
             average_price = 0.0
             value_calculate = 0.0
+            value_landed_calculate = 0.0
             stock_valuation_ids = self.env['stock.valuation.layer'].search
             lines.append(self._get_title_line(options, item))
 
@@ -75,6 +80,33 @@ class InventoryAccountReport(models.AbstractModel):
                 quantity_calculate += val.quantity
                 value_calculate += val.value
                 average_price = value_calculate/quantity_calculate if quantity_calculate != 0.0 else 0
+
+                # Nitipong - Case landed cost after sale
+                total = 0.0
+                balance_total = 0.0
+                standard_price = 0.0
+
+                if val.quantity > -1 :
+                    value_landed_calculate += val.value
+
+                if val.quantity == 0 and average_price == 0:
+
+                    # products = self.env['product.product'].browse(p.id for p in val.product_id)
+
+                    # for product in products:  # iterate on recordset to prefetch efficiently quantity_svl
+                    #     standard_price = product.with_company(val.company_id).sudo().with_context(disable_auto_svl=True).standard_price
+
+                    total = val.value
+                    balance_total = value_landed_calculate
+                else:
+                    total = val.value
+                    balance_total = value_calculate
+                
+                _logger.info('Papsiman')
+                _logger.info(value_calculate)
+                _logger.info(value_landed_calculate)
+                    
+
                 for i in range(MAX_COLUMNS):
                     tz = timezone(timedelta(hours=7))
                     new_time = val.create_date.astimezone(tz)
@@ -93,7 +125,7 @@ class InventoryAccountReport(models.AbstractModel):
                     #Unit of Measure
                     if i == 5: columns.append({'name': val.uom_id.name, 'class': 'number'})
                     #Total Value
-                    if i == 6: columns.append({'name': self.format_value(val.value), 'class': 'number'})
+                    if i == 6: columns.append({'name': self.format_value(total), 'class': 'number'})
                     #Balance Quantity
                     if i == 7: columns.append({'name': round(quantity_calculate, 2), 'class': 'number'})
                     #Balance Unit Value
@@ -101,7 +133,7 @@ class InventoryAccountReport(models.AbstractModel):
                     #Balance Unit of Measure
                     if i == 9: columns.append({'name': val.uom_id.name, 'class': 'number'})
                     #Balance Total Value
-                    if i == 10: columns.append({'name': self.format_value(value_calculate), 'class': 'number'})
+                    if i == 10: columns.append({'name': self.format_value(balance_total), 'class': 'number'})
                     
 
                 lines.append({
